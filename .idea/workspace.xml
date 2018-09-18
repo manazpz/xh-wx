@@ -2,27 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c0639584-f174-4e31-bcf8-378a9f4e95ff" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/views/statement/statement.vue" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/static/css/style.styl" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/static/image/icon_li_01.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/static/image/icon_li_02.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/static/image/icon_li_03.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/static/image/icon_li_04.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/static/image/icon_li_05.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/static/image/icon_li_06.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/static/image/icon_li_07.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/static/image/pic_bg.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/static/image/pic_img.png" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/src/components/sidebar/back.png" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/components/sidebar/collect.png" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/components/sidebar/sidebar.styl" afterPath="$PROJECT_DIR$/src/components/sidebar/sidebar.styl" />
-      <change beforePath="$PROJECT_DIR$/src/components/sidebar/sidebar.vue" afterPath="$PROJECT_DIR$/src/components/sidebar/sidebar.vue" />
-      <change beforePath="$PROJECT_DIR$/src/components/sidebar/useravatar.png" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/components/v-header/navigation.png" afterPath="$PROJECT_DIR$/src/views/home/navigation.png" />
-      <change beforePath="$PROJECT_DIR$/src/components/v-header/v-header.styl" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/components/v-header/v-header.vue" afterPath="$PROJECT_DIR$/src/components/v-header/v-header.vue" />
-      <change beforePath="$PROJECT_DIR$/src/router/index.js" afterPath="$PROJECT_DIR$/src/router/index.js" />
       <change beforePath="$PROJECT_DIR$/src/views/home/home.styl" afterPath="$PROJECT_DIR$/src/views/home/home.styl" />
       <change beforePath="$PROJECT_DIR$/src/views/home/home.vue" afterPath="$PROJECT_DIR$/src/views/home/home.vue" />
     </list>
@@ -49,57 +30,24 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="sidebar.vue" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/components/sidebar/sidebar.vue">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="147">
-              <caret line="7" column="31" lean-forward="false" selection-start-line="7" selection-start-column="25" selection-end-line="7" selection-end-column="31" />
-              <folding>
-                <element signature="n#style#0;n#ul#0;n#scroll#0;n#div#0;n#transition#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="e#1434#1457#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="sidebar.styl" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/components/sidebar/sidebar.styl">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="275">
-              <caret line="108" column="17" lean-forward="true" selection-start-line="108" selection-start-column="17" selection-end-line="108" selection-end-column="17" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="home.vue" pinned="false" current-in-tab="false">
+      <file leaf-file-name="home.vue" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/views/home/home.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="84">
-              <caret line="4" column="24" lean-forward="false" selection-start-line="4" selection-start-column="16" selection-end-line="4" selection-end-column="24" />
+            <state relative-caret-position="-378">
+              <caret line="12" column="21" lean-forward="false" selection-start-line="12" selection-start-column="5" selection-end-line="12" selection-end-column="21" />
               <folding>
-                <element signature="n#style#0;n#img#0;n#mt-swipe-item#0;n#mt-swipe#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="e#1834#1873#0" expanded="true" />
+                <element signature="n#style#0;n#img#0;n#mt-swipe-item#0;n#mt-swipe#0;n#mt-tab-container-item#0;n#mt-tab-container#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="e#1853#1892#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="home.styl" pinned="false" current-in-tab="true">
+      <file leaf-file-name="home.styl" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/views/home/home.styl">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="462">
-              <caret line="22" column="26" lean-forward="false" selection-start-line="22" selection-start-column="26" selection-end-line="22" selection-end-column="26" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="style.styl" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/static/css/style.styl">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="5" column="18" lean-forward="false" selection-start-line="5" selection-start-column="18" selection-end-line="5" selection-end-column="18" />
+            <state relative-caret-position="294">
+              <caret line="28" column="15" lean-forward="true" selection-start-line="28" selection-start-column="15" selection-end-line="28" selection-end-column="15" />
               <folding />
             </state>
           </provider>
@@ -109,7 +57,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>showFlag</find>
       <find>首页</find>
       <find>components</find>
       <find>news_qa</find>
@@ -139,6 +86,7 @@
       <find>themetitle</find>
       <find>header</find>
       <find>showSidebar</find>
+      <find>.mint-tab-container</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -189,6 +137,7 @@
         <option value="$PROJECT_DIR$/src/components/v-header/v-header.styl" />
         <option value="$PROJECT_DIR$/src/components/v-header/v-header.vue" />
         <option value="$PROJECT_DIR$/static/css/style.styl" />
+        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/src/views/home/home.vue" />
         <option value="$PROJECT_DIR$/src/views/home/home.styl" />
       </list>
@@ -240,44 +189,6 @@
             <path>
               <item name="xh-wx" type="b2602c69:ProjectViewProjectNode" />
               <item name="xh-wx" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="xh-wx" type="b2602c69:ProjectViewProjectNode" />
-              <item name="xh-wx" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="xh-wx" type="b2602c69:ProjectViewProjectNode" />
-              <item name="xh-wx" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="xh-wx" type="b2602c69:ProjectViewProjectNode" />
-              <item name="xh-wx" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-              <item name="sidebar" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="xh-wx" type="b2602c69:ProjectViewProjectNode" />
-              <item name="xh-wx" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-              <item name="v-header" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="xh-wx" type="b2602c69:ProjectViewProjectNode" />
-              <item name="xh-wx" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="views" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="xh-wx" type="b2602c69:ProjectViewProjectNode" />
-              <item name="xh-wx" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="views" type="462c0819:PsiDirectoryNode" />
-              <item name="home" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="xh-wx" type="b2602c69:ProjectViewProjectNode" />
@@ -443,12 +354,12 @@
       <workItem from="1536993120569" duration="5589000" />
       <workItem from="1537093357233" duration="7991000" />
       <workItem from="1537252139253" duration="12268000" />
-      <workItem from="1537268478029" duration="12274000" />
+      <workItem from="1537268478029" duration="15111000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="56880000" />
+    <option name="totallyTimeSpent" value="59717000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
@@ -522,13 +433,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/common/stylus/iconfont.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/common/stylus/base.styl">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -819,14 +723,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/css/style.styl">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="5" column="18" lean-forward="false" selection-start-line="5" selection-start-column="18" selection-end-line="5" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/sidebar/sidebar.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="147">
@@ -846,22 +742,38 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/views/home/home.vue">
+    <entry file="file://$PROJECT_DIR$/static/css/style.styl">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="84">
-          <caret line="4" column="24" lean-forward="false" selection-start-line="4" selection-start-column="16" selection-end-line="4" selection-end-column="24" />
-          <folding>
-            <element signature="n#style#0;n#img#0;n#mt-swipe-item#0;n#mt-swipe#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="e#1834#1873#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="105">
+          <caret line="5" column="18" lean-forward="false" selection-start-line="5" selection-start-column="18" selection-end-line="5" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="15" column="0" lean-forward="true" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/views/home/home.styl">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="462">
-          <caret line="22" column="26" lean-forward="false" selection-start-line="22" selection-start-column="26" selection-end-line="22" selection-end-column="26" />
+        <state relative-caret-position="294">
+          <caret line="28" column="15" lean-forward="true" selection-start-line="28" selection-start-column="15" selection-end-line="28" selection-end-column="15" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/home/home.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-378">
+          <caret line="12" column="21" lean-forward="false" selection-start-line="12" selection-start-column="5" selection-end-line="12" selection-end-column="21" />
+          <folding>
+            <element signature="n#style#0;n#img#0;n#mt-swipe-item#0;n#mt-swipe#0;n#mt-tab-container-item#0;n#mt-tab-container#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="e#1853#1892#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
