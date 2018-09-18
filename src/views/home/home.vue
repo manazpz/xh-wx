@@ -1,7 +1,25 @@
 <template>
   <div class="home" ref="home">
-    <v-header @showSide="show"></v-header>
+    <v-header title="小换"></v-header>
     <sidebar ref="sidebar"></sidebar>
+    <div class="homeHead">
+      <span class="navigation" @click="showSidebar"></span>
+      <mt-navbar class="navbar" v-model="selected">
+        <mt-tab-item id="sy">首页</mt-tab-item>
+        <mt-tab-item id="js">集市</mt-tab-item>
+      </mt-navbar>
+    </div>
+
+    <!--<mt-tab-container v-model="selected">-->
+      <!--<mt-tab-container-item id="sy">-->
+        <!--<mt-cell v-for="n in 10" :title="'content ' + n" />-->
+      <!--</mt-tab-container-item>-->
+      <!--<mt-tab-container-item id="js">-->
+        <!--<mt-cell v-for="n in 4" :title="'content ' + n" />-->
+      <!--</mt-tab-container-item>-->
+    <!--</mt-tab-container>-->
+
+
     <mt-swipe :stopPropagation="true" :prevent="true" :auto="5000" class="banner" style="height: 200px;margin-top: 40px">
       <mt-swipe-item v-for="item in banners">
         <img :src="item.url" style="height: 100%;width: 100%">
@@ -40,7 +58,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-
+  // import {mapGetters} from 'vuex'
   import { queryBanners } from 'api/home'
   import { queryStatement } from 'api/statement'
   import VHeader from 'components/v-header/v-header'
@@ -49,6 +67,7 @@
   export default {
     data() {
       return {
+        selected: 'sy',
         banners: [],
         statements: []
       }
@@ -58,7 +77,7 @@
       this.getStatement()
     },
     methods: {
-      show() {
+      showSidebar() {
         this.$refs.sidebar.open()
       },
       getBanners() {
@@ -83,6 +102,15 @@
       VHeader,
       Sidebar
     }
+    // computed: {
+    //   //返回当前模式
+    //   model() {
+    //     return this.isNight ? 'night' : 'morning'
+    //   },
+    //   ...mapGetters([
+    //     'isNight'
+    //   ])
+    // }
   }
 </script>
 

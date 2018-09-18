@@ -2,30 +2,34 @@
   <div>
     <transition name="fold">
       <div class="sidebar" v-show="showFlag">
-        <div class="user">
-          <div class="avatar"></div>
-          <div class="username">哈哈哈蜜瓜</div>
-          <div class="back" @click="hide"><img src="./back.png" width="22" height="22"></div>
+        <div class="top-pic">
+          <dl>
+            <dt>
+              <img src="/static/image/pic_img.png" title="头像">
+            </dt>
+            <p>Acid</p>
+          </dl>
         </div>
         <scroll :data="data" class="themes-list" ref="scroll">
-          <ul style="padding-left: 0">
-            <li class="themes" v-for="item in data">
-              <router-link v-if="!item.hidden" :to="resolvePath(item.path)">
+          <ul style="padding-left: 10px">
+            <router-link v-for="item in data" v-if="!item.hidden" :to="resolvePath(item.path)">
+              <li class="themes">
+                <img class="icons" :src="item.meta.icon">
                 <div class="themetitle">{{item.meta.title}}</div>
-              </router-link>
-            </li>
+              </li>
+            </router-link>
           </ul>
         </scroll>
-        <div class="bottom-menu">
-          <div class="menu">
-            <div class="avatar"><i class="icon iconfont icon-lixianwenjian"></i></div>
-            <div class="name">离线</div>
-          </div>
-          <div class="menu" @click="setIsNight">
-            <div class="avatar"><img :src="modelImg" width="18" height="18"></div>
-            <div class="name">{{modelText}}</div>
-          </div>
-        </div>
+        <!--<div class="bottom-menu">-->
+          <!--<div class="menu">-->
+            <!--<div class="avatar"><i class="icon iconfont icon-lixianwenjian"></i></div>-->
+            <!--<div class="name">离线</div>-->
+          <!--</div>-->
+          <!--<div class="menu" @click="setIsNight">-->
+            <!--<div class="avatar"><img :src="modelImg" width="18" height="18"></div>-->
+            <!--<div class="name">{{modelText}}</div>-->
+          <!--</div>-->
+        <!--</div>-->
       </div>
     </transition>
     <transition name="fade">
@@ -75,22 +79,9 @@
         if (routers.length > 0) {
           this.data = routers
         }
-        debugger
       },
       resolvePath(...paths) {
         return path.resolve(this.basePath, ...paths)
-      },
-      //跳转主题页面路由
-      goTheme(id) {
-        this.hide();
-        if (id === -1) {
-          this.$router.push({name: 'home'});
-          // this.setGoType(1)
-          // this.setThemeId(id)
-        }  else {
-          // this.setThemeId(id)
-          this.$router.push({name: 'themeDetail', params: {id: id}});
-        }
       },
       ...mapMutations({
         setIsNight: 'CHANGE_MODEL'
