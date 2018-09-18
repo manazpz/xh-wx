@@ -1,21 +1,19 @@
-/**
- * Created by luowendi on 2017/4/16.
- */
 import Vue from 'vue'
 import Vuex from 'vuex'
-import state from './state'
+import app from './modules/app'
+import rt from './modules/router'
+import getters from './getters'
 import mutations from './mutations'
-import * as getters from './getters'
-import createLogger from 'vuex/dist/logger'
 
 Vue.use(Vuex)
 
-const debug = process.env.NODE_ENV !== 'production'
-
-export default new Vuex.Store({
-  state,
+const store = new Vuex.Store({
+  modules: {
+    app,
+    rt
+  },
   mutations,
-  getters,
-  strict: debug,
-  plugins: debug ? [createLogger()] : []
+  getters
 })
+
+export default store

@@ -9,10 +9,10 @@
         </div>
         <scroll :data="data" class="themes-list" ref="scroll">
           <ul style="padding-left: 0">
-            <li class="themes" v-for="item in data" @click="goTheme(item.id)"
-                :class="{'current':currentThemeId===item.id}">
-              <div class="icons" v-if="item.id == -1"><i class="icon iconfont icon-shouyeshouye"></i></div>
-              <div class="themetitle">{{item.name}}</div>
+            <li class="themes" v-for="item in data">
+              <router-link v-if="!item.hidden" :to="resolvePath(item.path)">
+                <div class="themetitle">{{item.meta.title}}</div>
+              </router-link>
             </li>
           </ul>
         </scroll>
@@ -21,7 +21,7 @@
             <div class="avatar"><i class="icon iconfont icon-lixianwenjian"></i></div>
             <div class="name">离线</div>
           </div>
-          <div class="menu" @click="changeModel">
+          <div class="menu" @click="setIsNight">
             <div class="avatar"><img :src="modelImg" width="18" height="18"></div>
             <div class="name">{{modelText}}</div>
           </div>
@@ -35,8 +35,10 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import path from 'path'
   import Scroll from 'base/scroll/scroll'
   import {mapGetters, mapMutations} from 'vuex'
+  import store from '../../store'
 
   export default {
     //接收父组件传值
@@ -69,33 +71,29 @@
       },
       //获取主题列表数据
       fetchData() {
-        this.data.push({
-          color: 0,
-          thumbnail: '',
-          description: '首页',
-          id: -1,
-          name: '首页'
-        })
+        var routers = store.getters.routers
+        if (routers.length > 0) {
+          this.data = routers
+        }
+        debugger
+      },
+      resolvePath(...paths) {
+        return path.resolve(this.basePath, ...paths)
       },
       //跳转主题页面路由
       goTheme(id) {
+        this.hide();
         if (id === -1) {
-          this.hide();
           this.$router.push({name: 'home'});
-          this.setGoType(1)
-          this.setThemeId(id)
-        } else if (id === this.currentThemeId) {
-          this.hide();
-        } else {
-          this.hide();
-          this.setThemeId(id)
+          // this.setGoType(1)
+          // this.setThemeId(id)
+        }  else {
+          // this.setThemeId(id)
           this.$router.push({name: 'themeDetail', params: {id: id}});
         }
       },
       ...mapMutations({
-        setThemeId: 'CHANGE_CURRENT_THEME_ID',
-        setGoType: 'CHANGE_GO_TYPES',
-        changeModel: 'CHANGE_MODEL'
+        setIsNight: 'CHANGE_MODEL'
       })
     },
     computed: {
@@ -111,14 +109,12 @@
         }
       },
       ...mapGetters([
-        'currentThemeId',
         'isNight'
       ])
     },
     //注册组件
     components: {
       Scroll
-
     }
   }
 </script>
