@@ -17,18 +17,18 @@
             <img :src="item.url" style="height: 100%;width: 100%">
           </mt-swipe-item>
         </mt-swipe>
-        <div class="home-change-purchase">
+        <div class="home-change-purchase" :model="temp">
           <ul>
             <li>
               <span>旧机</span>
               <a>
-                <strong>iPhone 6/iPhone 6plus</strong>
+                <strong @click="choise('02')">{{temp.oldGoods[0].name}}</strong>
               </a>
             </li>
             <li>
               <span>新机</span>
               <a>
-                <strong>iPhone X/iPhone 8</strong>
+                <strong @click="choise('01')">{{temp.newGoods[0].name}}</strong>
               </a>
             </li>
             <li>
@@ -59,7 +59,7 @@
 
 <script type="text/ecmascript-6">
   // import {mapGetters} from 'vuex'
-  import { queryBanners } from 'api/home'
+  import { queryBanners, queryLableList, queryChoiceList } from 'api/home'
   import { queryStatement } from 'api/statement'
   import VHeader from 'components/v-header/v-header'
   import Sidebar from 'components/sidebar/sidebar'
@@ -69,16 +69,31 @@
       return {
         selected: 'sy',
         banners: [],
-        statements: []
+        statements: [],
+        name: '',
+        temp: {
+          name: '',
+          newGoods: '',
+          oldGoods: ''
+        },
       }
     },
     created() {
       this.getBanners()
       this.getStatement()
+      this.getList()
     },
     methods: {
       showSidebar() {
         this.$refs.sidebar.open()
+      },
+      getList() {
+        queryLableList().then(response => {
+          if (response.code === 200) {
+            this.temp = response.data.items[0]
+          }
+        }).catch(() => {
+        })
       },
       getBanners() {
         queryBanners('HB').then(response => {
@@ -92,6 +107,14 @@
         queryStatement('HT').then(response => {
           if (response.code === 200) {
             this.statements = response.data.items
+          }
+        }).catch(() => {
+        })
+      },
+      choise(val) {
+        queryChoiceList(val).then(response => {
+          if (response.code === 200) {
+            this.$router.push({ path: 'screening', query: { msg: response.data.items }})
           }
         }).catch(() => {
         })
@@ -115,5 +138,5 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-  @import "home.styl"
+  @import "home.styl";
 </style>

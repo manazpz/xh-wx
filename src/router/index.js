@@ -4,6 +4,7 @@ import Router from 'vue-router'
 Vue.use(Router)
 
 const Home = () => import('../views/home/home')
+const SCREENING = () => import('../views/screening/screening')
 
 export const constantRouterMap = [
   {
@@ -54,6 +55,13 @@ export const constantRouterMap = [
     name: 'setting',
     component: Home,
     meta: { title: '设置', icon: '/static/image/icon_li_07.png' }
+  },
+  {
+    path: '/screening',
+    name: 'screening',
+    hidden: true,
+    component: SCREENING,
+    meta: { title: '机型选择' }
   }
 ]
 
