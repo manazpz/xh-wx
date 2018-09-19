@@ -1,9 +1,7 @@
 <template>
   <div class="header" ref="header">
-    <mt-header :title="title" class="osStyle">
-      <router-link to="/" slot="left">
-        <mt-button icon="back"></mt-button>
-      </router-link>
+    <mt-header fixed :title="title" class="osStyle">
+      <mt-button icon="back" slot="left" @click="$router.back(-1)"></mt-button>
       <mt-button icon="more" slot="right"></mt-button>
     </mt-header>
   </div>
@@ -25,6 +23,7 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
+  @import "v-header.styl"
   @import "../../../static/css/style.styl"
 </style>
 

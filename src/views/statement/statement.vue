@@ -1,51 +1,30 @@
 <template>
   <div class="statement" ref="statement">
+    <v-header :title="title"></v-header>
+    <div style="margin-top: 40px;padding: 10px" v-html="content">
+    </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
 
-  import { queryBanners } from 'api/home'
-  import { queryStatement } from 'api/statement'
   import VHeader from 'components/v-header/v-header'
-  import Sidebar from 'components/sidebar/sidebar'
 
   export default {
     data() {
       return {
-        banners: [],
-        statements: []
+        title: this.$route.query.title?this.$route.query.title:'隐私政策',
+        content: this.$route.query.content?this.$route.query.content:''
       }
     },
     created() {
-      this.getBanners()
-      this.getStatement()
     },
     methods: {
-      show() {
-        this.$refs.sidebar.open()
-      },
-      getBanners() {
-        queryBanners('HB').then(response => {
-          if (response.code === 200) {
-            this.banners = response.data.items
-          }
-        }).catch(() => {
-        })
-      },
-      getStatement() {
-        queryStatement('HT').then(response => {
-          if (response.code === 200) {
-            this.statements = response.data.items
-          }
-        }).catch(() => {
-        })
-      }
+
     },
     //注册组件
     components: {
-      VHeader,
-      Sidebar
+      VHeader
     }
   }
 </script>

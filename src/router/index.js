@@ -5,6 +5,8 @@ Vue.use(Router)
 
 const Home = () => import('../views/home/home')
 const SCREENING = () => import('../views/screening/screening')
+const GoodsDetail = () => import('../views/goods/goodsDetail')
+const Statement = () => import('../views/statement/statement')
 
 export const constantRouterMap = [
   {
@@ -62,6 +64,20 @@ export const constantRouterMap = [
     hidden: true,
     component: SCREENING,
     meta: { title: '机型选择' }
+  },
+  {
+    path: '/goods/detail',
+    name: 'goodsDetail',
+    component: GoodsDetail,
+    hidden: true,
+    meta: { title: '商品详情' }
+  },
+  {
+    path: '/statement',
+    name: 'statement',
+    component: Statement,
+    hidden: true,
+    meta: { title: '声明' }
   }
 ]
 

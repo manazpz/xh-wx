@@ -6,15 +6,3 @@ export function queryBanners(query) {
     method: 'get'
   })
 }
-export function queryLableList(query) {
-  return request({
-    url: '/api/goods/lableList',
-    method: 'get'
-  })
-}
-export function queryChoiceList(query) {
-  return request({
-    url: '/api/goods/choiceList?model='+query,
-    method: 'get'
-  })
-}
