@@ -30,4 +30,11 @@ export function queryChoiceList(query) {
     params: query
   })
 }
+export function getGoodsAppList(query) {
+  return request({
+    url: '/api/goods/specList/'+query,
+    method: 'get',
+    params: query
+  })
+}
 

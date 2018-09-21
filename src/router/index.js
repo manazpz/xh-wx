@@ -9,6 +9,7 @@ const GoodsDetail = () => import('../views/goods/goodsDetail')
 const GoodsNew = () => import('../views/goods/goodsNew')
 const OrderSure = () => import('../views/order/orderSure')
 const Statement = () => import('../views/statement/statement')
+const OldAppraisal = () => import('../views/oldAppraisal/oldAppraisal')
 
 export const constantRouterMap = [
   {
@@ -94,6 +95,13 @@ export const constantRouterMap = [
     component: Statement,
     hidden: true,
     meta: { title: '声明' }
+  },
+  {
+    path: '/oldAppraisal',
+    name: 'oldAppraisal',
+    component: OldAppraisal,
+    hidden: true,
+    meta: { title: '旧机估计' }
   }
 ]
 
