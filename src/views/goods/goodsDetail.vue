@@ -7,9 +7,9 @@
       </mt-swipe-item>
     </mt-swipe>
     <div class="merchandise-des">
-      <h3><span>Apple iPhone X 苹果</span></h3>
-      <p class="p-1"><i>￥</i><span>6598-8828</span></p>
-      <p class="p-2"><span>最低换购价 ￥6500</span><i></i></p>
+      <h3><span>{{detail.name}}</span></h3>
+      <p class="p-1"><i>￥</i><span>{{price==0?minPrice+'-'+maxPrice:price}}</span></p>
+      <p class="p-2"><span>最低换购价 ￥{{minPrice}}</span><i></i></p>
     </div>
 
     <!-->
@@ -18,29 +18,17 @@
         <li>
           <span>规格</span>
           <div>
-            <dl>
-              <dt>屏幕尺寸</dt>
-              <dd>5.8英寸</dd>
-            </dl>
-            <dl>
-              <dt>机身内存</dt>
-              <dd>64GB</dd>
-            </dl>
-            <dl>
-              <dt>后置摄像头</dt>
-              <dd>1200像素</dd>
-            </dl>
-            <dl>
-              <dt>运行内存</dt>
-              <dd>6G</dd>
+            <dl v-if="detail.specParameter.length > 0" v-for="item in detail.specParameter[0].spec">
+              <dt>{{item.name}}</dt>
+              <dd>{{item.spec_value_name}}</dd>
             </dl>
           </div>
         </li>
         <li>
           <span>选择</span>
           <div>
-            <a class="parameter-more" href="javascipt:;">
-              <p>机身颜色，套餐类型，存储容量，版本类型</p><i></i>
+            <a class="parameter-more" href="javascipt:;" @click="openPopup">
+              <p>{{specText}}</p><i></i>
             </a>
           </div>
         </li>
@@ -59,11 +47,11 @@
       </ul>
     </div>
     <!-->
-
+    <popup v-model="detail" :popupVisible="showPopup" ref="popup" @submit-update="updatePop"></popup>
     <div class="footer-shopping-cart">
       <i class="left-icon"></i>
       <mt-button class="center-shopping">加入收藏</mt-button>
-      <mt-button class="right-shopping" href="../1-0/index-price.html">立即购买</mt-button>
+      <mt-button class="right-shopping">立即购买</mt-button>
     </div>
   </div>
 </template>
@@ -71,11 +59,17 @@
 <script type="text/ecmascript-6">
   import { queryGoodsDetail } from 'api/goods'
   import VHeader from 'components/v-header/v-header'
+  import Popup from 'components/popup/popup'
 
   export default {
     data() {
       return {
-        detail: {imgs:[]}
+        detail: {imgs:[],specParameter:[{spec:[]}]},
+        price: 0,
+        maxPrice: 0,
+        minPrice: 0,
+        specText: '机身颜色，套餐类型，存储容量，版本类型',
+        showPopup: true
       }
     },
     created() {
@@ -86,14 +80,25 @@
         queryGoodsDetail(this.$route.query.id).then(response => {
           if (response.code === 200) {
             this.detail = response.data.items[0]
+            this.detail.specParameter.sort(function(a,b){return a.price-b.price})
+            this.minPrice = this.detail.specParameter[0].price
+            this.maxPrice = this.detail.specParameter[this.detail.specParameter.length-1].price
           }
         }).catch(() => {
         })
+      },
+      openPopup() {
+        this.$refs.popup.open()
+      },
+      updatePop(value) {
+        this.price = value.price
+        this.specText = value.specText
       }
     },
     //注册组件
     components: {
-      VHeader
+      VHeader,
+      Popup
     }
   }
 </script>
