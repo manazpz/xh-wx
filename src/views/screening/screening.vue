@@ -18,7 +18,9 @@
       </div>
       <div class="right-tab-main">
         <ul class="show">
-          <li v-for="item in goods" class="select">{{item.name}}</li>
+          <router-link v-for="item in goods" :to="item.model === '01'?{path:'/goods/new',query:{id:item.id}}:{path:'/goods/new',query:{id:item.id}}">
+            <li class="select">{{item.name}}</li>
+          </router-link>
         </ul>
       </div>
     </div>
@@ -50,6 +52,7 @@
             this.selected = response.data.items[0].id
             this.brands = response.data.items[0].detail
             this.goods = response.data.items[0].detail[0].goods
+            debugger
           }
         }).catch(() => {
         })
