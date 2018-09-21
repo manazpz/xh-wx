@@ -18,8 +18,8 @@
       </div>
       <div class="right-tab-main">
         <ul class="show">
-          <router-link v-for="item in goods" :to="item.model === '01'?{path:'/goods/new',query:{id:item.id}}:{path:'/goods/new',query:{id:item.id}}">
-            <li class="select">{{item.name}}</li>
+          <router-link v-for="(item,index) in goods" :to="item.model === '01'?{path:'/goods/new',query:{id:item.id}}:{path:'/goods/new',query:{id:item.id}}">
+            <li :class="{'select': index ===flags }">{{item.name}}</li>
           </router-link>
         </ul>
       </div>
@@ -35,6 +35,7 @@
     data() {
       return {
         flag: 0,
+        flags: 0,
         brands: [],
         goods: [],
         selected: '',
@@ -52,7 +53,6 @@
             this.selected = response.data.items[0].id
             this.brands = response.data.items[0].detail
             this.goods = response.data.items[0].detail[0].goods
-            debugger
           }
         }).catch(() => {
         })
@@ -60,6 +60,10 @@
       selectClass(index,item) {
         this.goods = item.goods
         this.flag = index
+      },
+      selectRightClass(index,item) {
+        this.flags = index
+        this.$router.push({path: 'oldAppraisal', query: {item: item}})
       }
     },
     //注册组件
