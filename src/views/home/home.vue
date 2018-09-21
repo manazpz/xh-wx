@@ -36,7 +36,7 @@
               <p>新人可领取200元大礼包</p>
             </li>
           </ul>
-          <mt-button size="large" class="exchange-btn">换购新机</mt-button>
+          <mt-button size="large" class="exchange-btn" @click="tradeUp">换购新机</mt-button>
         </div>
         <div class="h-prompt-img">
           <h4>三天换新机</h4>
@@ -126,6 +126,9 @@
       },
       choise(val) {
         this.$router.push({path: 'screening', query: {model: val}})
+      },
+      tradeUp() {
+        this.$router.push({path: '/order/sure',query: {model: 'new'}})
       },
       getNewGoods() {
         var query = {
