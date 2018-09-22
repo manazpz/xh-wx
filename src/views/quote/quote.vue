@@ -55,7 +55,7 @@
                                 <h4>{{item.goodsName}}<span>已失效</span></h4>
                                 <p class="p-inf">
                                     <a href="" target="_top">
-                                        <span class="pXh">大陆全网通</span>
+                                        <span class="pXh">{{item.bllParameterStr}}</span>
                                     </a>
                                 </p>
                                 <div class="increase-change">
@@ -77,6 +77,10 @@
           <a href="javascript:;" title="+ 再添加">+ 再添加</a>
         </div>
       </div>
+    </div>
+    <div class="footer-appraisal">
+      <span>合计：<strong><b>￥</b> <em class="aggregate-amount">0</em></strong></span>
+       <a href="" target="_top"  title="提交">提交</a>
     </div>
   </div>
 </template>
@@ -100,15 +104,18 @@
         queryReplacementCar(this.openId).then(response => {
           if (response.code === 200) {
             let cur = this
-
             response.data.oldGoods.forEach((value, index) => {
               value.bllParameterStr = value.bllParameterStr.replace(/\s+|&nbsp;/ig, ';')
             })
-            // response.data.newGoods.forEach((value, index) => {
-            //   value.bllParameter[0].spec.forEach((value1, index1) => {
-            //     value.bllParameterStr += value1.spec_value_name
-            //   })
-            // })
+            response.data.newGoods.forEach((value, index) => {
+              value.bllParameter[0].spec.forEach((value1, index1) => {
+                if(value.bllParameterStr == ''){
+                  value.bllParameterStr += value1.spec_value_name
+                }else{
+                  value.bllParameterStr += ';' + value1.spec_value_name
+                }
+              })
+            })
             this.newGoods = response.data.newGoods
             this.oldGoods = response.data.oldGoods
 
