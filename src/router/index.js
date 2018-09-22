@@ -11,6 +11,7 @@ const OrderSure = () => import('../views/order/orderSure')
 const Statement = () => import('../views/statement/statement')
 const OldAppraisal = () => import('../views/oldAppraisal/oldAppraisal')
 const Quote = () => import('../views/quote/quote')
+const QuoteDetail = () => import('../views/quote/quoteDetail')
 
 export const constantRouterMap = [
   {
@@ -110,6 +111,13 @@ export const constantRouterMap = [
     component: Quote,
     hidden: true,
     meta: { title: '置换车' }
+  },
+  {
+    path: '/quote/detail',
+    name: 'quoteDetail',
+    component: QuoteDetail,
+    hidden: true,
+    meta: { title: '详情' }
   }
 ]
 

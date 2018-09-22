@@ -58,7 +58,7 @@
     },
     methods: {
       sure() {
-        this.$emit('submit-update', {price:this.price,specText:this.specText});
+        this.$emit('submit-update', {price:this.price,specText:this.specText,checks:this.checks});
         this.close()
       },
       open() {
@@ -70,6 +70,30 @@
           this.price = this.spec.price
           this.formatData(this.info.specParameter)
         }
+      },
+      chick(val){
+        let ure = this
+        ure.checks = []
+        val[0].spec.forEach((value, index) => {
+          ure.checks.push(value.spec_sort)
+        })
+        this.$nextTick(function(){
+          ure.checks.forEach((value, index) => {
+            var cell = ure.$refs['radio'+index][0].$el.getElementsByClassName('mint-cell')
+            for(var i =0; i< cell.length; i++){
+              cell[i].style.background=""
+            }
+          })
+          this.checksData.forEach((value, index) => {
+            ure.checksData[index].spec.forEach((value1, index1) => {
+              if(value1.value === ure.checks[index]){
+                var cell = ure.$refs['radio'+index][0].$el.getElementsByClassName('mint-cell')
+                cell[index1].style.background="#28c081"
+              }
+            })
+          })
+
+        })
       },
       close() {
         this.popupVisible = false
@@ -132,11 +156,13 @@
         })
         this.checksData = params
         this.$nextTick(function(){
-          this.checksData.forEach((value, index) => {
-            this.checks[index] = value.spec[0].value
-            var cell = this.$refs['radio'+index][0].$el.getElementsByClassName('mint-cell')
-            cell[0].style.background="#28c081"
-          })
+          if(this.checks.length <1) {
+            this.checksData.forEach((value, index) => {
+              this.checks[index] = value.spec[0].value
+              var cell = this.$refs['radio'+index][0].$el.getElementsByClassName('mint-cell')
+              cell[0].style.background="#28c081"
+            })
+          }
         })
       }
     }

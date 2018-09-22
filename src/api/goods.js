@@ -48,6 +48,20 @@ export function queryReplacementCar(query) {
   return request({
     url: '/api/goods/replacementCarList?openId='+query,
     method: 'get',
-    data: query
+    params: query
+  })
+}
+export function queryReplacementCarDetail(query) {
+  return request({
+    url: '/api/goods/replacementCarList?'+query,
+    method: 'get',
+    params: query
+  })
+}
+export function updateReplacementCar(params) {
+  return request({
+    url: '/api/goods/replacementCar/update',
+    method: 'POST',
+    data: params
   })
 }
