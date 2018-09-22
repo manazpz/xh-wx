@@ -37,4 +37,17 @@ export function getGoodsAppList(query) {
     params: query
   })
 }
-
+export function insertReplacementCar(params) {
+  return request({
+    url: '/api/goods/replacementCar/insert',
+    method: 'POST',
+    data: params
+  })
+}
+export function queryReplacementCar(query) {
+  return request({
+    url: '/api/goods/replacementCarList?openId='+query,
+    method: 'get',
+    data: query
+  })
+}

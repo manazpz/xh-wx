@@ -9,7 +9,7 @@
       <div class="progress-bar">
         <span class="line schedule-0"></span>
       </div>
-      <div class="appraisal-main" v-model="phonename">
+      <div class="appraisal-main">
         <ul class="appraisal-ul" price="0">
           <li class="li">
             <div>
@@ -22,14 +22,14 @@
               <strong></strong>
             </div>
             <ul :class="{'show': index === flag }">
-              <li v-for="items in item.parameter">{{items.spec_value_name}}</li>
+              <li v-for="(items,index) in item.parameter" @click="selectClass(item,items,index)">{{items.spec_value_name}}</li>
             </ul>
           </li>
         </ul>
       </div>
 
       <div class="offer-btn-box">
-        <a class="" href="javascript:;" title="查看报价">查看报价</a>
+        <mt-button class="confirm-btn" @click="confirm()">查看报价</mt-button>
       </div>
 
 
@@ -46,13 +46,16 @@
 
 <script type="text/ecmascript-6">
   import VHeader from 'components/v-header/v-header'
-  import { getGoodsAppList } from 'api/goods'
+  import { getGoodsAppList, insertReplacementCar } from 'api/goods'
   export default {
     data() {
       return {
         temp: {
-          id: undefined,
-          name: ''
+          openId: '123456',
+          goodsId: '',
+          price: 0,
+          model: '02',
+          parameter: []
         },
         flag: 0,
         appraisalList: [],
@@ -61,13 +64,35 @@
     },
     created() {
       this.getList()
-      this.phonename = this.$route.query.item.name
+      this.phonename = this.$route.query.name
     },
     methods: {
       getList() {
-        getGoodsAppList(this.$route.query.item.id).then(response => {
+        getGoodsAppList(this.$route.query.id).then(response => {
           if (response.code === 200) {
             this.appraisalList = response.data.items
+          }
+        }).catch(() => {
+        })
+      },
+      selectClass(item,val,index) {
+        if(this.temp.parameter.length == 0){
+          this.temp.parameter += '{"id": "'+item.id+'","parameter": [{"name": "'+val.spec_value_name+'","value":"'+val.spec_sort+'"}]}';
+        }else{
+          this.temp.parameter += ',{"id": "'+item.id+'","parameter": [{"name": "'+val.spec_value_name+'","value":"'+val.spec_sort+'"}]}';
+        }
+        this.temp.price += parseInt(val.correntPrice)
+      },
+      confirm() {
+        let cur = this
+        this.temp.goodsId = this.$route.query.id
+        this.temp.price += parseInt(this.$route.query.price)
+        this.temp.parameter = JSON.parse('['+this.temp.parameter+']')
+        insertReplacementCar(this.temp).then(response => {
+          if (response.code === 200) {
+            setTimeout(function() {
+              cur.$router.push({path: 'quote'})
+            },1000);
           }
         }).catch(() => {
         })

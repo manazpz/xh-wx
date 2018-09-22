@@ -18,7 +18,7 @@
       </div>
       <div class="right-tab-main">
         <ul class="show">
-          <router-link v-for="(item,index) in goods" :to="item.model === '01'?{path:'/goods/new',query:{id:item.id}}:{path:'/goods/new',query:{id:item.id}}">
+          <router-link v-for="(item,index) in goods" :to="item.model === '01'?{path:'/goods/new',query:{id:item.id}}:{path:'/oldAppraisal',query:{id:item.id,name:item.name,price:item.banPrice}}">
             <li :class="{'select': index ===flags }">{{item.name}}</li>
           </router-link>
         </ul>
@@ -63,7 +63,7 @@
       },
       selectRightClass(index,item) {
         this.flags = index
-        this.$router.push({path: 'oldAppraisal', query: {item: item}})
+        this.$router.push({path: 'oldAppraisal', query: {}})
       }
     },
     //注册组件

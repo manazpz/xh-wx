@@ -25,7 +25,7 @@
           @click.native="onRadio($event,index)"
           :options="item.spec">
         </mt-radio>
-        <mt-button class="confirm-btn" >确定</mt-button>
+        <mt-button class="confirm-btn" @click="confirm()">确定</mt-button>
       </mt-tab-container-item>
       <mt-tab-container-item id="xq">
         <div style="padding: 10px" v-html="detail.detail">
@@ -36,7 +36,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import { queryGoodsDetail } from 'api/goods'
+  import { queryGoodsDetail, insertReplacementCar } from 'api/goods'
   import VHeader from 'components/v-header/v-header'
 
   export default {
@@ -46,7 +46,15 @@
         detail: {imgs:[],specParameter:[{spec:[]}]},
         price: 0,
         checks: [],
-        checksData: []
+        checksData: [],
+        specpar: [],
+        temp: {
+          openId: '123456',
+          goodsId: '',
+          price: 0,
+          model: '01',
+          parameter: []
+        },
       }
     },
     created() {
@@ -58,7 +66,6 @@
           if (response.code === 200) {
             this.detail = response.data.items[0]
             this.detail.specParameter.sort(function(a,b){return a.price-b.price})
-            debugger
             this.price = this.detail.specParameter[0].price
             this.formatData(this.detail.specParameter)
           }
@@ -128,6 +135,30 @@
             var cell = this.$refs['radio'+index][0].$el.getElementsByClassName('mint-cell')
             cell[0].style.background="#28c081"
           })
+        })
+      },
+      confirm() {
+        let cur = this
+        this.detail.specParameter.forEach((value, index) => {
+          value.spec.forEach((values, index1) => {
+            cur.specpar.push(values.spec_sort)
+          })
+          if(JSON.stringify(cur.checks) == JSON.stringify(cur.specpar)){
+            cur.temp.parameter = '['+JSON.stringify(value)+']'
+          }else{
+            cur.specpar = []
+          }
+        })
+        this.temp.goodsId = this.$route.query.id
+        this.temp.price = this.price
+        this.temp.parameter = JSON.parse(this.temp.parameter)
+        insertReplacementCar(this.temp).then(response => {
+          if (response.code === 200) {
+            setTimeout(function() {
+              cur.$router.push({path: '/quote'})
+            },1000);
+          }
+        }).catch(() => {
         })
       }
     },
