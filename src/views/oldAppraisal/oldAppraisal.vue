@@ -104,7 +104,12 @@
     }
 
   }
+
 </script>
+<scirpt>
+
+
+</scirpt>
 
 <style lang="stylus" rel="stylesheet/stylus">
   @import "oldAppraisal.styl";

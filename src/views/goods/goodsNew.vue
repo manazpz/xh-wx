@@ -98,6 +98,7 @@
             cell[i].style.background = ''
           }
           item.path[4].style.background="#28c081"
+          item.path[4].find('.mint-radio-label').style.background="#fff"
         }
       },
       formatData(data) {
