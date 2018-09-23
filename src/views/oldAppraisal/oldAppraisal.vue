@@ -22,14 +22,14 @@
               <strong></strong>
             </div>
             <ul :class="{'show': index === flag }">
-              <li v-for="(items,index) in item.parameter" @click="selectClass(item,items,index)">{{items.spec_value_name}}</li>
+              <li v-for="(items,index) in item.parameter"   @click="selectClass(item,items,index)" :data="index">{{items.spec_value_name}}</li>
             </ul>
           </li>
         </ul>
       </div>
 
       <div class="offer-btn-box">
-        <mt-button class="confirm-btn" @click="confirm()">查看报价</mt-button>
+        <a class="" href="javascript:;" @click="confirm()" title="查看报价">查看报价</a>
       </div>
 
 
@@ -76,6 +76,44 @@
         })
       },
       selectClass(item,val,index) {
+        var statisticsPrice = '';
+        var total = $('.appraisal-ul').attr('price');
+        $('.appraisal-ul').on('click','.li li',function() {
+          var _this = $(this);
+          var inf   = _this.html();
+          var schedule = _this.parent('ul').find('li').attr('data');
+          debugger
+          if(_this.parent('ul').siblings('div').find('span')[0].innerText != '相关实情描述'){
+            _this.addClass('select').siblings().removeClass('select');
+            _this.parent('ul').siblings('div').find('strong').html(inf);
+          }else{
+            if (_this.hasClass('select')) {
+              _this.removeClass('select');
+            } else {
+              _this.addClass('select');
+              _this.parent('ul').siblings('div').find('strong').html(inf);
+            }
+          }
+          $('.progress-bar .line').addClass('schedule-'+schedule+'');
+          setTimeout(function() {
+            if(_this.parent('ul').siblings('div').find('span')[0].innerText != '相关实情描述'){
+              _this.parent('ul').removeClass('show').parent('.li').next().find('ul').addClass('show');
+            }
+          },1000);
+          debugger
+          if (schedule >= 50) {
+            $('.offer-btn-box a').addClass('open');
+          };
+          if (_this.hasClass('select')) {
+            statisticsPrice = Number(_this.find('li').next().context.nextSibling.innerText);
+            $('.appraisal-ul').attr('price', Number(statisticsPrice) + Number($('.appraisal-ul').attr('price')));
+          } else {
+            statisticsPrice = Number(_this.find('li').next().context.nextSibling.innerText);
+            $('.appraisal-ul').attr('price', Number(-statisticsPrice) + Number($('.appraisal-ul').attr('price')));
+          }
+        });
+
+
         if(this.temp.parameter.length == 0){
           this.temp.parameter += '{"id": "'+item.id+'","parameter": [{"name": "'+val.spec_value_name+'","value":"'+val.spec_sort+'"}]}';
         }else{

@@ -149,6 +149,15 @@
     },
     methods: {
       getList() {
+        debugger
+        // 左滑动显示删除按钮
+        $('.model-list-box').on("swipeleft",'.model-box',function(){
+          $(this).addClass('m-swipeleft');
+        });
+        // 右滑动遮盖删除按钮
+        $('.model-list-box').on("swiperight",'.model-box',function(){
+          $(this).removeClass('m-swipeleft');
+        });
         queryReplacementCar(this.openId).then(response => {
           if (response.code === 200) {
             let cur = this
