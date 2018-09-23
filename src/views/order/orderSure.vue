@@ -106,7 +106,7 @@
     },
     methods: {
       getData() {
-        queryReplacementCat({ids:'d2ed12f9ad734e83ba36cf146d8fee0b,ec2736e3bb4347bbbde3426e635833d2'}).then(response => {
+        queryReplacementCat({ids:this.$route.query.ids}).then(response => {
           if (response.code === 200) {
             this.data = response.data
             this.data.newGoods.forEach(obj => {

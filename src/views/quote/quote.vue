@@ -1,9 +1,6 @@
 <template>
   <div class="quote" ref="quote">
-    <v-header title="置换车"></v-header>
-    <div class="top-return">
-      <a href="javascript:history.back(-1)" title="返回上一页"></a>
-    </div>
+    <v-header title="清单"></v-header>
     <div class="equipment-list">
       <h3>旧机清单</h3>
       <div class="detailed-list old-machine-list" state="old">
@@ -91,8 +88,13 @@
       v-model="popupVisibleOld"
       popup-transition="popup-fade"
       position="bottom">
-      <div class="appraisal-main" v-for>
-        <ul class="appraisal-ul" price="0">
+      <div class="appraisal-main">
+        <div class="r-title">
+          <a class="revise-cancel-btn" href="javascript:;" @click="closePop" title="取消">取消</a>
+          <h1>设备评估详情</h1>
+          <a class="revise-confirm-btn" href="javascript:;" @click="surePop" title="确定">确定</a>
+        </div>
+        <ul class="appraisal-ul">
           <li class="li">
             <div>
               <span class="phonesname">{{phonename}}</span>
@@ -149,7 +151,6 @@
     },
     methods: {
       getList() {
-        debugger
         // 左滑动显示删除按钮
         $('.model-list-box').on("swipeleft",'.model-box',function(){
           $(this).addClass('m-swipeleft');
@@ -200,6 +201,12 @@
         this.$refs.popup.open()
         this.$refs.popup.chick(item.bllParameter)
       },
+      closePop() {
+        this.popupVisibleOld = false
+      },
+      surePop() {
+        this.popupVisibleOld = false
+      },
       updatePop(value) {
         this.checks = value.checks
         for(var i=0; i<this.checks.length; i++){
@@ -229,12 +236,56 @@
         })
       },
       selectClass(item,val,index) {
+        var statisticsPrice = '';
+        var total = $('.appraisal-ul').attr('price');
+        $('.appraisal-ul').on('click','.li li',function() {
+          var _this = $(this);
+          var inf   = _this.html();
+          var schedule = _this.parent('ul').find('li').attr('data');
+          if(_this.parent('ul').siblings('div').find('span')[0].innerText != '相关实情描述'){
+            _this.addClass('select').siblings().removeClass('select');
+            _this.parent('ul').siblings('div').find('strong').html(inf);
+          }else{
+            if (_this.hasClass('select')) {
+              _this.removeClass('select');
+            } else {
+              _this.addClass('select');
+              _this.parent('ul').siblings('div').find('strong').html(inf);
+            }
+          }
+          $('.progress-bar .line').addClass('schedule-'+schedule+'');
+          setTimeout(function() {
+            if(_this.parent('ul').siblings('div').find('span')[0].innerText != '相关实情描述'){
+              _this.parent('ul').removeClass('show').parent('.li').next().find('ul').addClass('show');
+            }
+          },1000);
+          if (schedule >= 50) {
+            $('.offer-btn-box a').addClass('open');
+          };
+          if (_this.hasClass('select')) {
+            statisticsPrice = Number(_this.find('li').next().context.nextSibling.innerText);
+            $('.appraisal-ul').attr('price', Number(statisticsPrice) + Number($('.appraisal-ul').attr('price')));
+          } else {
+            statisticsPrice = Number(_this.find('li').next().context.nextSibling.innerText);
+            $('.appraisal-ul').attr('price', Number(-statisticsPrice) + Number($('.appraisal-ul').attr('price')));
+          }
+        });
+
+
         if(this.temp.parameter.length == 0){
           this.temp.parameter += '{"id": "'+item.id+'","parameter": [{"name": "'+val.spec_value_name+'","value":"'+val.spec_sort+'"}]}';
         }else{
           this.temp.parameter += ',{"id": "'+item.id+'","parameter": [{"name": "'+val.spec_value_name+'","value":"'+val.spec_sort+'"}]}';
         }
         this.temp.price += parseInt(val.correntPrice)
+        if(this.rangeValue < this.maxp)
+          this.rangeValue++
+        // if(this.temp.parameter.length == 0){
+        //   this.temp.parameter += '{"id": "'+item.id+'","parameter": [{"name": "'+val.spec_value_name+'","value":"'+val.spec_sort+'"}]}';
+        // }else{
+        //   this.temp.parameter += ',{"id": "'+item.id+'","parameter": [{"name": "'+val.spec_value_name+'","value":"'+val.spec_sort+'"}]}';
+        // }
+        // this.temp.price += parseInt(val.correntPrice)
       },
       confirm() {
         let cur = this

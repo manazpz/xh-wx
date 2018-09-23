@@ -1,14 +1,14 @@
 <template>
   <div class="oldAppraisal" ref="oldAppraisal">
     <v-header title="旧机估计"></v-header>
+    <mt-range
+      v-model="rangeValue"
+      :min="0"
+      :max="maxp-1"
+      :bar-height="10">
+    </mt-range>
+    <span>{{rangeValue+'/'+maxp}}</span>
 
-      <div class="top-return">
-        <a href="javascript:history.back(-1)" title="返回上一页"></a>
-      </div>
-
-      <div class="progress-bar">
-        <span class="line schedule-0"></span>
-      </div>
       <div class="appraisal-main">
         <ul class="appraisal-ul" price="0">
           <li class="li">
@@ -59,7 +59,9 @@
         },
         flag: 0,
         appraisalList: [],
-        phonename:''
+        phonename:'',
+        rangeValue: 0,
+        maxp:0
       }
     },
     created() {
@@ -71,6 +73,7 @@
         getGoodsAppList(this.$route.query.id).then(response => {
           if (response.code === 200) {
             this.appraisalList = response.data.items
+            this.maxp = response.data.items.length
           }
         }).catch(() => {
         })
@@ -82,7 +85,6 @@
           var _this = $(this);
           var inf   = _this.html();
           var schedule = _this.parent('ul').find('li').attr('data');
-          debugger
           if(_this.parent('ul').siblings('div').find('span')[0].innerText != '相关实情描述'){
             _this.addClass('select').siblings().removeClass('select');
             _this.parent('ul').siblings('div').find('strong').html(inf);
@@ -100,7 +102,6 @@
               _this.parent('ul').removeClass('show').parent('.li').next().find('ul').addClass('show');
             }
           },1000);
-          debugger
           if (schedule >= 50) {
             $('.offer-btn-box a').addClass('open');
           };
@@ -113,13 +114,14 @@
           }
         });
 
-
         if(this.temp.parameter.length == 0){
           this.temp.parameter += '{"id": "'+item.id+'","parameter": [{"name": "'+val.spec_value_name+'","value":"'+val.spec_sort+'"}]}';
         }else{
           this.temp.parameter += ',{"id": "'+item.id+'","parameter": [{"name": "'+val.spec_value_name+'","value":"'+val.spec_sort+'"}]}';
         }
         this.temp.price += parseInt(val.correntPrice)
+        if(this.rangeValue < this.maxp)
+          this.rangeValue++
       },
       confirm() {
         let cur = this
@@ -128,9 +130,7 @@
         this.temp.parameter = JSON.parse('['+this.temp.parameter+']')
         insertReplacementCar(this.temp).then(response => {
           if (response.code === 200) {
-            setTimeout(function() {
-              cur.$router.push({path: 'quote'})
-            },1000);
+            cur.$router.push('quote')
           }
         }).catch(() => {
         })
