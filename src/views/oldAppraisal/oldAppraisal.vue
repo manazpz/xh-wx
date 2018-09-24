@@ -5,12 +5,12 @@
       v-model="rangeValue"
       :min="0"
       :max="maxp-1"
-      :bar-height="10">
+      :bar-height="15">
+      <div slot="end">{{rangeValue+'/'+maxp}}</div>
     </mt-range>
-    <span>{{rangeValue+'/'+maxp}}</span>
 
       <div class="appraisal-main">
-        <ul class="appraisal-ul" price="0">
+        <ul class="appraisal-ul">
           <li class="li">
             <div>
               <span class="phonesname">{{phonename}}</span>
@@ -19,10 +19,10 @@
           <li class="li" v-for="(item,index) in appraisalList" :key='item.id'>
             <div>
               <span class="problem-xh">{{item.name}}<i></i></span>
-              <strong></strong>
+              <strong><a v-for="p in text[index]">{{p}}</a></strong>
             </div>
             <ul :class="{'show': index === flag }">
-              <li v-for="(items,index) in item.parameter"   @click="selectClass(item,items,index)" :data="index">{{items.spec_value_name}}</li>
+              <li v-for="(items,index) in item.parameter" class=""  @click="selectClass(item,items,$event)" :data="index">{{items.spec_value_name}}</li>
             </ul>
           </li>
         </ul>
@@ -31,7 +31,6 @@
       <div class="offer-btn-box">
         <a class="" href="javascript:;" @click="confirm()" title="查看报价">查看报价</a>
       </div>
-
 
     <div class="appraisal-process-problem-wrap" title="问号弹窗">
       <div class="problem-box">
@@ -52,21 +51,21 @@
       return {
         temp: {
           openId: '123456',
-          goodsId: '',
-          price: 0,
+          goodsId:this.$route.query.id,
+          banPrice: this.$route.query.price,
           model: '02',
           parameter: []
         },
         flag: 0,
         appraisalList: [],
-        phonename:'',
+        text: [],
+        phonename:this.$route.query.name,
         rangeValue: 0,
         maxp:0
       }
     },
     created() {
       this.getList()
-      this.phonename = this.$route.query.name
     },
     methods: {
       getList() {
@@ -78,59 +77,88 @@
         }).catch(() => {
         })
       },
-      selectClass(item,val,index) {
-        var statisticsPrice = '';
-        var total = $('.appraisal-ul').attr('price');
-        $('.appraisal-ul').on('click','.li li',function() {
-          var _this = $(this);
-          var inf   = _this.html();
-          var schedule = _this.parent('ul').find('li').attr('data');
-          if(_this.parent('ul').siblings('div').find('span')[0].innerText != '相关实情描述'){
-            _this.addClass('select').siblings().removeClass('select');
-            _this.parent('ul').siblings('div').find('strong').html(inf);
-          }else{
-            if (_this.hasClass('select')) {
-              _this.removeClass('select');
-            } else {
-              _this.addClass('select');
-              _this.parent('ul').siblings('div').find('strong').html(inf);
-            }
+      selectClass(item,val,ent) {
+        //判断是否多选
+        if (item.obligate != '02') {
+          //当前进度
+          if (this.flag < this.appraisalList.length-1)
+            this.flag++
+          //获取控件
+          var li = ent.path[1].getElementsByTagName('li')
+          //清空选择项
+          for(var i=0;i<li.length;i++) {
+            if(ent.path[1].getElementsByTagName('li')[i].className == 'select')
+              ent.path[1].getElementsByTagName('li')[i].classList.remove("select")
           }
-          $('.progress-bar .line').addClass('schedule-'+schedule+'');
-          setTimeout(function() {
-            if(_this.parent('ul').siblings('div').find('span')[0].innerText != '相关实情描述'){
-              _this.parent('ul').removeClass('show').parent('.li').next().find('ul').addClass('show');
-            }
-          },1000);
-          if (schedule >= 50) {
-            $('.offer-btn-box a').addClass('open');
-          };
-          if (_this.hasClass('select')) {
-            statisticsPrice = Number(_this.find('li').next().context.nextSibling.innerText);
-            $('.appraisal-ul').attr('price', Number(statisticsPrice) + Number($('.appraisal-ul').attr('price')));
-          } else {
-            statisticsPrice = Number(_this.find('li').next().context.nextSibling.innerText);
-            $('.appraisal-ul').attr('price', Number(-statisticsPrice) + Number($('.appraisal-ul').attr('price')));
+          //添加当前选择项
+          ent.toElement.classList.add("select")
+        }else {
+          if (this.flag < this.appraisalList.length-1)
+            this.flag++
+          //调整选择项
+          if(ent.toElement.className == 'select'){
+            ent.toElement.classList.remove("select")
+          }else {
+            ent.toElement.classList.add("select")
           }
-        });
-
-        if(this.temp.parameter.length == 0){
-          this.temp.parameter += '{"id": "'+item.id+'","parameter": [{"name": "'+val.spec_value_name+'","value":"'+val.spec_sort+'"}]}';
-        }else{
-          this.temp.parameter += ',{"id": "'+item.id+'","parameter": [{"name": "'+val.spec_value_name+'","value":"'+val.spec_sort+'"}]}';
         }
-        this.temp.price += parseInt(val.correntPrice)
+        //选择数据存储
+        if(this.temp.parameter.length == 0){
+          this.temp.parameter.push('{"id": "'+item.id+'","obligate": "'+item.obligate+'","spec": ['+JSON.stringify(val)+']}')
+        }else{
+          //判断是否多选
+          if (item.obligate === '02') {
+              //定义已有数据下标
+              var xxx = -1
+              this.temp.parameter.forEach((value,index) => {
+                if(value.indexOf(item.id) > -1) {
+                  xxx = index
+                  return
+                }
+              })
+              //判断选择项的选中与不选中
+              if(xxx != -1) {
+                //删除已选中的数据
+                var json = JSON.parse(this.temp.parameter[xxx])
+                if(JSON.stringify(json.spec).indexOf(JSON.stringify(val)) > -1) {
+                  json.spec.splice(JSON.stringify(json.spec).indexOf(JSON.stringify(val)),1)
+                }else {
+                  json.spec.push(val)
+                }
+                this.temp.parameter[xxx] = JSON.stringify(json)
+              }else {
+                //添加已选择的数据
+                this.temp.parameter.push('{"id": "'+item.id+'","obligate": "'+item.obligate+'","spec": ['+JSON.stringify(val)+']}')
+              }
+          }else {
+            //单选添加
+            this.temp.parameter.push('{"id": "'+item.id+'","obligate": "'+item.obligate+'","spec": ['+JSON.stringify(val)+']}')
+          }
+        }
+        //回显
+        this.text = []
+        this.temp.parameter.forEach(val => {
+          var txt = ''
+          JSON.parse(val).spec.forEach(val1 => {
+            if(txt == ''){
+              txt += val1.spec_value_name
+            }else{
+              txt += ';' + val1.spec_value_name
+            }
+          })
+          this.text.push(txt)
+        })
+        //进度条，可用flag
         if(this.rangeValue < this.maxp)
           this.rangeValue++
       },
       confirm() {
         let cur = this
-        this.temp.goodsId = this.$route.query.id
-        this.temp.price += parseInt(this.$route.query.price)
         this.temp.parameter = JSON.parse('['+this.temp.parameter+']')
         insertReplacementCar(this.temp).then(response => {
           if (response.code === 200) {
             cur.$router.push('quote')
+            this.flag = 0
           }
         }).catch(() => {
         })
@@ -144,10 +172,6 @@
   }
 
 </script>
-<scirpt>
-
-
-</scirpt>
 
 <style lang="stylus" rel="stylesheet/stylus">
   @import "oldAppraisal.styl";

@@ -1,28 +1,25 @@
 <template>
   <div class="quoteDetail" ref="quoteDetail">
     <v-header title="详情"></v-header>
-    <div class="top-return">
-      <a href="javascript:history.back(-1)" title="返回上一页"></a>
-    </div>
     <div class="top-inf-appraisal" v-for="item in goods">
       <div class="left-img-box">
-                <img :src="item.imgs.length>0?item.imgs[0].url:''" title="产品">
-            </div>
-            <div class="right-inf-box">
-                <h2><span>{{item.goodsName}}</span></h2>
-                <h3>
-                    <span class="pXh">{{item.bllParameterStr}}</span>
-                </h3>
-                <div>
-                    <p v-if="item.model === '02'">最终成交价以工程师检验为准</p>
-                    <strong><em>￥</em><span>{{item.bllPrice}}</span></strong>
-                </div>
-            </div>
+          <img :src="item.imgs.length>0?item.imgs[0].url:''" title="产品">
+      </div>
+      <div class="right-inf-box">
+          <h2><span>{{item.goodsName}}</span></h2>
+          <h3>
+              <span class="pXh">{{item.bllParameterStr}}</span>
+          </h3>
+          <div>
+              <p v-if="item.model === '02'">最终成交价以工程师检验为准</p>
+              <strong><em>￥</em><span>{{item.bllPrice}}</span></strong>
+          </div>
+      </div>
     </div>
     <div class="echarts-main" title="价格趋势echarts">
       <h2>价格趋势</h2>
       <p>预计下周跌幅40元</p>
-      <div id="container"></div>
+      <div ref="container" style="height: 100%"></div>
     </div>
 
     <div class="promise-main" title="我们的承诺图片">
@@ -37,19 +34,23 @@
 <script type="text/ecmascript-6">
   import VHeader from 'components/v-header/v-header'
   import { queryReplacementCarDetail } from 'api/goods'
+  import echarts from 'echarts'
 
   export default {
     data() {
       return {
         openId: '123456',
         id: '',
+        chart: null,
         goods: []
       }
     },
     created() {
       this.id = this.$route.query.id
       this.getList()
-      this.functionEcharts()
+      this.$nextTick(function () {
+        this.functionEcharts()
+      })
     },
     methods: {
       getList() {
@@ -66,11 +67,7 @@
         })
       },
       functionEcharts(){
-        var dom = document.getElementById("container");
-        var myChart = echarts.init(dom);
-        var app = {};
-        option = null;
-        option = {
+        var option = {
           tooltip : {
             trigger: 'axis',
             axisPointer: {
@@ -133,9 +130,8 @@
             }
           ]
         }
-        if (option && typeof option === "object") {
-          myChart.setOption(option, true);
-        }
+        this.chart = echarts.init(this.$refs.container)
+        this.chart.setOption(option)
       }
     },
     //注册组件

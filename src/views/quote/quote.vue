@@ -8,14 +8,14 @@
           <div class="model-big-box model-big-0" dataNum="0" v-for="item in oldGoods">
                   <div class="model-box clearfix" >
                       <div class="left-b-box clearfix">
-                          <i class="sign-i"></i>
+                          <i class="sign-i" @click="oldCheck($event,item.bllId)"></i>
                           <div class="pic-left">
                               <img :src="item.imgs.length>0?item.imgs[0].url:''" >
                           </div>
                           <div class="inf-right">
                               <h4>{{item.goodsName}} <span v-if="item.del === 'N' || item.logIstcs === '02'">已失效</span></h4>
-                              <p class="p-inf">
-                                <a href="javascript:;" target="_top" @click="oldSpec(item)">
+                              <p class="p-inf" @click="oldSpec(item)">
+                                <a href="javascript:;" target="_top" >
                                       <span class="pXh">{{item.bllParameterStr}}</span>
                                   </a>
                               </p>
@@ -45,7 +45,7 @@
               <div class="model-big-box model-big-1" dataNum="1" v-for="item in newGoods">
                     <div class="model-box clearfix">
                         <div class="left-b-box clearfix">
-                            <i class="sign-i"></i>
+                            <i class="sign-i" @click="oldCheck($event,item.bllId)"></i>
                             <div class="pic-left">
                                 <img :src="item.imgs.length>0?item.imgs[0].url:''">
                             </div>
@@ -77,15 +77,14 @@
         </div>
       </div>
     </div>
-    <div class="footer-appraisal">
+    <div class="footer-appraisal" @click="confirm">
       <span>合计：<strong><b>￥</b> <em class="aggregate-amount">0</em></strong></span>
-      <router-link :to="{path:'/order/sure',query:{ids:'b30b712c5d634a289d55b5cbc0146b14'}}">提交</router-link>
-    </div><div class="popup-choice-wrap" title="是否删除弹窗">
-
-  </div>
+      <p>提交</p>
+    </div>
     <mt-popup
-      style="width: 100%;height: 50%"
+      style="width: 100%;height: 50%;"
       v-model="popupVisibleOld"
+      ref="oldPop"
       popup-transition="popup-fade"
       position="bottom">
       <div class="appraisal-main">
@@ -94,19 +93,20 @@
           <h1>设备评估详情</h1>
           <a class="revise-confirm-btn" href="javascript:;" @click="surePop" title="确定">确定</a>
         </div>
-        <ul class="appraisal-ul">
+        <ul class="appraisal-ul" style="overflow:scroll;" >
           <li class="li">
             <div>
               <span class="phonesname">{{phonename}}</span>
             </div>
           </li>
           <li class="li" v-for="(item,index) in updateOldGoods.goodsParameter">
-            <div>
+            <div @click="showFlag(index)">
               <span class="problem-xh">{{item.name}}<i></i></span>
-              <strong></strong>
+              <strong><a>{{text[index]}}</a></strong>
+              <!--<strong><a v-if="updateOldGoods.bllParameter[index]" v-for="p in updateOldGoods.bllParameter[index].spec">{{updateOldGoods.bllParameter[index].spec.length==1?p.spec_value_name:p.spec_value_name+','}}</a></strong>-->
             </div>
             <ul :class="{'show': index === flag }">
-              <li v-for="(items,index) in item.parameter" @click="selectClass(item,items,index)">{{items.spec_value_name}}</li>
+              <li :class="{'select': items.select }" v-for="(items,index1) in item.parameter" @click="selectClass(item,items,$event,index)">{{items.spec_value_name}}</li>
             </ul>
           </li>
         </ul>
@@ -127,8 +127,9 @@
         updateNewGoods: {imgs:[],specParameter:[{spec:[]}]},
         openId: '123456',
         oldGoods: [],
-        flag: 0,
+        flag: -1,
         newGoods: [],
+        oldChecks: [],
         checks: [],
         checksCheck: '',
         checksData: [],
@@ -137,9 +138,11 @@
         popupVisibleNew: false,
         phonename: '',
         showPopup: true,
+        text:[],
         temp: {
           id: '',
-          price: '',
+          price: 0,
+          banPrice: 0,
           tips: '',
           model: '02',
           parameter: []
@@ -163,7 +166,7 @@
           if (response.code === 200) {
             let cur = this
             response.data.oldGoods.forEach((value, index) => {
-              value.bllParameterStr = value.bllParameterStr.replace(/\s+|&nbsp;/ig, ';')
+              value.bllParameterStr = value.bllParameterStr
             })
             response.data.newGoods.forEach((value, index) => {
               value.bllParameter[0].spec.forEach((value1, index1) => {
@@ -188,11 +191,37 @@
         }
       },
       confirm(){
-        this.$router.push({path: 'orderSure', query: {ids:'b30b712c5d634a289d55b5cbc0146b14'}})
+        this.$router.push({path: '/order/sure', query: {ids:this.oldChecks.join(',')}})
+        this.oldChecks = []
       },
       oldSpec(item) {
         this.phonename = item.goodsName
         this.updateOldGoods = item
+        this.temp.id = item.bllId
+        this.temp.banPrice = item.banPrice
+        this.temp.parameter = []
+        this.text = []
+        item.bllParameter.forEach((val,index) =>{
+          this.temp.parameter.push(JSON.stringify(val))
+          var txt = ''
+          val.spec.forEach(val1 => {
+            if(txt == ''){
+              txt += val1.spec_value_name
+            }else{
+              txt += ';' + val1.spec_value_name
+            }
+          })
+          this.text.push(txt)
+          this.updateOldGoods.goodsParameter[index].parameter.forEach(val2 => {
+            var zzz = false
+            val.spec.forEach(val3 => {
+              if(val3.spec_sort === val2.spec_sort){
+                zzz = true
+              }
+            })
+            val2.select = zzz
+          })
+        })
         this.popupVisibleOld = true
       },
       newSpec(item) {
@@ -205,7 +234,26 @@
         this.popupVisibleOld = false
       },
       surePop() {
-        this.popupVisibleOld = false
+        this.temp.parameter = JSON.parse('['+this.temp.parameter+']')
+        updateReplacementCar(this.temp).then(response => {
+          if (response.code === 200) {
+            this.popupVisibleOld = false
+            this.getList()
+          }
+        }).catch(() => {
+        })
+      },
+      showFlag(index){
+        this.flag = index
+      },
+      oldCheck(evn,val) {
+        if(this.oldChecks.indexOf(val) > -1) {
+          this.oldChecks.splice(this.oldChecks.indexOf(val),1)
+          evn.toElement.className = "sign-i"
+        }else {
+          this.oldChecks.push(val)
+          evn.toElement.className = "sign-on"
+        }
       },
       updatePop(value) {
         this.checks = value.checks
@@ -235,72 +283,83 @@
         }).catch(() => {
         })
       },
-      selectClass(item,val,index) {
-        var statisticsPrice = '';
-        var total = $('.appraisal-ul').attr('price');
-        $('.appraisal-ul').on('click','.li li',function() {
-          var _this = $(this);
-          var inf   = _this.html();
-          var schedule = _this.parent('ul').find('li').attr('data');
-          if(_this.parent('ul').siblings('div').find('span')[0].innerText != '相关实情描述'){
-            _this.addClass('select').siblings().removeClass('select');
-            _this.parent('ul').siblings('div').find('strong').html(inf);
-          }else{
-            if (_this.hasClass('select')) {
-              _this.removeClass('select');
-            } else {
-              _this.addClass('select');
-              _this.parent('ul').siblings('div').find('strong').html(inf);
+      selectClass(item,val,ent,index) {
+        //判断多选
+        if (item.obligate != '02') {
+          //已选择切换
+          if(ent.toElement.className != 'select') {
+            var li = ent.path[1].getElementsByTagName('li')
+            for(var i=0;i<li.length;i++) {
+              if(ent.path[1].getElementsByTagName('li')[i].className == 'select')
+                ent.path[1].getElementsByTagName('li')[i].classList.remove("select")
+            }
+            ent.toElement.classList.add("select")
+            this.text[index] = val.spec_value_name
+            this.flag = -1
+          }
+        }else {
+          if(ent.toElement.className == 'select'){
+            ent.toElement.classList.remove("select")
+            if(this.text[index].split(';').length == 1) {
+              this.text[index] = this.text[index].replace(val.spec_value_name, '')
+            }else {
+              if (this.text[index].indexOf(val.spec_value_name) == 0){
+                this.text[index] = this.text[index].replace(val.spec_value_name+';', '')
+              }else if (this.text[index].indexOf(val.spec_value_name) > 0){
+                this.text[index] = this.text[index].replace(';'+val.spec_value_name, '')
+              }
+            }
+          }else {
+            ent.toElement.classList.add("select")
+            if(this.text[index].length == 0) {
+              this.text[index] += val.spec_value_name
+            }else {
+              this.text[index] += ';' + val.spec_value_name
             }
           }
-          $('.progress-bar .line').addClass('schedule-'+schedule+'');
-          setTimeout(function() {
-            if(_this.parent('ul').siblings('div').find('span')[0].innerText != '相关实情描述'){
-              _this.parent('ul').removeClass('show').parent('.li').next().find('ul').addClass('show');
-            }
-          },1000);
-          if (schedule >= 50) {
-            $('.offer-btn-box a').addClass('open');
-          };
-          if (_this.hasClass('select')) {
-            statisticsPrice = Number(_this.find('li').next().context.nextSibling.innerText);
-            $('.appraisal-ul').attr('price', Number(statisticsPrice) + Number($('.appraisal-ul').attr('price')));
-          } else {
-            statisticsPrice = Number(_this.find('li').next().context.nextSibling.innerText);
-            $('.appraisal-ul').attr('price', Number(-statisticsPrice) + Number($('.appraisal-ul').attr('price')));
-          }
-        });
-
-
-        if(this.temp.parameter.length == 0){
-          this.temp.parameter += '{"id": "'+item.id+'","parameter": [{"name": "'+val.spec_value_name+'","value":"'+val.spec_sort+'"}]}';
-        }else{
-          this.temp.parameter += ',{"id": "'+item.id+'","parameter": [{"name": "'+val.spec_value_name+'","value":"'+val.spec_sort+'"}]}';
+          ent.path[2].childNodes[0].childNodes[2].innerText = this.text[index]
         }
-        this.temp.price += parseInt(val.correntPrice)
-        if(this.rangeValue < this.maxp)
-          this.rangeValue++
-        // if(this.temp.parameter.length == 0){
-        //   this.temp.parameter += '{"id": "'+item.id+'","parameter": [{"name": "'+val.spec_value_name+'","value":"'+val.spec_sort+'"}]}';
-        // }else{
-        //   this.temp.parameter += ',{"id": "'+item.id+'","parameter": [{"name": "'+val.spec_value_name+'","value":"'+val.spec_sort+'"}]}';
-        // }
-        // this.temp.price += parseInt(val.correntPrice)
-      },
-      confirm() {
-        let cur = this
-        this.temp.id = this.newGoods[0].bllId
-        this.temp.price = this.newGoods[0].bllPrice
-        this.temp.parameter = JSON.parse('['+this.temp.parameter+']')
-        updateReplacementCar(this.temp).then(response => {
-          if (response.code === 200) {
-            setTimeout(function() {
-              this.temp.parameter = []
-              this.popupVisibleOld = false
-            },1000);
+        if(this.temp.parameter.length == 0){
+          this.temp.parameter.push('{"id": "'+item.id+'","obligate": "'+item.obligate+'","spec": ['+JSON.stringify(val)+']}')
+        }else{
+          if (item.obligate === '02') {
+            var xxx = -1
+            this.temp.parameter.forEach((value,index) => {
+              if(value.indexOf(item.id) > -1) {
+                xxx = index
+                return
+              }
+            })
+            if(xxx != -1) {
+              var i = -1
+              var json = JSON.parse(this.temp.parameter[xxx])
+              json.spec.forEach((val2,index2) => {
+                if (val.spec_sort === val2.spec_sort) {
+                  i = index2
+                }
+              })
+              if(i == -1) {
+                json.spec.push(val)
+              }else {
+                json.spec.splice(i,1)
+              }
+              this.temp.parameter[xxx] = JSON.stringify(json)
+            }else {
+              this.temp.parameter.push('{"id": "'+item.id+'","obligate": "'+item.obligate+'","spec": ['+JSON.stringify(val)+']}')
+            }
+          }else {
+            if (this.temp.parameter.length > 0) {
+              this.temp.parameter.forEach((val1,index1) => {
+                var xxx = JSON.parse(val1)
+                if(item.id === xxx.id) {
+                  this.temp.parameter[index1] = '{"id": "'+item.id+'","obligate": "'+item.obligate+'","spec": ['+JSON.stringify(val)+']}'
+                }
+              })
+            }else {
+              this.temp.parameter.push('{"id": "'+item.id+'","obligate": "'+item.obligate+'","spec": ['+JSON.stringify(val)+']}')
+            }
           }
-        }).catch(() => {
-        })
+        }
       }
     },
     //注册组件
