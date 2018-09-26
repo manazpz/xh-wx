@@ -8,7 +8,7 @@
           <div class="model-big-box model-big-0" dataNum="0" v-for="item in oldGoods">
                   <div class="model-box clearfix" >
                       <div class="left-b-box clearfix">
-                          <i class="sign-i" @click="oldCheck($event,item.bllId)"></i>
+                          <i class="sign-i" @click="oldCheck(item,$event,item.bllId)"></i>
                           <div class="pic-left">
                               <img :src="item.imgs.length>0?item.imgs[0].url:''" >
                           </div>
@@ -45,7 +45,7 @@
               <div class="model-big-box model-big-1" dataNum="1" v-for="item in newGoods">
                     <div class="model-box clearfix">
                         <div class="left-b-box clearfix">
-                            <i class="sign-i" @click="oldCheck($event,item.bllId)"></i>
+                            <i class="sign-i" @click="oldCheck(item,$event,item.bllId)"></i>
                             <div class="pic-left">
                                 <img :src="item.imgs.length>0?item.imgs[0].url:''">
                             </div>
@@ -259,13 +259,48 @@
       showFlag(index){
         this.flag = index
       },
-      oldCheck(evn,val) {
+      oldCheck(item,evn,val) {
         if(this.oldChecks.indexOf(val) > -1) {
           this.oldChecks.splice(this.oldChecks.indexOf(val),1)
           evn.toElement.className = "sign-i"
+          if ($('.aggregate-amount').html() !== '0') {
+            if(item.model === '02'){
+              $('.aggregate-amount').html( parseFloat( this.temp.price)- parseFloat(item.bllPrice) );
+              this.temp.price = $('.aggregate-amount').html()
+            }else{
+              $('.aggregate-amount').html( parseFloat(item.bllPrice) + parseFloat( this.temp.price) );
+              this.temp.price = $('.aggregate-amount').html()
+            }
+          } else {
+            if(item.model === '01'){
+              $('.aggregate-amount').html(- item.bllPrice);
+              this.temp.price = $('.aggregate-amount').html()
+            }else{
+              $('.aggregate-amount').html(item.bllPrice);
+              this.temp.price = $('.aggregate-amount').html()
+            }
+          }
         }else {
           this.oldChecks.push(val)
           evn.toElement.className = "sign-on"
+          this.temp.price = $('.aggregate-amount').html()
+          if ($('.aggregate-amount').html() !== '0') {
+            if(item.model === '02'){
+              $('.aggregate-amount').html( parseFloat( this.temp.price)- parseFloat(item.bllPrice) );
+              this.temp.price = $('.aggregate-amount').html()
+            }else{
+              $('.aggregate-amount').html( parseFloat( this.temp.price) - parseFloat(item.bllPrice)   );
+              this.temp.price = $('.aggregate-amount').html()
+            }
+          } else {
+            if(item.model === '01'){
+              $('.aggregate-amount').html(- item.bllPrice);
+              this.temp.price = $('.aggregate-amount').html()
+            }else{
+              $('.aggregate-amount').html(item.bllPrice);
+              this.temp.price = $('.aggregate-amount').html()
+            }
+          }
         }
       },
       updatePop(value) {

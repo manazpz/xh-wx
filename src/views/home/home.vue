@@ -33,7 +33,7 @@
               </a>
             </li>
             <li>
-              <p>新人可领取200元大礼包</p>
+              <!--<p>新人可领取200元大礼包</p>-->
             </li>
           </ul>
           <mt-button size="large" class="exchange-btn" @click="tradeUp">换购新机</mt-button>

@@ -2,7 +2,7 @@
   <div class="screening" ref="screening">
     <v-header title="机型选择"></v-header>
     <mt-navbar class="navbar" v-model="selected" v-for="item in selecteds">
-      <mt-tab-item :id="item.id">{{item.name}}</mt-tab-item>
+      <mt-tab-item v-if="item.length > 1" :id="item.id">{{item.name}}</mt-tab-item>
     </mt-navbar>
     <div class="model-search" title="搜索框">
       <label>
