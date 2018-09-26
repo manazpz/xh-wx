@@ -74,7 +74,7 @@
       chick(val){
         let ure = this
         ure.checks = []
-        val[0].spec.forEach((value, index) => {
+        JSON.parse(val)[0].spec.forEach((value, index) => {
           ure.checks.push(value.spec_sort)
         })
         this.$nextTick(function(){

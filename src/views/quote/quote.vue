@@ -77,7 +77,7 @@
         </div>
       </div>
     </div>
-    <div class="footer-appraisal" @click="confirm">
+    <div class="footer-appraisal1" @click="confirm">
       <span>合计：<strong><b>￥</b> <em class="aggregate-amount">0</em></strong></span>
       <p>提交</p>
     </div>
@@ -120,6 +120,7 @@
   import VHeader from 'components/v-header/v-header'
   import { queryReplacementCar, updateReplacementCar } from 'api/goods'
   import Popup from 'components/popup/popup'
+  import { Toast } from 'mint-ui'
 
   export default {
     data() {
@@ -168,15 +169,16 @@
             response.data.oldGoods.forEach((value, index) => {
               value.bllParameterStr = value.bllParameterStr
             })
-            response.data.newGoods.forEach((value, index) => {
-              value.bllParameter[0].spec.forEach((value1, index1) => {
-                if(value.bllParameterStr == ''){
-                  value.bllParameterStr += value1.spec_value_name
-                }else{
-                  value.bllParameterStr += ';' + value1.spec_value_name
-                }
-              })
-            })
+            // response.data.newGoods.forEach((value, index) => {
+            //   debugger
+            //   JSON.parse(value.bllParameter)[0].spec.forEach((value1, index1) => {
+            //     if(value.bllParameterStr == ''){
+            //       value.bllParameterStr += value1.spec_value_name
+            //     }else{
+            //       value.bllParameterStr += ';' + value1.spec_value_name
+            //     }
+            //   })
+            // })
             this.newGoods = response.data.newGoods
             this.oldGoods = response.data.oldGoods
           }
@@ -191,17 +193,27 @@
         }
       },
       confirm(){
-        this.$router.push({path: '/order/sure', query: {ids:this.oldChecks.join(',')}})
-        this.oldChecks = []
+        if (this.oldChecks.length > 0) {
+          this.$router.push({path: '/order/sure', query: {ids:this.oldChecks.join(',')}})
+          this.oldChecks = []
+        }else {
+          Toast({
+            message: '请选择商品！',
+            position: 'bottom',
+            duration: 5000
+          });
+        }
+
       },
       oldSpec(item) {
         this.phonename = item.goodsName
         this.updateOldGoods = item
         this.temp.id = item.bllId
         this.temp.banPrice = item.banPrice
+        this.temp.model = '02'
         this.temp.parameter = []
         this.text = []
-        item.bllParameter.forEach((val,index) =>{
+       JSON.parse(item.bllParameter).forEach((val,index) =>{
           this.temp.parameter.push(JSON.stringify(val))
           var txt = ''
           val.spec.forEach(val1 => {
@@ -228,6 +240,7 @@
         this.updateNewGoods.specParameter = item.goodsParameter
         this.updateNewGoods.imgs = item.imgs
         this.$refs.popup.open()
+        this.temp.model = '01'
         this.$refs.popup.chick(item.bllParameter)
       },
       closePop() {
@@ -257,10 +270,10 @@
       },
       updatePop(value) {
         this.checks = value.checks
+        this.checksCheck = ''
         for(var i=0; i<this.checks.length; i++){
           this.checksCheck += this.checks[i]
         }
-        this.checks.toString()
         let tar  = this
         this.newGoods.forEach((value, index) => {
           value.goodsParameter.forEach((value1, index1) => {
@@ -269,16 +282,17 @@
                specs += value2.spec_sort
             })
             if(tar.checksCheck  === specs){
+              tar.temp.parameter = []
+              tar.temp.price = value1.price
               tar.temp.parameter.push(value1)
             }
           })
         })
         tar.temp.id = tar.newGoods[0].bllId
-        tar.temp.price = tar.newGoods[0].bllPrice
         updateReplacementCar(tar.temp).then(response => {
           if (response.code === 200) {
-            tar.temp.parameter = []
             this.$refs.popup.close()
+            this.getList()
           }
         }).catch(() => {
         })

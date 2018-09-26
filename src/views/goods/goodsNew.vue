@@ -96,9 +96,10 @@
           var cell = this.$refs['radio'+index][0].$el.getElementsByClassName('mint-cell')
           for (var i = 0; i < cell.length; i++) {
             cell[i].style.background = ''
+            cell[i].getElementsByClassName('mint-radio-label')[0].style.color="#000"
           }
           item.path[4].style.background="#28c081"
-          item.path[4].find('.mint-radio-label').style.background="#fff"
+          item.path[4].getElementsByClassName('mint-radio-label')[0].style.color="#fff"
         }
       },
       formatData(data) {
@@ -134,6 +135,7 @@
           this.checksData.forEach((value, index) => {
             this.checks[index] = value.spec[0].value
             var cell = this.$refs['radio'+index][0].$el.getElementsByClassName('mint-cell')
+            cell[0].getElementsByClassName('mint-radio-label')[0].style.color="#fff"
             cell[0].style.background="#28c081"
           })
         })

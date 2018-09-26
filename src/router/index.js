@@ -34,9 +34,9 @@ export const constantRouterMap = [
     meta: { title: '收藏', icon: '/static/image/icon_li_02.png' }
   },
   {
-    path: '/replacement',
-    name: 'replacement',
-    component: Home,
+    path: '/quote',
+    name: 'quote',
+    component: Quote,
     meta: { title: '置换车', icon: '/static/image/icon_li_03.png' }
   },
   {
@@ -104,13 +104,6 @@ export const constantRouterMap = [
     component: OldAppraisal,
     hidden: true,
     meta: { title: '旧机估计' }
-  },
-  {
-    path: '/quote',
-    name: 'quote',
-    component: Quote,
-    hidden: true,
-    meta: { title: '置换车' }
   },
   {
     path: '/quote/detail',

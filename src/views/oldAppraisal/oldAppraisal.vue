@@ -119,11 +119,17 @@
               //判断选择项的选中与不选中
               if(xxx != -1) {
                 //删除已选中的数据
+                var i = -1
                 var json = JSON.parse(this.temp.parameter[xxx])
-                if(JSON.stringify(json.spec).indexOf(JSON.stringify(val)) > -1) {
-                  json.spec.splice(JSON.stringify(json.spec).indexOf(JSON.stringify(val)),1)
-                }else {
+                json.spec.forEach((val2,index2) => {
+                  if (val.spec_sort === val2.spec_sort) {
+                    i = index2
+                  }
+                })
+                if(i == -1) {
                   json.spec.push(val)
+                }else {
+                  json.spec.splice(i,1)
                 }
                 this.temp.parameter[xxx] = JSON.stringify(json)
               }else {
