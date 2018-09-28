@@ -5,7 +5,7 @@
       <h3>旧机清单</h3>
       <div class="detailed-list old-machine-list" state="old">
         <div class="model-list-box">
-          <div dataNum="0" v-for="item in oldGoods">
+          <div v-for="item in oldGoods">
             <mt-cell-swipe :right="[
             {content: '删除',
             style: { background: '#27c080', color: '#fff', lineHeight: '115px' },
@@ -18,10 +18,8 @@
                       </div>
                       <div class="inf-right">
                           <h4>{{item.goodsName}} <span v-if="item.del === 'N' || item.logIstcs === '02'">已失效</span></h4>
-                          <p class="p-inf" @click="oldSpec(item)">
-                            <a href="javascript:;" target="_top" >
-                                  <span class="pXh">{{item.bllParameterStr}}</span>
-                              </a>
+                          <p @click="oldSpec(item)">
+                             <span>{{item.bllParameterStr}}</span>
                           </p>
                           <div class="increase-change">
                               <span class="reduce">-</span><i class="number">1</i><span class="add">+</span>
@@ -46,7 +44,7 @@
       <h3>新机清单</h3>
       <div class="detailed-list new-machine-list" state="new">
         <div class="model-list-box">
-              <div dataNum="1" v-for="item in newGoods">
+              <div v-for="item in newGoods">
                 <mt-cell-swipe :right="[
                 {content: '删除',
                 style: { background: '#27c080', color: '#fff', lineHeight: '115px' },
