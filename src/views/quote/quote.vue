@@ -5,34 +5,38 @@
       <h3>旧机清单</h3>
       <div class="detailed-list old-machine-list" state="old">
         <div class="model-list-box">
-          <div class="model-big-box model-big-0" dataNum="0" v-for="item in oldGoods">
-                  <div class="model-box clearfix" >
-                      <div class="left-b-box clearfix">
-                          <i class="sign-i" @click="oldCheck(item,$event,item.bllId)"></i>
-                          <div class="pic-left">
-                              <img :src="item.imgs.length>0?item.imgs[0].url:''" >
+          <div dataNum="0" v-for="item in oldGoods">
+            <mt-cell-swipe :right="[
+            {content: '删除',
+            style: { background: '#27c080', color: '#fff', lineHeight: '115px' },
+            handler: () => deleteGoods(item)}]">
+              <div class="model-box" >
+                  <div class="left-b-box">
+                      <i class="sign-i" @click="oldCheck(item,$event,item.bllId)"></i>
+                      <div class="pic-left">
+                          <img :src="item.imgs.length>0?item.imgs[0].url:''" >
+                      </div>
+                      <div class="inf-right">
+                          <h4>{{item.goodsName}} <span v-if="item.del === 'N' || item.logIstcs === '02'">已失效</span></h4>
+                          <p class="p-inf" @click="oldSpec(item)">
+                            <a href="javascript:;" target="_top" >
+                                  <span class="pXh">{{item.bllParameterStr}}</span>
+                              </a>
+                          </p>
+                          <div class="increase-change">
+                              <span class="reduce">-</span><i class="number">1</i><span class="add">+</span>
                           </div>
-                          <div class="inf-right">
-                              <h4>{{item.goodsName}} <span v-if="item.del === 'N' || item.logIstcs === '02'">已失效</span></h4>
-                              <p class="p-inf" @click="oldSpec(item)">
-                                <a href="javascript:;" target="_top" >
-                                      <span class="pXh">{{item.bllParameterStr}}</span>
-                                  </a>
-                              </p>
-                              <div class="increase-change">
-                                  <span class="reduce">-</span><i class="number">1</i><span class="add">+</span>
-                              </div>
-                              <div class="inf-r-price">
-                                  <span>预计一周后再降￥30</span>
-                                <router-link :to="{path:'/quote/detail',query:{id:item.bllId,openId:'123456'}}">
-                                  <strong><b>￥</b><em>{{item.bllPrice}}</em></strong>
-                                </router-link>
-                              </div>
+                          <div class="inf-r-price">
+                              <span>预计一周后再降￥30</span>
+                            <router-link :to="{path:'/quote/detail',query:{id:item.bllId,openId:'123456'}}">
+                              <strong><b>￥</b><em>{{item.bllPrice}}</em></strong>
+                            </router-link>
                           </div>
                       </div>
-                      <div class="rigth-delete">删除</div>
                   </div>
               </div>
+            </mt-cell-swipe>
+          </div>
         </div>
         <div class="add-btn">
           <router-link :to="{path:'/screening',query:{model:'02'}}">+ 再添加
@@ -42,9 +46,13 @@
       <h3>新机清单</h3>
       <div class="detailed-list new-machine-list" state="new">
         <div class="model-list-box">
-              <div class="model-big-box model-big-1" dataNum="1" v-for="item in newGoods">
-                    <div class="model-box clearfix">
-                        <div class="left-b-box clearfix">
+              <div dataNum="1" v-for="item in newGoods">
+                <mt-cell-swipe :right="[
+                {content: '删除',
+                style: { background: '#27c080', color: '#fff', lineHeight: '115px' },
+                handler: () => deleteGoods(item)}]">
+                    <div class="model-box">
+                        <div class="left-b-box">
                             <i class="sign-i" @click="oldCheck(item,$event,item.bllId)"></i>
                             <div class="pic-left">
                                 <img :src="item.imgs.length>0?item.imgs[0].url:''">
@@ -67,8 +75,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="rigth-delete">删除</div>
                     </div>
+                </mt-cell-swipe>
                 </div>
             </div>
         <div class="add-btn">
@@ -191,6 +199,9 @@
         }else{
           this.$router.push({path: 'screening', query: {model:'02'}})
         }
+      },
+      deleteGoods(item) {
+        debugger
       },
       confirm(){
         if (this.oldChecks.length > 0) {
