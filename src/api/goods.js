@@ -65,3 +65,10 @@ export function updateReplacementCar(params) {
     data: params
   })
 }
+export function deleteReplacementCar(params) {
+  return request({
+    url: '/api/goods/replacementCar/delete',
+    method: 'POST',
+    data: params
+  })
+}

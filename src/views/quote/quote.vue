@@ -87,6 +87,15 @@
       <span>合计：<strong><b>￥</b> <em class="aggregate-amount">0</em></strong></span>
       <p>提交</p>
     </div>
+    <div class="popup-choice-wrap" title="是否删除弹窗">
+      <div class="choice-box">
+        <p>确定要将商品移除吗？</p>
+        <div>
+          <a class="cancel-btn" href="javascript:;" title="取消">取消</a>
+          <a class="confirm-btn" href="javascript:;" title="确定">确定</a>
+        </div>
+      </div>
+    </div>
     <mt-popup
       style="width: 100%;height: 50%;"
       v-model="popupVisibleOld"
@@ -124,7 +133,7 @@
 
 <script type="text/ecmascript-6">
   import VHeader from 'components/v-header/v-header'
-  import { queryReplacementCar, updateReplacementCar } from 'api/goods'
+  import { queryReplacementCar, updateReplacementCar, deleteReplacementCar } from 'api/goods'
   import Popup from 'components/popup/popup'
   import { Toast } from 'mint-ui'
 
@@ -140,6 +149,7 @@
         checks: [],
         checksCheck: '',
         checksData: [],
+        bllId: '',
         updateOldGoods: '',
         popupVisibleOld: false,
         popupVisibleNew: false,
@@ -175,16 +185,6 @@
             response.data.oldGoods.forEach((value, index) => {
               value.bllParameterStr = value.bllParameterStr
             })
-            // response.data.newGoods.forEach((value, index) => {
-            //   debugger
-            //   JSON.parse(value.bllParameter)[0].spec.forEach((value1, index1) => {
-            //     if(value.bllParameterStr == ''){
-            //       value.bllParameterStr += value1.spec_value_name
-            //     }else{
-            //       value.bllParameterStr += ';' + value1.spec_value_name
-            //     }
-            //   })
-            // })
             this.newGoods = response.data.newGoods
             this.oldGoods = response.data.oldGoods
           }
@@ -199,7 +199,27 @@
         }
       },
       deleteGoods(item) {
-        debugger
+        this.bllId = item.bllId
+        $('.popup-choice-wrap').fadeIn();
+        $('.popup-choice-wrap .cancel-btn').click(function() {
+          $('.popup-choice-wrap').fadeOut();
+          $('.model-box').removeClass('m-swipeleft');
+        });
+        var tar = this
+        $('.popup-choice-wrap .confirm-btn').click(function() {
+          deleteReplacementCar({id:tar.bllId}).then(response => {
+            if (response.code === 200) {
+              $('.popup-choice-wrap').fadeOut();
+              Toast({
+                message: '删除成功！',
+                position: 'bottom',
+                duration: 5000
+              });
+              tar.getList()
+            }
+          }).catch(() => {
+          })
+        });
       },
       confirm(){
         if (this.oldChecks.length > 0) {
