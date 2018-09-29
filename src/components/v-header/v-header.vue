@@ -2,7 +2,6 @@
   <div class="header" ref="header">
     <mt-header fixed :title="title" class="osStyle">
       <mt-button icon="back" slot="left" @click="$router.back(-1)"></mt-button>
-      <mt-button icon="more" slot="right"></mt-button>
     </mt-header>
   </div>
 </template>
