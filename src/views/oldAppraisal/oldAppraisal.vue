@@ -16,8 +16,8 @@
               <span class="phonesname">{{phonename}}</span>
             </div>
           </li>
-          <li class="li" v-for="(item,index) in appraisalList" :key='item.id'>
-            <div>
+          <li class="li" v-for="(item,index) in appraisalList"   :key='item.id'>
+            <div @click="showFlag(index)">
               <span class="problem-xh">{{item.name}}<i v-if="item.tipsType === '02'" @click="chickProblem(item)"></i></span>
               <strong><a v-for="p in text[index]">{{p}}</a></strong>
             </div>
@@ -76,6 +76,9 @@
           }
         }).catch(() => {
         })
+      },
+      showFlag(index){
+        this.flag = index
       },
       selectClass(item,val,ent) {
         //判断是否多选

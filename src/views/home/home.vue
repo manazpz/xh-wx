@@ -66,9 +66,6 @@
         </div>
       </mt-tab-container-item>
     </mt-tab-container>
-
-
-
   </div>
 </template>
 

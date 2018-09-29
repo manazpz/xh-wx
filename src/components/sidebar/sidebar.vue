@@ -32,9 +32,9 @@
         <!--</div>-->
       </div>
     </transition>
-    <transition name="fade">
-      <div class="mask" @click.stop.prevent="hide" v-show="showFlag"></div>
-    </transition>
+    <!--<transition name="fade">-->
+      <!--<div class="mask" @click.stop.prevent="hide" v-show="showFlag"></div>-->
+    <!--</transition>-->
   </div>
 </template>
 
