@@ -18,7 +18,7 @@
           </li>
           <li class="li" v-for="(item,index) in appraisalList" :key='item.id'>
             <div>
-              <span class="problem-xh">{{item.name}}<i></i></span>
+              <span class="problem-xh">{{item.name}}<i v-if="item.tipsType === '02'" @click="chickProblem(item)"></i></span>
               <strong><a v-for="p in text[index]">{{p}}</a></strong>
             </div>
             <ul :class="{'show': index === flag }">
@@ -172,6 +172,14 @@
           }
         }).catch(() => {
         })
+      },
+      chickProblem(val){
+        $('.appraisal-process-problem-wrap').fadeIn();
+        $('.problem-box').addClass('p-top-ani').find('h1').html(val.name).siblings('p').html(val.tipsText);
+        $('.appraisal-process-problem-wrap').on('click','.problem-close',function () {
+          $('.appraisal-process-problem-wrap').fadeOut();
+          $('.problem-box').removeClass('p-top-ani');
+        });
       }
     },
     //注册组件
