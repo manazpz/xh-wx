@@ -7,7 +7,7 @@
     <div class="model-search" title="搜索框">
       <label>
         <i></i>
-        <input type="text" value="" placeholder="搜索您想要的机型">
+        <input type="text" value="" @blur.prevent="serach(value)"   placeholder="搜索您想要的机型">
       </label>
     </div>
     <div class="tab-change-main" title="手机查询切换列表">
@@ -53,6 +53,7 @@
             this.selected = response.data.items[0].id
             this.brands = response.data.items[0].detail
             this.goods = response.data.items[0].detail[0].goods
+            debugger
           }
         }).catch(() => {
         })
@@ -64,6 +65,9 @@
       selectRightClass(index,item) {
         this.flags = index
         this.$router.push({path: 'oldAppraisal', query: {}})
+      },
+      serach(val){
+        debugger
       }
     },
     //注册组件

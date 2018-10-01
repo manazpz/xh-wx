@@ -12,6 +12,7 @@ const Statement = () => import('../views/statement/statement')
 const OldAppraisal = () => import('../views/oldAppraisal/oldAppraisal')
 const Quote = () => import('../views/quote/quote')
 const QuoteDetail = () => import('../views/quote/quoteDetail')
+const Recovery = () => import('../views/order/recovery')
 
 export const constantRouterMap = [
   {
@@ -111,6 +112,13 @@ export const constantRouterMap = [
     component: QuoteDetail,
     hidden: true,
     meta: { title: '详情' }
+  },
+  {
+    path: '/order/recovery',
+    name: 'recovery',
+    component: Recovery,
+    hidden: true,
+    meta: { title: '回收方式' }
   }
 ]
 

@@ -24,7 +24,7 @@
         </li>
       </ul>
       <div class="subtotal-box">
-        共<span>2</span>件商品&nbsp;&nbsp;小计：<strong>￥{{sData.sumOldPrice}}</strong>
+        共<span>{{data.oldGoods.length}}</span>件商品&nbsp;&nbsp;小计：<strong>￥{{sData.sumOldPrice}}</strong>
       </div>
     </div>
 
@@ -48,7 +48,7 @@
         </li>
       </ul>
       <div class="subtotal-box">
-        共<span>2</span>件商品&nbsp;&nbsp;小计：<strong>￥{{sData.sumNewPrice}}</strong>
+        共<span>{{data.newGoods.length}}</span>件商品&nbsp;&nbsp;小计：<strong>￥{{sData.sumNewPrice}}</strong>
       </div>
     </div>
 
@@ -60,28 +60,30 @@
         </li>
         <li>
           <span>回收方式</span>
-          <a href="javascript:;" class="right-arrow">上门回收</a>
+          <!--<a href="javascript:;" class="right-arrow">上门回收</a>-->
+          <router-link :to="{path:'/order/recovery',query:{}}">上门回收
+          </router-link>
         </li>
-        <li>
-          <span>新用户优惠劵</span>
-          <a href="javascript:;" class="number-color">￥300</a>
-        </li>
-        <li>
-          <span>优惠劵</span>
-          <a href="javascript:;" class="right-arrow popip-discount-btn">3张可用</a>
-        </li>
-        <li>
-          <span>换机专享优惠</span>
-          <a href="javascript:;" class="right-arrow">6张可用</a>
-        </li>
+        <!--<li>-->
+          <!--<span>新用户优惠劵</span>-->
+          <!--<a href="javascript:;" class="number-color">￥300</a>-->
+        <!--</li>-->
+        <!--<li>-->
+          <!--<span>优惠劵</span>-->
+          <!--<a href="javascript:;" class="right-arrow popip-discount-btn">3张可用</a>-->
+        <!--</li>-->
+        <!--<li>-->
+          <!--<span>换机专享优惠</span>-->
+          <!--<a href="javascript:;" class="right-arrow">6张可用</a>-->
+        <!--</li>-->
       </ul>
-      <div class="rule-p">
-        <p><span>优惠规则</span><i></i></p>
-      </div>
+      <!--<div class="rule-p">-->
+        <!--<p><span>优惠规则</span><i></i></p>-->
+      <!--</div>-->
     </div>
 
     <div class="footer-appraisal">
-      <span>合计：<strong><b>￥</b> <em class="aggregate-amount">0</em></strong></span>
+      <span>合计：<strong><b>￥</b> <em class="aggregate-amount">{{sData.sumNewPrice - sData.sumOldPrice}}</em></strong></span>
       <a href="javascript:;" title="订单提交">订单提交</a>
     </div>
   </div>
@@ -95,6 +97,7 @@
       return {
         newTile: this.$route.query.model == 'new'?'购买新机':'新机换购',
         data: {newGoods:[{imgs:[]}],oldGoods:[{imgs:[]}]},
+
         sData: {
           sumNewPrice: 0,
           sumOldPrice: 0,

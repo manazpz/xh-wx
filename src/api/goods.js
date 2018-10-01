@@ -72,3 +72,10 @@ export function deleteReplacementCar(params) {
     data: params
   })
 }
+export function recoveryList(query) {
+  return request({
+    url: '/api/goods/recoveryList',
+    method: 'get',
+    params: query
+  })
+}
