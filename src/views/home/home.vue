@@ -125,7 +125,7 @@
         this.$router.push({path: 'screening', query: {model: val}})
       },
       tradeUp() {
-        this.$router.push({path: '/order/sure',query: {model: 'new'}})
+        this.$router.push('quote')
       },
       getNewGoods() {
         var query = {
