@@ -79,3 +79,17 @@ export function recoveryList(query) {
     params: query
   })
 }
+export function insertRecoveryUser(params) {
+  return request({
+    url: '/api/goods/recoveryListUser/insert',
+    method: 'POST',
+    data: params
+  })
+}
+export function queryrecoveryList(query) {
+  return request({
+    url: '/api/goods/queryrecoveryList',
+    method: 'get',
+    params: query
+  })
+}

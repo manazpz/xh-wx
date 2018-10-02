@@ -60,8 +60,7 @@
         </li>
         <li>
           <span>回收方式</span>
-          <!--<a href="javascript:;" class="right-arrow">上门回收</a>-->
-          <router-link :to="{path:'/order/recovery',query:{}}">上门回收
+          <router-link :to="{path:'/order/recovery',query:{}}">{{list.types}}
           </router-link>
         </li>
         <!--<li>-->
@@ -90,6 +89,7 @@
 </template>
 <script type="text/ecmascript-6">
   import { queryReplacementCat } from 'api/order'
+  import { queryrecoveryList } from 'api/goods'
   import VHeader from 'components/v-header/v-header'
 
   export default {
@@ -97,7 +97,7 @@
       return {
         newTile: this.$route.query.model == 'new'?'购买新机':'新机换购',
         data: {newGoods:[{imgs:[]}],oldGoods:[{imgs:[]}]},
-
+        list: null,
         sData: {
           sumNewPrice: 0,
           sumOldPrice: 0,
@@ -106,8 +106,21 @@
     },
     created() {
       this.getData();
+      this.getList();
     },
     methods: {
+      getList() {
+        queryrecoveryList({openId:'123456'}).then(response => {
+          if (response.code === 200) {
+            if(response.data.items.length >1){
+              this.list = response.data.items[0]
+            }else{
+              this.list = response.data.items
+            }
+          }
+        }).catch(() => {
+        })
+      },
       getData() {
         queryReplacementCat({ids:this.$route.query.ids}).then(response => {
           if (response.code === 200) {
