@@ -58,9 +58,9 @@
           <span>售后服务</span>
           <a href="javascript:;">全国联保</a>
         </li>
-        <li>
+        <li v-for="(item,index) in list">
           <span>回收方式</span>
-          <router-link :to="{path:'/order/recovery',query:{}}">{{list.types}}
+          <router-link :to="{path:'/order/recovery',query:{}}">{{item.types}}
           </router-link>
         </li>
         <!--<li>-->
