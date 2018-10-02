@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="background: #c0c0c0">
     <transition name="fold">
       <div class="sidebar" v-show="showFlag">
         <div class="top-pic">
@@ -32,9 +32,9 @@
         <!--</div>-->
       </div>
     </transition>
-    <!--<transition name="fade">-->
-      <!--<div class="mask" @click.stop.prevent="hide" v-show="showFlag"></div>-->
-    <!--</transition>-->
+    <transition name="fade">
+      <div class="mask" @click.stop.prevent="hide" v-show="showFlag"></div>
+    </transition>
   </div>
 </template>
 

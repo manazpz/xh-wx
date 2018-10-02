@@ -84,7 +84,7 @@
       </div>
     </div>
     <div class="footer-appraisal1" @click="confirm">
-      <span>合计：<strong><b>￥</b> <em class="aggregate-amount">0</em></strong></span>
+      <span>合计：<strong><b>￥</b> <em class="aggregate-amount">{{temp.price}}</em></strong></span>
       <p>提交</p>
     </div>
     <div class="popup-choice-wrap" title="是否删除弹窗">
@@ -292,43 +292,20 @@
         if(this.oldChecks.indexOf(val) > -1) {
           this.oldChecks.splice(this.oldChecks.indexOf(val),1)
           evn.toElement.className = "sign-i"
-          if ($('.aggregate-amount').html() !== '0') {
-            if(item.model === '02'){
-              $('.aggregate-amount').html( parseFloat( this.temp.price)- parseFloat(item.bllPrice) );
-              this.temp.price = $('.aggregate-amount').html()
-            }else{
-              $('.aggregate-amount').html( parseFloat(item.bllPrice) + parseFloat( this.temp.price) );
-              this.temp.price = $('.aggregate-amount').html()
-            }
-          } else {
-            if(item.model === '01'){
-              $('.aggregate-amount').html(- item.bllPrice);
-              this.temp.price = $('.aggregate-amount').html()
-            }else{
-              $('.aggregate-amount').html(item.bllPrice);
-              this.temp.price = $('.aggregate-amount').html()
-            }
+          if(item.model === '01') {
+            this.temp.price = parseFloat(this.temp.price) - parseFloat(item.bllPrice)
+          }
+          if(item.model === '02') {
+            this.temp.price = parseFloat(this.temp.price) + parseFloat(item.bllPrice)
           }
         }else {
           this.oldChecks.push(val)
           evn.toElement.className = "sign-on"
-          this.temp.price = $('.aggregate-amount').html()
-          if ($('.aggregate-amount').html() !== '0') {
-            if(item.model === '02'){
-              $('.aggregate-amount').html( parseFloat( this.temp.price)- parseFloat(item.bllPrice) );
-              this.temp.price = $('.aggregate-amount').html()
-            }else{
-              $('.aggregate-amount').html( parseFloat( this.temp.price) - parseFloat(item.bllPrice)   );
-              this.temp.price = $('.aggregate-amount').html()
-            }
-          } else {
-            if(item.model === '01'){
-              $('.aggregate-amount').html(- item.bllPrice);
-              this.temp.price = $('.aggregate-amount').html()
-            }else{
-              $('.aggregate-amount').html(item.bllPrice);
-              this.temp.price = $('.aggregate-amount').html()
-            }
+          if(item.model === '01') {
+            this.temp.price = parseFloat(this.temp.price) + parseFloat(item.bllPrice)
+          }
+          if(item.model === '02') {
+            this.temp.price = parseFloat(this.temp.price) - parseFloat(item.bllPrice)
           }
         }
       },
