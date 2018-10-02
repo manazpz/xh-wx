@@ -2,7 +2,7 @@
   <div class="orderSure" ref="orderSure">
     <v-header title="确认订单"></v-header>
     <div class="address-inf-box">
-      <p class="p-null" title="未填写收货地址时"><a href="">您的收货地址为空，为您的手机添加地址吧！</a></p>
+      <!--<p class="p-null" title="未填写收货地址时"><a href="">您的收货地址为空，为您的手机添加地址吧！</a></p>-->
     </div>
 
     <div class="c-des-list" v-if="data.oldGoods.length > 0">

@@ -5,8 +5,8 @@
     <div class="homeHead">
       <span class="navigation" @click="showSidebar"></span>
       <mt-navbar  class="navbar" v-model="selected">
-        <mt-tab-item id="sy">首页</mt-tab-item>
-        <mt-tab-item id="js">集市</mt-tab-item>
+        <mt-tab-item id="sy" @click.native="qh('HB')">首页</mt-tab-item>
+        <mt-tab-item id="js" @click.native="qh('JB')">集市</mt-tab-item>
       </mt-navbar>
     </div>
     <mt-swipe :stopPropagation="true" :auto="5000" class="banner" style="height: 200px;margin-top: 89px;">
@@ -88,7 +88,7 @@
       }
     },
     created() {
-      this.getBanners()
+      this.getBanners('HB')
       this.getStatement()
       this.getHgGoods()
       this.getNewGoods()
@@ -105,13 +105,16 @@
         }).catch(() => {
         })
       },
-      getBanners() {
-        queryBanners('HB').then(response => {
+      getBanners(val) {
+        queryBanners(val).then(response => {
           if (response.code === 200) {
             this.banners = response.data.items
           }
         }).catch(() => {
         })
+      },
+      qh(val) {
+        this.getBanners(val)
       },
       getStatement() {
         queryStatement('HT').then(response => {

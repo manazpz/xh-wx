@@ -6,11 +6,11 @@
         <li v-for="(item,index) in list">
           <dl>
             <dt>
-              <i @click="chicks(item,index,$event)"></i>
+              <i @click="chicks(item,index,$event)" :ref="'i'+item.id"></i>
               <span>{{item.types}}</span>
             </dt>
             <dd>
-              <i @click="chickPrete(item,index,$event)"></i>
+              <i @click="chickPrete(item,index,$event)" :ref="'ii'+item.id"></i>
               <span>设为默认上门方式</span>
             </dd>
           </dl>
@@ -51,15 +51,28 @@
           if (response.code === 200) {
             this.list = response.data.items
             this.check = response.data.check
-            // if(response.data.check !== undefined ){
-            //
-            // }
+            this.$nextTick(function () {
+              if(this.check.length>0) {
+                this.list.forEach(obj=>{
+                    if(obj.id === this.check[0].recoveryId) {
+                      this.$refs['i'+obj.id][0].classList.add("dt-hook")
+                      this.$refs['ii'+obj.id][0].classList.add("dd-hook")
+                    }
+                })
+              }else {
+                if(this.list.length > 0) {
+                    this.$refs['i'+this.list[0].id][0].classList.add("dt-hook")
+                    this.$refs['ii'+this.list[0].id][0].classList.add("dd-hook")
+                }
+              }
+            })
           }
         }).catch(() => {
         })
       },
       chicks(item,index,ent){
         $('.recovery-box li dt i').removeClass('dt-hook');
+        $('.recovery-box li dd i').removeClass('dd-hook');
         if(ent.path[1].getElementsByTagName('i')[0].className == 'dt-hook'){
           ent.path[1].getElementsByTagName('i')[0].classList.remove("dt-hook")
         }else{
