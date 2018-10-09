@@ -1,57 +1,72 @@
 <template>
   <div class="orderSure" ref="orderSure">
     <v-header title="确认订单"></v-header>
-    <div class="address-inf-box">
-      <!--<p class="p-null" title="未填写收货地址时"><a href="">您的收货地址为空，为您的手机添加地址吧！</a></p>-->
-    </div>
-
-    <div class="c-des-list" v-if="data.oldGoods.length > 0">
-      <h3>旧机估价</h3>
-      <ul>
-        <li v-for="item in data.oldGoods">
-          <div class="li-left-img">
-            <img :src="item.imgs.length>0?item.imgs[0].url:''" >
-          </div>
-          <div class="li-right-inf">
-            <h4><span>{{item.goodsName}}</span></h4>
-            <h5>{{item.bllParameterStr}}</h5>
-            <h6>估价：<span>￥{{item.bllPrice}}</span></h6>
-            <div>
-              <p>最终回收价以工程师检测为准</p>
-              <span>x 1</span>
-            </div>
-          </div>
-        </li>
-      </ul>
-      <div class="subtotal-box">
-        共<span>{{data.oldGoods.length}}</span>件商品&nbsp;&nbsp;小计：<strong>￥{{sData.sumOldPrice}}</strong>
+    <div class="top-address-inf">
+      <div class="address-inf-box">
+        <router-link v-if="address.length > 0" class="div-des" title="已经收货地址时" :to="{path:'/manaAddress',query:{}}">
+          <p>
+            <span>{{address[0].name}}</span>
+            <strong>{{address[0].phone}}</strong>
+          </p>
+          <p>
+            <span>{{address[0].areaString}}{{address[0].streetString}}</span>
+          </p>
+        </router-link>
+        <div v-else>
+          <router-link  :to="{path:'/addressEdit',query:{}}"><p class="p-null" title="未填写收货地址时">您的收货地址为空，为您的手机添加地址吧！</p>
+          </router-link>
+        </div>
       </div>
     </div>
 
-    <div class="c-des-list" v-if="data.newGoods.length > 0">
-      <h3>{{newTile}}</h3>
-      <ul>
-        <li v-for="item in data.newGoods">
-          <div class="li-left-img">
-            <img :src="item.imgs.length>0?item.imgs[0].url:''" >
-          </div>
-          <div class="li-right-inf">
-            <h4><span>{{item.goodsName}}</span></h4>
-            <h5>{{item.bllParameterStr}}</h5>
-            <h6>估价：<span>￥{{item.bllPrice}}</span></h6>
-            <i class="i-img"></i>
-            <div>
-              <p>价格<b class="through">￥9600.00</b></p>
-              <span>x 1</span>
+    <div class="calculation-main" title="换购明细">
+      <div class="c-des-list" v-if="data.oldGoods.length > 0">
+        <h3>旧机估价</h3>
+        <ul>
+          <li v-for="item in data.oldGoods">
+            <div class="li-left-img">
+              <img :src="item.imgs.length>0?item.imgs[0].url:''" >
             </div>
-          </div>
-        </li>
-      </ul>
-      <div class="subtotal-box">
-        共<span>{{data.newGoods.length}}</span>件商品&nbsp;&nbsp;小计：<strong>￥{{sData.sumNewPrice}}</strong>
+            <div class="li-right-inf">
+              <h4><span>{{item.goodsName}}</span></h4>
+              <h5>{{item.bllParameterStr}}</h5>
+              <h6>估价：<span>￥{{item.bllPrice}}</span></h6>
+              <div>
+                <p>最终回收价以工程师检测为准</p>
+                <span>x 1</span>
+              </div>
+            </div>
+          </li>
+        </ul>
+        <div class="subtotal-box">
+          共<span>{{data.oldGoods.length}}</span>件商品&nbsp;&nbsp;小计：<strong>￥{{sData.sumOldPrice}}</strong>
+        </div>
+      </div>
+
+      <div class="c-des-list" v-if="data.newGoods.length > 0">
+        <h3>{{newTile}}</h3>
+        <ul>
+          <li v-for="item in data.newGoods">
+            <div class="li-left-img">
+              <img :src="item.imgs.length>0?item.imgs[0].url:''" >
+            </div>
+            <div class="li-right-inf">
+              <h4><span>{{item.goodsName}}</span></h4>
+              <h5>{{item.bllParameterStr}}</h5>
+              <h6>估价：<span>￥{{item.bllPrice}}</span></h6>
+              <i class="i-img"></i>
+              <div>
+                <p>价格<b class="through">￥9600.00</b></p>
+                <span>x 1</span>
+              </div>
+            </div>
+          </li>
+        </ul>
+        <div class="subtotal-box">
+          共<span>{{data.newGoods.length}}</span>件商品&nbsp;&nbsp;小计：<strong>￥{{sData.sumNewPrice}}</strong>
+        </div>
       </div>
     </div>
-
     <div class="details-inf">
       <ul>
         <li>
@@ -88,7 +103,7 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import { queryReplacementCat } from 'api/order'
+  import { queryReplacementCat, queryAddress } from 'api/order'
   import { queryrecoveryList } from 'api/goods'
   import VHeader from 'components/v-header/v-header'
 
@@ -98,6 +113,7 @@
         newTile: this.$route.query.model == 'new'?'购买新机':'新机换购',
         data: {newGoods:[{imgs:[]}],oldGoods:[{imgs:[]}]},
         list: null,
+        address: [],
         sData: {
           sumNewPrice: 0,
           sumOldPrice: 0,
@@ -120,6 +136,12 @@
           }
         }).catch(() => {
         })
+        queryAddress({openId:'123456',isVisit:'Y'}).then(response => {
+          if (response.code === 200) {
+            this.address = response.data.items
+          }
+        }).catch(() => {
+        })
       },
       getData() {
         queryReplacementCat({ids:this.$route.query.ids}).then(response => {
@@ -134,6 +156,12 @@
           }
         }).catch(() => {
         })
+      },
+      choice() {
+        this.$router.push({path:'/addressEdit',query:{}})
+      },
+      address() {
+        debugger
       }
     },
     //注册组件

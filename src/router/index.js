@@ -14,6 +14,8 @@ const Quote = () => import('../views/quote/quote')
 const QuoteDetail = () => import('../views/quote/quoteDetail')
 const Recovery = () => import('../views/order/recovery')
 const collect = () => import('../views/collect/collect')
+const AddressEdit = () => import('../views/address/addressEdit')
+const ManaAddress = () => import('../views/address/manaAddress')
 
 export const constantRouterMap = [
   {
@@ -120,6 +122,20 @@ export const constantRouterMap = [
     component: Recovery,
     hidden: true,
     meta: { title: '回收方式' }
+  },
+  {
+    path: '/addressEdit',
+    name: 'addressEdit',
+    component: AddressEdit,
+    hidden: true,
+    meta: { title: '编辑地址' }
+  },
+  {
+    path: '/manaAddress',
+    name: 'manaAddress',
+    component: ManaAddress,
+    hidden: true,
+    meta: { title: '管理收货地址' }
   }
 ]
 

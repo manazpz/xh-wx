@@ -1,0 +1,217 @@
+.management-address {
+  width: 100%;
+  height: 93vh;
+  padding-top: 7vh;
+  background: #f6f6f6;
+}
+.management-address ul {
+  padding: 0.5rem 0 5rem;
+}
+.management-address li {
+  display: block;
+  width: 100%;
+  margin-bottom: 0.17rem;
+  background: #fff;
+}
+.management-address li .div-des {
+  width: 100%;
+  height: 3rem;
+  border-bottom: 1px solid #f6f6f6;
+}
+.management-address li .div-des p {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 1.5rem;
+  text-indent: 12%;
+}
+.management-address li .div-des p:nth-child(1) {
+  color: #222;
+  line-height: 1.8rem;
+  font-size: 0.7rem;
+}
+.management-address li .div-des p:nth-child(1) strong {
+  margin-left: 5%;
+}
+.management-address li .div-des p:nth-child(2) {
+  color: #666;
+  line-height: 1.2rem;
+  font-size: 0.6rem;
+}
+.management-address li .div-des p:nth-child(1):after,
+.management-address li .div-des p:nth-child(2):after {
+  position: absolute;
+  left: 5%;
+  width: 4.71%;
+  content: "";
+}
+.management-address li .div-des p:nth-child(1):after {
+  top: 0.4rem;
+  height: 0.82rem;
+  background: url("/static/image/icon_figure.png") no-repeat;
+  -webkit-background-size: 100% 100%;
+  -moz-background-size: 100% 100%;
+  -ms-background-size: 100% 100%;
+  -o-background-size: 100% 100%;
+  background-size: 100% 100%;
+}
+.management-address li .div-des p:nth-child(2):after {
+  top: 0.1rem;
+  height: 1rem;
+  background: url("/static/image/icon_location.png") no-repeat;
+  -webkit-background-size: 100% 100%;
+  -moz-background-size: 100% 100%;
+  -ms-background-size: 100% 100%;
+  -o-background-size: 100% 100%;
+  background-size: 100% 100%;
+}
+.management-address li .default-set-box {
+  position: relative;
+  width: 100%;
+  height: 1.75rem;
+  border-bottom: 1px solid #f6f6f6;
+}
+.management-address li .default-set-box i {
+  position: absolute;
+  top: 0;
+  left: 2.6%;
+  width: 9.8%;
+  height: 1.75rem;
+  background: url("/static/image/oldmobileaddress_button_tick_default@2x.png") 50% no-repeat;
+  -webkit-background-size: 40% 40%;
+  -moz-background-size: 40% 40%;
+  -ms-background-size: 40% 40%;
+  -o-background-size: 40% 40%;
+  background-size: 40% 40%;
+}
+.management-address li .default-set-box .i-on {
+  background: url("/static/image/oldmobileaddress_button_tick_press@2x.png") 50% no-repeat;
+  -webkit-background-size: 40% 40%;
+  -moz-background-size: 40% 40%;
+  -ms-background-size: 40% 40%;
+  -o-background-size: 40% 40%;
+  background-size: 40% 40%;
+}
+.management-address li .default-set-box p {
+  display: block;
+  width: 50%;
+  height: 1.75rem;
+  margin-left: 12%;
+  color: #999;
+  line-height: 1.75rem;
+  font-size: 0.7rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.management-address li .default-set-box .set {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 38%;
+  height: 1.75rem;
+  color: #222;
+  line-height: 1.75rem;
+  font-size: 0.7rem;
+}
+.management-address li .default-set-box .set span,
+.management-address li .default-set-box .set strong {
+  position: relative;
+  padding-left: 22%;
+}
+.management-address li .default-set-box .set span:after,
+.management-address li .default-set-box .set strong:after {
+  position: absolute;
+  top: 0.1rem;
+  left: 20%;
+  width: 26%;
+  height: 0.78rem;
+  content: "";
+}
+.management-address li .default-set-box .set span:after {
+  background: url("/static/image/oldmobileaddress_button_editor@2x.png") 50% no-repeat;
+  -webkit-background-size: 100% 100%;
+  -moz-background-size: 100% 100%;
+  -ms-background-size: 100% 100%;
+  -o-background-size: 100% 100%;
+  background-size: 100% 100%;
+}
+.management-address li .default-set-box .set strong:after {
+  background: url("/static/image/oldmobileaddress_button_delete@2x.png") 50% no-repeat;
+  -webkit-background-size: 100% 100%;
+  -moz-background-size: 100% 100%;
+  -ms-background-size: 100% 100%;
+  -o-background-size: 100% 100%;
+  background-size: 100% 100%;
+}
+.management-address .add-new-address {
+  position: fixed;
+  bottom: 0;
+  left: 0%;
+  width: 100%;
+  height: 3.5rem;
+  background: #f6f6f6;
+}
+.management-address .add-new-address a {
+  display: block;
+  width: 80%;
+  height: 2rem;
+  border-radius: 2rem;
+  margin: 0 auto;
+  background: #28c081;
+  color: #fff;
+  font-size: 0.9rem;
+  line-height: 2rem;
+  text-align: center;
+}
+.popup-choice-wrap {
+  display: none;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  min-width: 320px;
+  max-width: 750px;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+}
+.popup-choice-wrap .choice-box {
+  overflow: hidden;
+  position: absolute;
+  top: 40vh;
+  left: 15%;
+  width: 70%;
+  border-radius: 0.5rem;
+  background: #fff;
+}
+.popup-choice-wrap .choice-box p {
+  width: 100%;
+  padding: 1rem 0;
+  color: #222;
+  font-size: 0.9rem;
+  text-align: center;
+}
+.popup-choice-wrap .choice-box div {
+  display: block;
+  width: 100%;
+  height: 2.25rem;
+}
+.popup-choice-wrap .choice-box div a {
+  width: 50%;
+  height: 2.25rem;
+  color: #fff;
+  font-size: 0.9rem;
+  line-height: 2.25rem;
+  text-align: center;
+  box-shadow: 0 0 1px 1px #f6f6f6;
+}
+.popup-choice-wrap .choice-box div .cancel-btn {
+  float: left;
+  background: #28c07b;
+  color: #fff;
+}
+.popup-choice-wrap .choice-box div .confirm-btn {
+  float: right;
+  background: #fff;
+  color: #222;
+}

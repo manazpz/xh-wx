@@ -1,19 +1,51 @@
 .orderSure {
   //padding: 50px 0;
-  height: 100vh;
   background :#f6f6f6;
+  padding-bottom: 5rem;
+  width: 100%;
+  padding-top: 1vh;
+  height: auto;
 }
-.address-inf-box {
+.top-address-inf {
+  display: block;
+  width: 93.33%;
+  height: 2.95rem;
+  margin: 0 auto 0.5rem;
+  padding-top: 3rem;
+}
+.top-address-inf .address-inf-box {
+  //position: relative;
+  //overflow :hidden;
+  //display: block;
+  //width: 92%;
+  //height: 3.2rem;
+  //margin : 0 auto 0.6rem;
+  //padding-top: 3rem;
+  ////margin-top 40px
+  //background :#fff;
   position: relative;
   overflow :hidden;
   display: block;
-  width: 92%;
-  height: 3.2rem;
-  margin : 0 auto 0.6rem;
-  padding-top: 0rem;
-  //margin-top 40px
+  width: 100%;
+  height: 2.95rem;
+  border-radius: 0.5rem;
+  background: #fff;
 }
-.address-inf-box .p-null {
+.top-address-inf .address-inf-box:after {
+  position: absolute;
+  top: 1.25rem;
+  right: 3.57%;
+  width: 1.57%;
+  height: 0.45rem;
+  background: url(/static/image/icon_right_arrow_s.png) no-repeat;
+  -webkit-background-size: 100% 100%;
+  -moz-background-size: 100% 100%;
+  -ms-background-size: 100% 100%;
+  -o-background-size: 100% 100%;
+  background-size: 100% 100%;
+  content: "";
+}
+.top-address-inf .address-inf-box .p-null {
   display: block;
   width: 100%;
   height: 3.2rem;
@@ -27,11 +59,79 @@
   white-space: nowrap;
   text-overflow: ellipsis;
 }
-.address-inf-box .p-null a {
+.top-address-inf .address-inf-box .p-null a {
   color: #28c081;
 }
-
-.c-des-list {
+.top-address-inf .address-inf-box .div-des {
+  width: 100%;
+}
+.top-address-inf .address-inf-box .div-des h5 {
+  width: 100%;
+  height: 1.5rem;
+  border-bottom: 1px solid #f6f6f6;
+  color: #28c081;
+  line-height: 1.5rem;
+  font-size: 0.8rem;
+  text-indent: 5%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.top-address-inf .address-inf-box .div-des p {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 1.48rem;
+  text-indent: 12%;
+}
+.top-address-inf .address-inf-box .div-des p:nth-child(1) {
+  color: #222;
+  line-height: 1.8rem;
+  font-size: 0.78rem;
+}
+.top-address-inf .address-inf-box .div-des p:nth-child(2) strong {
+  margin-left: 5%;
+}
+.top-address-inf .address-inf-box .div-des p:nth-child(2) {
+  color: #666;
+  line-height: 1.6rem;
+  font-size: 0.78rem;
+}
+.top-address-inf .address-inf-box .div-des p:nth-child(1):after,
+.top-address-inf .address-inf-box .div-des p:nth-child(2):after {
+  position: absolute;
+  left: 5%;
+  width: 4.71%;
+  content: "";
+}
+.top-address-inf .address-inf-box .div-des p:nth-child(1):after {
+  top: 0.2rem;
+  height: 1rem;
+  background: url("/static/image/icon_figure.png") no-repeat;
+  -webkit-background-size: 100% 100%;
+  -moz-background-size: 100% 100%;
+  -ms-background-size: 100% 100%;
+  -o-background-size: 100% 100%;
+  background-size: 100% 100%;
+}
+.top-address-inf .address-inf-box .div-des p:nth-child(2):after {
+  top: 0.1rem;
+  height: 1.2rem;
+  background: url("/static/image/icon_location.png") no-repeat;
+  -webkit-background-size: 100% 100%;
+  -moz-background-size: 100% 100%;
+  -ms-background-size: 100% 100%;
+  -o-background-size: 100% 100%;
+  background-size: 100% 100%;
+}
+.calculation-main {
+  width: 93.33%;
+  height: auto;
+  margin: 0 auto 0.5rem;
+  border-radius: 0.5rem;
+  background: #fff;
+}
+.calculation-main .c-des-list {
   overflow: hidden;
   width: 86%;
   height: auto;
@@ -41,40 +141,40 @@
   padding : 0 3%;
   background #fff;
 }
-.c-des-list h3 {
+.calculation-main .c-des-list h3 {
   width: 100%;
   height: 1.8rem;
   color: #222;
   line-height: 1.8rem;
-  font-size: 0.85rem;
+  font-size: 0.86rem;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
-.c-des-list li {
+.calculation-main .c-des-list li {
   width: 100%;
   height: 7rem;
   margin-bottom: 0.5rem;
   border-bottom: 1px solid #f6f6f6;
 }
-.c-des-list li .li-left-img {
+.calculation-main .c-des-list li .li-left-img {
   overflow hidden;
   float: left;
   width: 29%;
   height: 5.8rem;
   border-radius : 0.3rem;
 }
-.c-des-list li .li-left-img img {
+.calculation-main .c-des-list li .li-left-img img {
   display: block;
   width: 100%;
   height: 100%;
 }
-.c-des-list li .li-right-inf {
+.calculation-main .c-des-list li .li-right-inf {
   position: relative;
   float: right;
   width: 68%;
 }
-.c-des-list li .li-right-inf h4 {
+.calculation-main .c-des-list li .li-right-inf h4 {
   width: 100%;
   height: 1.2rem;
   color: #222;
@@ -82,38 +182,38 @@
   white-space: nowrap;
   text-overflow: ellipsis;
 }
-.c-des-list li .li-right-inf h4 span {
+.calculation-main .c-des-list li .li-right-inf h4 span {
   float: left;
   width: 70%;
-  font-size: 0.85rem;
+  font-size: 0.86rem;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
-.c-des-list li .li-right-inf h5 {
+.calculation-main .c-des-list li .li-right-inf h5 {
   width: 100%;
   height: 1.2rem;
   color: #222;
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
-.c-des-list li .li-right-inf h6 {
+.calculation-main .c-des-list li .li-right-inf h6 {
   width: 100%;
   height: 1.2rem;
   margin-top: 0.8rem;
   font-size: 0.85rem;
 }
-.c-des-list li .li-right-inf h6 span {
+.calculation-main .c-des-list li .li-right-inf h6 span {
   font-size: 0.95rem;
 }
-.c-des-list li .li-right-inf div {
+.calculation-main .c-des-list li .li-right-inf div {
   display: block;
   width: 100%;
   height: 1.5rem;
 }
-.c-des-list li .li-right-inf div p {
+.calculation-main .c-des-list li .li-right-inf div p {
   float: left;
   width: 75%;
   height: 1.5rem;
@@ -124,7 +224,7 @@
   white-space: nowrap;
   text-overflow: ellipsis;
 }
-.c-des-list li .li-right-inf div span {
+.calculation-main .c-des-list li .li-right-inf div span {
   float: right;
   width: 25%;
   height: 1.5rem;
@@ -136,11 +236,11 @@
   white-space: nowrap;
   text-overflow: ellipsis;
 }
-.c-des-list li .li-right-inf div .through {
+.calculation-main .c-des-list li .li-right-inf div .through {
   font-weight: normal;
   text-decoration: line-through;
 }
-.c-des-list li .li-right-inf .i-img {
+.calculation-main .c-des-list li .li-right-inf .i-img {
   position: absolute;
   top: 1.9rem;
   left: 0;
@@ -153,7 +253,7 @@
   -o-background-size: 100% 100%;
   background-size: 100% 100%;
 }
-.c-des-list .subtotal-box {
+.calculation-main .c-des-list .subtotal-box {
   display: block;
   width: 100%;
   height: 2.2rem;
@@ -165,7 +265,7 @@
   white-space: nowrap;
   text-overflow: ellipsis;
 }
-.c-des-list .subtotal-box strong {
+.calculation-main .c-des-list .subtotal-box strong {
   color: #fe4045;
   font-size: 1rem;
 }
@@ -275,5 +375,6 @@
   line-height: 2.8rem;
   text-align: center;
 }
+
 
 
