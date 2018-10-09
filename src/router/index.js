@@ -13,6 +13,7 @@ const OldAppraisal = () => import('../views/oldAppraisal/oldAppraisal')
 const Quote = () => import('../views/quote/quote')
 const QuoteDetail = () => import('../views/quote/quoteDetail')
 const Recovery = () => import('../views/order/recovery')
+const collect = () => import('../views/collect/collect')
 
 export const constantRouterMap = [
   {
@@ -31,7 +32,7 @@ export const constantRouterMap = [
   {
     path: '/collect',
     name: 'collect',
-    component: Home,
+    component: collect,
     meta: { title: '收藏', icon: '/static/image/icon_li_02.png' }
   },
   {
@@ -76,7 +77,7 @@ export const constantRouterMap = [
     name: 'goodsNew',
     component: GoodsNew,
     hidden: true,
-    meta: { title: '商品详情' }
+    meta: { title: '新商品' }
   },
   {
     path: '/goods/detail',

@@ -24,12 +24,7 @@ service.interceptors.response.use(
   response => {
     const res = response.data
     if (res.code !== 200) {
-      // Message({
-      //   message: res.message,
-      //   type: 'error',
-      //   duration: 5 * 1000
-      // })
-      return Promise.reject('error')
+      return Promise.reject(res,'error')
     } else {
       if (res.data === null) {
         res.data = {}
@@ -39,11 +34,6 @@ service.interceptors.response.use(
   },
   error => {
     console.log('err' + error)// for debug
-    // Message({
-    //   message: !error.response ? error.message : !error.response.statusText ? error.message : error.response.statusText,
-    //   type: 'error',
-    //   duration: 5 * 1000
-    // })
     return Promise.reject(error)
   }
 )

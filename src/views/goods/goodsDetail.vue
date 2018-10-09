@@ -49,8 +49,10 @@
     <!-->
     <popup v-model="detail" :popupVisible="showPopup" ref="popup" @submit-update="updatePop"></popup>
     <div class="footer-shopping-cart">
-      <i class="left-icon"></i>
-      <mt-button class="center-shopping">加入收藏</mt-button>
+      <router-link :to="{path:'/collect'}">
+        <i class="left-icon"></i>
+      </router-link>
+      <mt-button class="center-shopping" @click="addCollect">加入收藏</mt-button>
       <mt-button class="right-shopping">立即购买</mt-button>
     </div>
   </div>
@@ -58,7 +60,9 @@
 
 <script type="text/ecmascript-6">
   import { queryGoodsDetail } from 'api/goods'
+  import { insertCollect } from 'api/collect'
   import VHeader from 'components/v-header/v-header'
+  import { Toast } from 'mint-ui'
   import Popup from 'components/popup/popup'
 
   export default {
@@ -93,6 +97,16 @@
       updatePop(value) {
         this.price = value.price
         this.specText = value.specText
+      },
+      addCollect() {
+        insertCollect({openId:'123456',basicId:this.detail.id}).then(response => {
+          Toast({
+            message: response.message,
+            iconClass: 'mintui mintui-success'
+          });
+        }).catch((response) => {
+          Toast(response.message);
+        })
       }
     },
     //注册组件
