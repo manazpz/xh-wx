@@ -156,12 +156,6 @@
           }
         }).catch(() => {
         })
-      },
-      choice() {
-        this.$router.push({path:'/addressEdit',query:{}})
-      },
-      address() {
-        debugger
       }
     },
     //注册组件

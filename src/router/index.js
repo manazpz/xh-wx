@@ -3,6 +3,7 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 
+const Login = () => import('../views/home/Login')
 const Home = () => import('../views/home/home')
 const SCREENING = () => import('../views/screening/screening')
 const GoodsDetail = () => import('../views/goods/goodsDetail')
@@ -25,6 +26,13 @@ const encyclopedias = () => import('../views/user/encyclopedias')
 export const constantRouterMap = [
   {
     path: '/',
+    name: 'login',
+    component: Login,
+    hidden: true,
+    meta: { title: '授权' }
+  },
+  {
+    path: '/home',
     name: 'home',
     component: Home,
     hidden: true,

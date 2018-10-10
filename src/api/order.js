@@ -28,5 +28,12 @@ export function deleteAddress(params) {
     data: params
   })
 }
+export function updateAddress(params) {
+  return request({
+    url: '/api/address/update',
+    method: 'POST',
+    data: params
+  })
+}
 
 

@@ -42,8 +42,9 @@
           <mt-field label="" placeholder="请输入详细地址信息，如道路、门牌号小区、楼栋号、单元室等" type="textarea" rows="2" cols="20" v-model="streetString"></mt-field>
         </li>
         <li class="clearfix">
-          <span class="span-length">设置为默认</span>
-          <i @click="chicks($event)"></i>
+          <span class="span-length">设置为默认收货地址</span>
+          <i v-if="take == 'Y'" class="i-on" @click="chicks($event)"></i>
+          <i v-else @click="chicks($event)"></i>
         </li>
         <li class="clearfix">
           <span class="span-length">设置为默认上门地址</span>
@@ -61,7 +62,7 @@
 <script type="text/ecmascript-6">
   import data from '../../../static/json/address.json'
   import VHeader from 'components/v-header/v-header'
-  import { insertAddress } from 'api/order'
+  import { insertAddress, updateAddress } from 'api/order'
   import { Toast } from 'mint-ui'
 
   var index = 0
@@ -92,18 +93,22 @@
         name: '',
         phone: '',
         visit: 'N',
+        take: 'N',
         areaVisible: false,
         streetVisible: false,
         areaString: '请选择',
         streetString: '',
         item: '',
         temp: {
+          id: '',
+          no: '',
           openId: '123456',
           name: '',
           phone: '',
           areaString: '',
           streetString: '',
-          isVisit: 'N'
+          isVisit: 'N',
+          isTake: 'N'
         },
         slots: [{
           flex: 1,
@@ -149,6 +154,9 @@
         this.areaString = this.item.areaString
         this.streetString = this.item.streetString
         this.visit = this.item.isVisit
+        this.take = this.item.isTake
+        this.temp.isTake = this.item.isTake
+        this.temp.isVisit = this.item.isVisit
       }
     },
     methods: {
@@ -191,8 +199,10 @@
       chicks(ent){
         if(ent.path[0].className == 'i-on'){
           ent.path[0].classList.remove("i-on")
+          this.temp.isTake = 'N'
         }else{
           ent.toElement.classList.add("i-on")
+          this.temp.isTake = 'Y'
         }
       },
       chickVisit(ent) {
@@ -210,21 +220,40 @@
         this.temp.areaString = this.areaString
         this.temp.streetString = this.streetString
         var tar = this
-        insertAddress(this.temp).then(response => {
-          if (response.code === 200) {
-            Toast({
-              message: '添加成功！',
-              position: 'bottom',
-              duration: 5000
-            });
-            setTimeout(function (){
-              tar.$router.back(-1)
-            }, 1000);
+        if(this.item !== undefined){
+          this.temp.id = this.item.id
+          this.temp.no = this.item.no
+          debugger
+          updateAddress(this.temp).then(response => {
+            if (response.code === 200) {
+              Toast({
+                message: '更新成功！',
+                position: 'bottom',
+                duration: 5000
+              });
+              setTimeout(function (){
+                tar.$router.back(-1)
+              }, 1000);
 
-          }
-        }).catch(() => {
-        })
+            }
+          }).catch(() => {
+          })
+        }else{
+          insertAddress(this.temp).then(response => {
+            if (response.code === 200) {
+              Toast({
+                message: '添加成功！',
+                position: 'bottom',
+                duration: 5000
+              });
+              setTimeout(function (){
+                tar.$router.back(-1)
+              }, 1000);
 
+            }
+          }).catch(() => {
+          })
+        }
       }
     },
     //注册组件

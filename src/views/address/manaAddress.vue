@@ -14,16 +14,17 @@
             </p>
           </div>
           <div class="default-set-box">
-            <i @click="chicks($event)"></i>
-            <p>设为默认收货地址</p>
+            <i v-if="item.isTake == 'Y'" class="i-on"></i>
+            <p v-if="item.isTake == 'Y'">默认收货地址</p>
             <div class="set">
               <span><a href="javascript:;" @click="editAdress(item,index)">编辑</a></span>
               <strong class="set-delete" @click="delAdress(item,index)">删除</strong>
             </div>
           </div>
           <div class="default-set-box">
-            <i @click="chickVisit($event)"></i>
-            <p>设为默认上门地址</p>
+            <!--<i @click="chickVisit($event)"></i>-->
+            <i v-if="item.isVisit == 'Y'" class="i-on"></i>
+            <p v-if="item.isVisit == 'Y'">默认上门地址</p>
           </div>
         </li>
       </ul>
