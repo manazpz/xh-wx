@@ -16,6 +16,11 @@ const Recovery = () => import('../views/order/recovery')
 const collect = () => import('../views/collect/collect')
 const AddressEdit = () => import('../views/address/addressEdit')
 const ManaAddress = () => import('../views/address/manaAddress')
+const customService = () => import('../views/customService/customService')
+const setting = () => import('../views/setting/setting')
+const about = () => import('../views/setting/about')
+const user = () => import('../views/user/user')
+const encyclopedias = () => import('../views/user/encyclopedias')
 
 export const constantRouterMap = [
   {
@@ -58,14 +63,21 @@ export const constantRouterMap = [
   {
     path: '/cs',
     name: 'cs',
-    component: Home,
+    component: customService,
     meta: { title: '客服', icon: '/static/image/icon_li_06.png' }
   },
   {
     path: '/setting',
     name: 'setting',
-    component: Home,
+    component: setting,
     meta: { title: '设置', icon: '/static/image/icon_li_07.png' }
+  },
+  {
+    path: '/setting/about',
+    name: 'about',
+    hidden: true,
+    component: about,
+    meta: { title: '设置' }
   },
   {
     path: '/screening',
@@ -136,6 +148,20 @@ export const constantRouterMap = [
     component: ManaAddress,
     hidden: true,
     meta: { title: '管理收货地址' }
+  },
+  {
+    path: '/user',
+    name: 'user',
+    component: user,
+    hidden: true,
+    meta: { title: '用户管理' }
+  },
+  {
+    path: '/user/encyclopedias',
+    name: 'encyclopedias',
+    component: encyclopedias,
+    hidden: true,
+    meta: { title: '用户管理' }
   }
 ]
 

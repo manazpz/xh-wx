@@ -5,7 +5,7 @@
         <div class="top-pic">
           <dl>
             <dt>
-              <img src="/static/image/pic_img.png" title="头像">
+              <img src="/static/image/pic_img.png" @click="jumpUser" title="头像">
             </dt>
             <p>Acid</p>
           </dl>
@@ -56,6 +56,7 @@
       return {
         data: [],                        //初始化主题列表数据,
         showFlag: false,
+        openId: undefined
       }
     },
     //生命周期创建观察数据
@@ -82,6 +83,9 @@
       },
       resolvePath(...paths) {
         return path.resolve(this.basePath, ...paths)
+      },
+      jumpUser(openid){
+        this.$router.push({path:'/user'})
       },
       ...mapMutations({
         setIsNight: 'CHANGE_MODEL'

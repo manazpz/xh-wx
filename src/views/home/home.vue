@@ -41,7 +41,7 @@
         <div class="h-prompt-img">
           <h4>三天换新机</h4>
           <div>
-            <router-link v-for="item in statements" :to="{path:'/statement',query:{title:item.title,content:item.content}}">
+            <router-link v-for="item in statements" :to="{path:'/statement',query:{title:item.title,id:item.id}}">
               <img :src="item.imgUrl">
               <span>{{item.title}}</span>
             </router-link>
@@ -117,7 +117,7 @@
         this.getBanners(val)
       },
       getStatement() {
-        queryStatement('HT').then(response => {
+        queryStatement({type:'HT'}).then(response => {
           if (response.code === 200) {
             this.statements = response.data.items
           }
