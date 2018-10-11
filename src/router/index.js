@@ -22,17 +22,20 @@ const setting = () => import('../views/setting/setting')
 const about = () => import('../views/setting/about')
 const user = () => import('../views/user/user')
 const encyclopedias = () => import('../views/user/encyclopedias')
+const authentication = () => import('../views/user/authentication')
+const accountBingDing = () => import('../views/user/account-bingding')
+const bingDingSuccess = () => import('../views/user/bingding-success')
 
 export const constantRouterMap = [
   {
-    path: '/',
+    path: '/login',
     name: 'login',
     component: Login,
     hidden: true,
     meta: { title: '授权' }
   },
   {
-    path: '/home',
+    path: '/',
     name: 'home',
     component: Home,
     hidden: true,
@@ -62,12 +65,12 @@ export const constantRouterMap = [
     component: Home,
     meta: { title: '优惠券', icon: '/static/image/icon_li_04.png' }
   },
-  {
-    path: '/news',
-    name: 'news',
-    component: Home,
-    meta: { title: '消息', icon: '/static/image/icon_li_05.png' }
-  },
+  // {
+  //   path: '/news',
+  //   name: 'news',
+  //   component: Home,
+  //   meta: { title: '消息', icon: '/static/image/icon_li_05.png' }
+  // },
   {
     path: '/cs',
     name: 'cs',
@@ -170,6 +173,27 @@ export const constantRouterMap = [
     component: encyclopedias,
     hidden: true,
     meta: { title: '用户管理' }
+  },
+  {
+    path: '/user/authentication',
+    name: 'authentication',
+    component: authentication,
+    hidden: true,
+    meta: { title: '用户管理' }
+  },
+  {
+    path: '/user/accountBingDing',
+    name: 'accountBingDing',
+    component: accountBingDing,
+    // hidden: true,
+    meta: { title: '绑定账户' }
+  },
+  {
+    path: '/user/bingDingSuccess',
+    name: 'bingDingSuccess',
+    component: bingDingSuccess,
+    hidden: true,
+    meta: { title: '绑定账户' }
   }
 ]
 

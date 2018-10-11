@@ -18,7 +18,7 @@
           </li>
           <li class="li" v-for="(item,index) in appraisalList"   :key='item.id'>
             <div @click="showFlag(index)">
-              <span class="problem-xh">{{item.name}}<i v-if="item.tipsType === '02'" @click="chickProblem(item)"></i></span>
+              <span class="problem-xh">{{item.name}}<i v-if="!(item.tipsType === '01')" @click="chickProblem(item)"></i></span>
               <strong><a v-for="p in text[index]">{{p}}</a></strong>
             </div>
             <ul :class="{'show': index === flag }">

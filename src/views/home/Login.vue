@@ -42,7 +42,6 @@
                     //msg不是200的情况，可能跳到404的错误页面
                 }
             }
-            debugger
             let code = GetQueryString("code");
             if(code != null && code != false){
                 this.ReturnGetToken(code);

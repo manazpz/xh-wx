@@ -10,6 +10,7 @@
           <dd class="formal">
             <span>Acid</span>
           </dd>
+          <!--<mt-button size="small" plain type="danger" @click="jump('/user/authentication')">未认证</mt-button>-->
         </dl>
       </div>
       <div class="account-list">
