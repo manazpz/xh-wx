@@ -1,0 +1,433 @@
+.order-all {
+  height: 100vh;
+  width: 100%;
+  height: 93vh;
+  padding-top: 6vh;
+  background: #f6f6f6;
+}
+.order-all .screening-box {
+  position: fixed;
+  overflow-x: auto;
+  width: 100%;
+  min-width: 320px;
+  max-width: 750px;
+  height: 2.25rem;
+  background: #fff;
+  z-index: 9999;
+}
+.order-all .screening-box ul {
+  list-style: none;
+  display: flex;
+}
+.order-all .screening-box ul li {
+  margin: 0 2%;
+  font-size: 0.8rem;
+}
+.order-all .screening-box ul li a {
+  display: block;
+  width: 3.5rem;
+  color: #666;
+  line-height: 2.25rem;
+  text-align: center;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.order-all .screening-box ul .select {
+  position: relative;
+}
+.order-all .screening-box ul .select a {
+  color: #28c081;
+}
+.order-all .screening-box ul .select::after {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  border-radius: 5rem;
+  width: 100%;
+  height: 0.15rem;
+  background: #28c081;
+  content: "";
+}
+.order-all .screening-box::-webkit-scrollbar {
+  display: none;
+}
+
+.order-all .order-main {
+  width: 100%;
+  height: auto;
+  padding: 2rem 0 3rem;
+}
+.order-all .order-main .order-tab-box {
+  display: none;
+}
+.order-all .order-main .order-null .calculation-main {
+  display: none;
+}
+.order-all .order-main .order-show {
+  display: block;
+}
+.line {
+  border-top: 0.5rem solid #f6f6f6;
+}
+.order-all .order-main .calculation-main {
+  width: 94%;
+  height: auto;
+  padding: 0 3%;
+  background: #fff;
+}
+.order-all .order-main .calculation-main .big-title {
+  position: relative;
+  width: 100%;
+  height: 1.85rem;
+  margin-top: 0.5rem;
+  border-bottom: 1px solid #f6f6f6;
+  color: #222;
+  line-height: 1.85rem;
+}
+.order-all .order-main .calculation-main .big-title i {
+  position: absolute;
+  top: 0.55rem;
+  left: 0;
+  width: 4.5%;
+  height: 0.8rem;
+  background: url("/static/image/alloeders_button_tick_default@2x.png") no-repeat;
+  -webkit-background-size: 100% 100%;
+  -moz-background-size: 100% 100%;
+  -ms-background-size: 100% 100%;
+  -o-background-size: 100% 100%;
+  background-size: 100% 100%;
+}
+.order-all .order-main .calculation-main .big-title .hook-i {
+  background: url("/static/image/alloeders_button_tick_press@2x.png") no-repeat;
+  -webkit-background-size: 100% 100%;
+  -moz-background-size: 100% 100%;
+  -ms-background-size: 100% 100%;
+  -o-background-size: 100% 100%;
+  background-size: 100% 100%;
+}
+.order-all .order-main .calculation-main .big-title span {
+  margin-left: 7%;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+.order-all .order-main .calculation-main .big-title strong {
+  float: right;
+  color: #fe4045;
+  font-size: 0.7rem;
+}
+.order-all .order-main .calculation-main .c-des-list {
+  overflow: hidden;
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+.order-all .order-main .calculation-main .c-des-list h3 {
+  position: relative;
+  width: 100%;
+  height: 1.6rem;
+  color: #222;
+  line-height: 1.6rem;
+  font-size: 0.7rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.order-all .order-main .calculation-main .c-des-list h3 i {
+  position: absolute;
+  top: 0.5rem;
+  right: -2%;
+  width: 11%;
+  height: 1.6rem;
+  background: url("/static/image/icon_bottom_arrow_s_2.png") 50% no-repeat;
+  -webkit-background-size: 50% 33%;
+  -moz-background-size: 50% 33%;
+  -ms-background-size: 50% 33%;
+  -o-background-size: 50% 33%;
+  background-size: 50% 33%;
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  -ms-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  transition: all 0.5s;
+}
+.order-all .order-main .calculation-main .c-des-list h3 .i-ani {
+  transform: rotate(180deg);
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  -ms-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  transition: all 0.5s;
+}
+.order-all .order-main .calculation-main .c-des-list ul {
+  overflow: hidden;
+}
+.order-all .order-main .calculation-main .c-des-list .ul-auto {
+  height: auto;
+}
+.order-all .order-main .calculation-main .c-des-list li {
+  width: 100%;
+  margin-bottom: 0.5rem;
+*zoom: 1;
+}
+.order-all .order-main .calculation-main .c-des-list li .li-left-img {
+  float: left;
+  width: 27%;
+  height: 4.6rem;
+}
+.order-all .order-main .calculation-main .c-des-list li .li-left-img img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.order-all .order-main .calculation-main .c-des-list li .li-right-inf {
+  position: relative;
+  float: right;
+  width: 68%;
+}
+.order-all .order-main .calculation-main .c-des-list li .li-right-inf h4 {
+  width: 100%;
+  height: 1rem;
+  color: #222;
+  line-height: 0.8rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.order-all .order-main .calculation-main .c-des-list li .li-right-inf h4 span {
+  float: left;
+  width: 70%;
+  font-size: 0.75rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.order-all .order-main .calculation-main .c-des-list li .li-right-inf h5 {
+  width: 100%;
+  height: 1rem;
+  color: #222;
+  font-size: 0.6rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.order-all .order-main .calculation-main .c-des-list li .li-right-inf h6 {
+  width: 100%;
+  height: 0.8rem;
+  margin-top: 0.6rem;
+  font-size: 0.6rem;
+}
+.order-all .order-main .calculation-main .c-des-list li .li-right-inf h6 span {
+  font-size: 0.8rem;
+}
+.order-all .order-main .calculation-main .c-des-list li .li-right-inf div {
+  display: block;
+  width: 100%;
+  height: 1.5rem;
+}
+.order-all .order-main .calculation-main .c-des-list li .li-right-inf div p {
+  float: left;
+  width: 75%;
+  height: 1.5rem;
+  color: #999;
+  line-height: 1.5rem;
+  font-size: 0.5rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.order-all .order-main .calculation-main .c-des-list li .li-right-inf div span {
+  float: right;
+  width: 25%;
+  height: 1.5rem;
+  color: #022222;
+  text-align: right;
+  font-size: 0.8rem;
+  line-height: 1.5rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.order-all .order-main .calculation-main .c-des-list li .li-right-inf div .through {
+  font-weight: normal;
+  text-decoration: line-through;
+}
+.order-all .order-main .calculation-main .c-des-list li .li-right-inf .i-img {
+  position: absolute;
+  top: 1.9rem;
+  left: 0;
+  width: 20%;
+  height: 0.85rem;
+  background: url("/static/image/font_img_01.png") no-repeat;
+  -webkit-background-size: 100% 100%;
+  -moz-background-size: 100% 100%;
+  -ms-background-size: 100% 100%;
+  -o-background-size: 100% 100%;
+  background-size: 100% 100%;
+}
+.order-all .order-main .calculation-main .c-des-list li:after {
+  content: "\200B";
+  display: block;
+  height: 0;
+  clear: both;
+}
+.order-all .order-main .calculation-main .c-des-list .small-p {
+  display: block;
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+.order-all .order-main .calculation-main .c-des-list .small-p p {
+  color: #666;
+  line-height: 0.7rem;
+  font-size: 0.5rem;
+}
+.order-all .order-main .calculation-main .c-des-list .small-p p span {
+  float: left;
+  width: 50%;
+  text-align: left;
+}
+.order-all .order-main .calculation-main .c-des-list .small-p p strong {
+  float: right;
+  width: 50%;
+  text-align: right;
+}
+.order-all .order-main .calculation-main .c-des-list .subtotal-li-box {
+  display: block;
+  width: 100%;
+  height: 1.4rem;
+  margin-bottom: 0.4rem;
+  border-bottom: 1px solid #f6f6f6;
+  color: #222;
+  line-height: 1.2rem;
+  font-size: 0.7rem;
+  text-align: right;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.order-all .order-main .calculation-main .c-des-list .subtotal-li-box strong {
+  color: #fe4045;
+  font-size: 0.8rem;
+}
+.order-all .order-main .calculation-main .c-des-list .subtotal-li-box em {
+  margin-right: 3%;
+}
+.order-all .order-main .calculation-main .c-des-list .subtotal-li-box b {
+  color: #222;
+  font-weight: normal;
+  font-size: 0.8rem;
+}
+.order-all .order-main .calculation-main .c-des-list .subtotal-box {
+  display: block;
+  width: 100%;
+  height: 1.85rem;
+  border-bottom: 1px solid #f6f6f6;
+  color: #222;
+  line-height: 1.85rem;
+  font-size: 0.7rem;
+  text-align: right;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.order-all .order-main .calculation-main .c-des-list .subtotal-box strong {
+  font-size: 0.8rem;
+}
+.order-all .order-main .calculation-main .c-des-list .subtotal-box .color-red {
+  font-style: normal;
+  color: #fe4045;
+}
+.order-all .order-main .calculation-main .c-des-list .subtotal-box em {
+  float: left;
+}
+.order-all .order-main .calculation-main .c-des-list .subtotal-box b {
+  color: #222;
+  font-weight: normal;
+  font-size: 0.8rem;
+}
+.order-all .order-main  .btn-box {
+  width: 100%;
+  background #fff
+  height: 3rem;
+}
+.order-all .order-main  .btn-box a {
+  float: right;
+  width: 22.29%;
+  height: 1.4rem;
+  margin: 0.5rem 0 0 4%;
+  margin-right 0.5rem
+  border-radius: 1rem;
+  line-height: 1.4rem;
+  text-align: center;
+  font-size: 0.75rem;
+}
+.order-all .order-main .btn-box .cancel-btn {
+  border: 1px solid #222;
+  color: #222;
+}
+.order-all .order-main  .btn-box .payment-btn,
+.order-all .order-main  .btn-box .examine-btn {
+  border: 1px solid #fe4045;
+  color: #fe4045;
+}
+
+.order-all .footer-payment {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  min-width: 320px;
+  max-width: 750px;
+  height: 2.25rem;
+  box-shadow: 0 0 5px 5px #f6f6f6;
+  background: #fff;
+}
+.order-all .footer-payment span {
+  float: left;
+  width: 50%;
+  height: 2.25rem;
+  color: #222;
+  font-size: 0.8rem;
+  line-height: 2.25rem;
+  text-indent: 4%;
+}
+.order-all .footer-payment span strong {
+  font-weight: normal;
+  color: #fe4045;
+}
+.order-all .footer-payment span strong b {
+  font-size: 0.6rem;
+  font-weight: normal;
+}
+.order-all .footer-payment a {
+  float: right;
+  width: 20.8%;
+  height: 1.5rem;
+  margin: 0.3rem 3.33% 0 0;
+  border: 1px solid #fe4045;
+  border-radius: 0.2rem;
+  background: #fff;
+  color: #fe4045;
+  font-size: 0.75rem;
+  line-height: 1.5rem;
+  text-align: center;
+}
+
+.order-all .order-null {
+  width: 100%;
+  padding: 2rem 0;
+  text-align:center;
+  line-height:45px
+
+}
+.order-all .order-null img {
+  margin-top 30%
+  height 35%
+  width 50%
+}
+.order-all .order-null a {
+  color #4caf50
+}

@@ -14,6 +14,7 @@ const OldAppraisal = () => import('../views/oldAppraisal/oldAppraisal')
 const Quote = () => import('../views/quote/quote')
 const QuoteDetail = () => import('../views/quote/quoteDetail')
 const Recovery = () => import('../views/order/recovery')
+const orderList = () => import('../views/order/orderList')
 const collect = () => import('../views/collect/collect')
 const AddressEdit = () => import('../views/address/addressEdit')
 const ManaAddress = () => import('../views/address/manaAddress')
@@ -42,9 +43,9 @@ export const constantRouterMap = [
     meta: { title: '首页' }
   },
   {
-    path: '/order',
-    name: 'order',
-    component: Home,
+    path: '/orderList',
+    name: 'orderList',
+    component: orderList,
     meta: { title: '订单', icon: '/static/image/icon_li_01.png' }
   },
   {
