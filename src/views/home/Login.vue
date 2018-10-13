@@ -1,6 +1,5 @@
 <template>
     <div>
-        授权中。。。
     </div>
 </template>
 
@@ -57,8 +56,12 @@
               })
             },
             ReturnGetToken(obj){
+              var tar = this
               getUserinfo(obj).then(response => {
-                debugger
+                if(response.openid !==''){
+                  window.localStorage.setItem("openId",response.openid)
+                  tar.$router.push('home')
+                }
               }).catch(() => {
               })
             }

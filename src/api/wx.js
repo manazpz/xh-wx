@@ -14,3 +14,10 @@ export function getUserinfo(query) {
     params: query
   })
 }
+export function queryTppConfig(query) {
+  return request({
+    url: '/api/wx/tppConfig',
+    method: 'get',
+    params: query
+  })
+}

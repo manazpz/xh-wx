@@ -35,5 +35,12 @@ export function updateAddress(params) {
     data: params
   })
 }
+export function instertOrder(params) {
+  return request({
+    url: '/api/order/insert',
+    method: 'POST',
+    data: params
+  })
+}
 
 

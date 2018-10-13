@@ -97,15 +97,17 @@
     </div>
 
     <div class="footer-appraisal">
-      <span>合计：<strong><b>￥</b> <em class="aggregate-amount">{{sData.sumNewPrice - sData.sumOldPrice}}</em></strong></span>
-      <a href="javascript:;" title="订单提交">订单提交</a>
+      <span>合计：<strong><b>￥</b> <em v-model="price" class="aggregate-amount">{{sData.sumNewPrice - sData.sumOldPrice}}</em></strong></span>
+      <a href="javascript:;" title="订单提交" @click="submit">订单提交</a>
     </div>
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import { queryReplacementCat, queryAddress } from 'api/order'
+  import { queryReplacementCat, queryAddress, instertOrder } from 'api/order'
   import { queryrecoveryList } from 'api/goods'
+  import { queryTppConfig } from 'api/wx'
   import VHeader from 'components/v-header/v-header'
+  import { Toast } from 'mint-ui'
 
   export default {
     data() {
@@ -113,14 +115,23 @@
         newTile: this.$route.query.model == 'new'?'购买新机':'新机换购',
         data: {newGoods:[{imgs:[]}],oldGoods:[{imgs:[]}]},
         list: null,
+        wx: null,
+        openid: '',
+        price: '',
         address: [],
         sData: {
           sumNewPrice: 0,
           sumOldPrice: 0,
-        }
+        },
+        temp: {
+          openid: 'onJWQ0ZUumLqW5R2EcVFNVwzcDtk',
+          price:0,
+          orderName: ''
+        },
       }
     },
     created() {
+      this.openid = window.localStorage.getItem("openid");
       this.getData();
       this.getList();
     },
@@ -144,6 +155,7 @@
         })
       },
       getData() {
+        var tar = this
         queryReplacementCat({ids:this.$route.query.ids}).then(response => {
           if (response.code === 200) {
             this.data = response.data
@@ -156,6 +168,62 @@
           }
         }).catch(() => {
         })
+      },
+      submit() {
+        if(this.data.oldGoods.length === 0){
+          this.temp.price = this.sData.sumNewPrice - this.sData.sumOldPrice
+          this.temp.orderName = 'shangpin'
+          queryTppConfig(this.temp).then(response => {
+            this.weixinPay(response.data)
+          }).catch(() => {
+          })
+        }else{
+          this.data.price = this.sData.sumNewPrice - this.sData.sumOldPrice
+          this.data.openId = this.openId
+          instertOrder(this.data).then(response => {
+            Toast({
+              message: '订单已提交，请等待工作人员上门验机！',
+              position: 'bottom',
+              duration: 5000
+            });
+          }).catch(() => {
+          })
+        }
+      },
+      weixinPay:function(data){
+        var vm= this;
+        if (typeof WeixinJSBridge == "undefined"){//微信浏览器内置对象。参考微信官方文档
+          if( document.addEventListener ){
+            document.addEventListener('WeixinJSBridgeReady', vm.onBridgeReady(data), false);
+          }else if (document.attachEvent){
+            document.attachEvent('WeixinJSBridgeReady', vm.onBridgeReady(data));
+            document.attachEvent('onWeixinJSBridgeReady',vm.onBridgeReady(data));
+          }
+        }else{
+          vm.onBridgeReady(data);
+        }
+      },
+      onBridgeReady:function(data){
+        var  vm = this;
+        WeixinJSBridge.invoke(
+          'getBrandWCPayRequest',{
+            debug:true,
+            "appId":data.appId,     //公众号名称，由商户传入
+            "timeStamp":data.timeStamp, //时间戳，自1970年以来的秒数
+            "nonceStr":data.nonceStr, //随机串
+            "package":data.packAge,
+            "signType":data.signType, //微信签名方式：
+            "paySign":data.paySign, //微信签名
+          },
+          function(res){
+            // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
+            if(res.err_msg == "get_brand_wcpay_request:ok" ){
+
+            }else{
+
+            }
+          }
+        );
       }
     },
     //注册组件
