@@ -96,7 +96,10 @@
               position: 'bottom',
               duration: 5000
             });
-            this.$router.back(-1)
+            setTimeout(() => {
+              this.$router.back(-1)
+            }, 1000)
+
           }
         }).catch(() => {
         })

@@ -105,7 +105,7 @@
 <script type="text/ecmascript-6">
   import { queryReplacementCat, queryAddress, instertOrder } from 'api/order'
   import { queryrecoveryList } from 'api/goods'
-  import { queryTppConfig } from 'api/wx'
+  import { pay } from 'api/wx'
   import VHeader from 'components/v-header/v-header'
   import { Toast } from 'mint-ui'
 
@@ -123,15 +123,10 @@
           sumNewPrice: 0,
           sumOldPrice: 0,
         },
-        temp: {
-          openid: 'onJWQ0ZUumLqW5R2EcVFNVwzcDtk',
-          price:0,
-          orderName: ''
-        },
       }
     },
     created() {
-      this.openid = window.localStorage.getItem("openid");
+      this.openid = window.localStorage.getItem("openId");
       this.getData();
       this.getList();
     },
@@ -170,22 +165,23 @@
         })
       },
       submit() {
+        this.data.price = this.sData.sumNewPrice - this.sData.sumOldPrice
+        this.data.openId = this.openid
         if(this.data.oldGoods.length === 0){
-          this.temp.price = this.sData.sumNewPrice - this.sData.sumOldPrice
-          this.temp.orderName = 'shangpin'
-          queryTppConfig(this.temp).then(response => {
+          pay(this.data).then(response => {
             this.weixinPay(response.data)
           }).catch(() => {
           })
         }else{
-          this.data.price = this.sData.sumNewPrice - this.sData.sumOldPrice
-          this.data.openId = this.openId
           instertOrder(this.data).then(response => {
             Toast({
               message: '订单已提交，请等待工作人员上门验机！',
               position: 'bottom',
               duration: 5000
             });
+            setTimeout(() => {
+              this.$router.back(-1)
+            }, 1000)
           }).catch(() => {
           })
         }

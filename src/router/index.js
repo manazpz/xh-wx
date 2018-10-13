@@ -29,14 +29,14 @@ const bingDingSuccess = () => import('../views/user/bingding-success')
 
 export const constantRouterMap = [
   {
-    path: '/login',
+    path: '/',
     name: 'login',
     component: Login,
     hidden: true,
     meta: { title: '授权' }
   },
   {
-    path: '/',
+    path: '/home',
     name: 'home',
     component: Home,
     hidden: true,
