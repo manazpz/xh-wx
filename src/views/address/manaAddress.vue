@@ -53,7 +53,7 @@
 
 <script type="text/ecmascript-6">
   import VHeader from 'components/v-header/v-header'
-  import { queryAddress, deleteAddress } from 'api/order'
+  import { queryAddress, deleteAddress } from 'api/address'
   import { Toast } from 'mint-ui'
 
   export default {

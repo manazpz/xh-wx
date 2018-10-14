@@ -78,7 +78,7 @@
               </div>
             </div>
             <div  class="btn-box">
-              <a v-if="navbar=='ALL'?(item1.type == '03' && item1.payStatus == '01'):btn.fk" class="payment-btn" href="javascript:;" title="付款">付款</a>
+              <a v-if="navbar=='ALL'?(item1.type == '03' && item1.payStatus == '01'):btn.fk" class="payment-btn" href="javascript:;" @click="fkcilck(item1,index1)" title="付款">付款</a>
               <a v-if="navbar=='ALL'?(item1.type == '03' && item1.payStatus == '01'):btn.qxfk" class="cancel-btn" href="javascript:;" title="取消订单">取消订单</a>
               <a v-if="navbar=='ALL'?(item1.deliveryStatus == '01'):btn.qrsh" class="payment-btn" href="javascript:;" title="确认收款">确认收货</a>
               <a v-if="navbar=='ALL'?(item1.deliveryStatus == '01'):btn.qrsk" class="payment-btn" href="javascript:;" title="确认收款">确认收款</a>
@@ -108,6 +108,7 @@
   import VHeader from 'components/v-header/v-header'
   import { queryOrderList } from 'api/order'
   import { payStatus,orderType } from '../../utils/filter'
+  import { pay } from 'api/wx'
 
   export default {
     data() {
@@ -115,6 +116,14 @@
         selected: '1',
         data: [],
         navbar: 'ALL',
+        types: '',
+        openId: '',
+        temp:{
+          orderId: '',
+          openId: '',
+          goodsName: '',
+          price: ''
+        },
         btn: {
           fk:false,
           qxfk:false,
@@ -131,6 +140,7 @@
     },
     created() {
       this.getList();
+      this.openId = window.localStorage.getItem("openId")
     },
     filters: {
       payStatus,
@@ -238,6 +248,60 @@
       },
       gujia() {
         this.$router.push("/screening?model=02")
+      },
+      fkcilck(item,index) {
+        switch (item.type) {
+          case '01' :
+            this.types = '购买新机：'
+          case '02' :
+            this.types = '出售旧机：'
+          case '03' :
+            this.types = '换机订单：'
+        }
+        // this.temp.openId = this.openId
+        this.temp.openId = 'oaCWN0ns9o_IjsXbeRQtAqIeHhhg'
+        this.temp.orderId = item.number
+        this.temp.price = item.sum
+        this.temp.goodsName = this.types + item.goodsName
+        pay(this.temp).then(response => {
+          this.weixinPay(response.data)
+        }).catch(() => {
+        })
+      },
+      weixinPay:function(data){
+        var vm= this;
+        if (typeof WeixinJSBridge == "undefined"){//微信浏览器内置对象。参考微信官方文档
+          if( document.addEventListener ){
+            document.addEventListener('WeixinJSBridgeReady', vm.onBridgeReady(data), false);
+          }else if (document.attachEvent){
+            document.attachEvent('WeixinJSBridgeReady', vm.onBridgeReady(data));
+            document.attachEvent('onWeixinJSBridgeReady',vm.onBridgeReady(data));
+          }
+        }else{
+          vm.onBridgeReady(data);
+        }
+      },
+      onBridgeReady:function(data){
+        var  vm = this;
+        WeixinJSBridge.invoke(
+          'getBrandWCPayRequest',{
+            debug:true,
+            "appId":data.appId,     //公众号名称，由商户传入
+            "timeStamp":data.timeStamp, //时间戳，自1970年以来的秒数
+            "nonceStr":data.nonceStr, //随机串
+            "package":data.packAge,
+            "signType":data.signType, //微信签名方式：
+            "paySign":data.paySign, //微信签名
+          },
+          function(res){
+            // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
+            if(res.err_msg == "get_brand_wcpay_request:ok" ){
+
+            }else{
+
+            }
+          }
+        );
       }
     },
     //注册组件

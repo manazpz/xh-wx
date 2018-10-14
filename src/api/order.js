@@ -7,5 +7,12 @@ export function queryOrderList(query) {
     params: query
   })
 }
+export function instertOrder(params) {
+  return request({
+    url: '/api/order/insert',
+    method: 'POST',
+    data: params
+  })
+}
 
 

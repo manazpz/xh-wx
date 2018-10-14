@@ -62,7 +62,7 @@
 <script type="text/ecmascript-6">
   import data from '../../../static/json/address.json'
   import VHeader from 'components/v-header/v-header'
-  import { insertAddress, updateAddress } from 'api/order'
+  import { insertAddress, updateAddress } from 'api/address'
   import { Toast } from 'mint-ui'
 
   var index = 0

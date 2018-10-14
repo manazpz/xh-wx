@@ -103,8 +103,9 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import { queryReplacementCat, queryAddress, instertOrder } from 'api/order'
-  import { queryrecoveryList } from 'api/goods'
+  import {  instertOrder } from 'api/order'
+  import { queryAddress } from 'api/address'
+  import { queryReplacementCar, queryrecoveryList } from 'api/goods'
   import { pay } from 'api/wx'
   import VHeader from 'components/v-header/v-header'
   import { Toast } from 'mint-ui'
@@ -151,7 +152,7 @@
       },
       getData() {
         var tar = this
-        queryReplacementCat({ids:this.$route.query.ids}).then(response => {
+        queryReplacementCar({ids:this.$route.query.ids}).then(response => {
           if (response.code === 200) {
             this.data = response.data
             this.data.newGoods.forEach(obj => {
