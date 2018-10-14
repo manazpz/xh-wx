@@ -88,10 +88,10 @@
             <div class="line" v-if="index1 != 0"></div>
           </div>
         </div>
-        <div v-if="navbar == 'ALL'" class="footer-payment">
-          <span>合计：<strong><b>￥</b> <em class="aggregate-amount">0</em></strong></span>
-          <a href="javascript:;" title="合并付款">合并付款</a>
-        </div>
+        <!--<div v-if="navbar == 'ALL'" class="footer-payment">-->
+          <!--<span>合计：<strong><b>￥</b> <em class="aggregate-amount">0</em></strong></span>-->
+          <!--<a href="javascript:;" title="合并付款">合并付款</a>-->
+        <!--</div>-->
       </div>
 
       <div style="height: 100%;" v-else>

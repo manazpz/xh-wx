@@ -9,6 +9,7 @@ const SCREENING = () => import('../views/screening/screening')
 const GoodsDetail = () => import('../views/goods/goodsDetail')
 const GoodsNew = () => import('../views/goods/goodsNew')
 const OrderSure = () => import('../views/order/orderSure')
+const orderDetail = () => import('../views/order/orderDetail')
 const Statement = () => import('../views/statement/statement')
 const OldAppraisal = () => import('../views/oldAppraisal/oldAppraisal')
 const Quote = () => import('../views/quote/quote')
@@ -27,7 +28,7 @@ const authentication = () => import('../views/user/authentication')
 const accountBingDing = () => import('../views/user/account-bingding')
 const bingDingSuccess = () => import('../views/user/bingding-success')
 const machine = () => import('../views/machine/machine')
-const orderDetail = () => import('../views/order/orderDetail')
+const testMachine = () => import('../views/machine/testMachine')
 
 export const constantRouterMap = [
   {
@@ -122,6 +123,12 @@ export const constantRouterMap = [
     meta: { title: '确定订单' }
   },
   {
+    path: '/orderDetail',
+    name: 'orderDetail',
+    component: orderDetail,
+    meta: {title: '订单详情'}
+  },
+  {
     path: '/statement',
     name: 'statement',
     component: Statement,
@@ -205,10 +212,11 @@ export const constantRouterMap = [
     meta: { title: '验机列表', icon: '/static/image/icon_li_07.png' }
   },
   {
-    path: '/orderDetail',
-    name: 'orderDetail',
-    component: orderDetail,
-    meta: { title: '订单详情' }
+    path: '/testMachine',
+    name: 'testMachine',
+    component: testMachine,
+    hidden: true,
+    meta: { title: '验机' }
   }
 ]
 

@@ -4,12 +4,12 @@
     <div class="machine-all">
       <div v-if="data.length > 0">
         <div class="machine-main">
-          <div v-for="(item1,index1) in data" class="machine-tab-box machine-show" @click="yanji(item1)">
+          <div v-for="(item1,index1) in data" class="machine-tab-box machine-show" >
             <div class="calculation-main">
               <div class="c-des-list" v-if="item1.oldOrder.item.length > 0 && item1.oldOrder.item[0].id != null">
                 <h3>订单号：{{item1.number}}</h3>
                 <ul v-for="(item2,index2) in item1.oldOrder.item">
-                  <li>
+                  <li @click="yanji(item2)">
                     <div class="li-left-img">
                       <img :src="item2.imgs[0].url">
                     </div>
@@ -63,7 +63,7 @@
         })
       },
       yanji(item) {
-        debugger
+        this.$router.push({path: 'testMachine', query: {id:item.id,no:item.no,name:item.goodsName}})
       }
     },
     //注册组件
