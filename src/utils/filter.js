@@ -4,7 +4,7 @@ export function payStatus(status) {
         case '01' :
           return '未付款';
         case '03' :
-          return '已退款';
+          return '已取消';
       }
     }else {
       switch (status.deliveryStatus) {

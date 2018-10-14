@@ -14,5 +14,13 @@ export function instertOrder(params) {
     data: params
   })
 }
+export function updateOrder(params) {
+  return request({
+    url: '/api/order/update',
+    method: 'POST',
+    data: params
+  })
+}
+
 
 

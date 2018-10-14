@@ -78,7 +78,7 @@
             </div>
             <div  class="btn-box">
               <a v-if="navbar=='ALL'?(item1.type == '03' && item1.payStatus == '01'):btn.fk" class="payment-btn" href="javascript:;" @click="fkcilck(item1,index1)" title="付款">付款</a>
-              <a v-if="navbar=='ALL'?(item1.type == '03' && item1.payStatus == '01'):btn.qxfk" class="cancel-btn" href="javascript:;" title="取消订单">取消订单</a>
+              <a v-if="navbar=='ALL'?(item1.type == '03' && item1.payStatus == '01'):btn.qxfk" class="cancel-btn" href="javascript:;" @click="qxcilck(item1,index1)" title="取消订单">取消订单</a>
               <a v-if="navbar=='ALL'?(item1.deliveryStatus == '01'):btn.qrsh" class="payment-btn" href="javascript:;" title="确认收款">确认收货</a>
               <a v-if="navbar=='ALL'?(item1.deliveryStatus == '01'):btn.qrsk" class="payment-btn" href="javascript:;" title="确认收款">确认收款</a>
               <a v-if="navbar=='ALL'?(item1.deliveryStatus == '03'):btn.pl" class="payment-btn" href="javascript:;" title="评价">评价</a>
@@ -107,9 +107,10 @@
 
 <script type="text/ecmascript-6">
   import VHeader from 'components/v-header/v-header'
-  import { queryOrderList } from 'api/order'
+  import { queryOrderList, updateOrder } from 'api/order'
   import { payStatus,orderType } from '../../utils/filter'
   import { pay } from 'api/wx'
+  import { Toast } from 'mint-ui'
 
   export default {
     data() {
@@ -120,6 +121,7 @@
         types: '',
         openId: '',
         temp:{
+          id: '',
           orderId: '',
           openId: '',
           goodsName: '',
@@ -266,9 +268,31 @@
         this.temp.goodsName = this.types + item.goodsName
         pay(this.temp).then(response => {
           this.weixinPay(response.data)
+          setTimeout(() => {
+            this.getList()
+          }, 1000)
         }).catch(() => {
         })
       },
+      qxcilck(item,index) {
+        this.temp.id = item.id
+        this.temp.paystatus = '03'
+        updateOrder(this.temp).then(response => {
+          Toast({
+            message: '订单取消成功！',
+            position: 'bottom',
+            duration: 5000
+          });
+          setTimeout(() => {
+            this.getList()
+          }, 1000)
+        }).catch(() => {
+        })
+      },
+
+
+
+      //调用微信支付
       weixinPay:function(data){
         var vm= this;
         if (typeof WeixinJSBridge == "undefined"){//微信浏览器内置对象。参考微信官方文档
