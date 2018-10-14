@@ -26,17 +26,18 @@ const encyclopedias = () => import('../views/user/encyclopedias')
 const authentication = () => import('../views/user/authentication')
 const accountBingDing = () => import('../views/user/account-bingding')
 const bingDingSuccess = () => import('../views/user/bingding-success')
+const machine = () => import('../views/machine/machine')
 
 export const constantRouterMap = [
   {
-    path: '/',
+    path: '/login',
     name: 'login',
     component: Login,
     hidden: true,
     meta: { title: '授权' }
   },
   {
-    path: '/home',
+    path: '/',
     name: 'home',
     component: Home,
     hidden: true,
@@ -173,7 +174,7 @@ export const constantRouterMap = [
     name: 'encyclopedias',
     component: encyclopedias,
     hidden: true,
-    meta: { title: '用户管理' }
+    meta: { title: '用户认证' }
   },
   {
     path: '/user/authentication',
@@ -186,7 +187,7 @@ export const constantRouterMap = [
     path: '/user/accountBingDing',
     name: 'accountBingDing',
     component: accountBingDing,
-    // hidden: true,
+    hidden: true,
     meta: { title: '绑定账户' }
   },
   {
@@ -194,7 +195,13 @@ export const constantRouterMap = [
     name: 'bingDingSuccess',
     component: bingDingSuccess,
     hidden: true,
-    meta: { title: '绑定账户' }
+    meta: { title: '成功绑定' }
+  },
+  {
+    path: '/machine',
+    name: 'machine',
+    component: machine,
+    meta: { title: '验机列表', icon: '/static/image/icon_li_07.png' }
   }
 ]
 

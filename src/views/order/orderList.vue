@@ -6,13 +6,13 @@
         <ul ref="ul">
           <li class="select" @click="qh('ALL')" ref="ALL"><a href="javascript:;">全部</a></li>
           <li @click="qh('DFK',{payStatus:'01'})" ref="DFK"><a href="javascript:;">待付款</a></li>
-          <li @click="qh('DJY',{checkStatus:'01',payStatus:'01'})" ref="DJY"><a href="javascript:;">待检验</a></li>
+          <li @click="qh('DJY',{checkStatus:'01',model:'02'})" ref="DJY"><a href="javascript:;">待检验</a></li>
           <li @click="qh('DSXJ',{deliveryStatus:'01',model:'01'})" ref="DSXJ"><a href="javascript:;">待收新机</a></li>
           <li @click="qh('DSJJ',{deliveryStatus:'01',model:'02'})" ref="DSJJ"><a href="javascript:;">待收旧机</a></li>
 
           <li @click="qh('DSK',{payStatus:'04',model:'02'})" ref="DSK"><a href="javascript:;">待收款</a></li>
 
-          <li @click="qh('DPL',{deliveryStatus:'03'})" ref="DPL"><a href="javascript:;">待评价</a></li>
+          <li @click="qh('DPL',{deliveryStatus:'03',model:'01'})" ref="DPL"><a href="javascript:;">待评价</a></li>
         </ul>
       </div>
       <div v-if="data.length > 0">
@@ -47,10 +47,9 @@
                 </div>
               </div>
             </div>
-            <div class="line" v-if="item1.newOrder.item.length > 0 && item1.oldOrder.item.length > 0"></div>
-            </divclass>
             <div class="calculation-main" title="换购明细">
               <div class="c-des-list" v-if="item1.newOrder.item.length > 0 && item1.newOrder.item[0].id != null">
+                  <div class="line" v-if="item1.oldOrder.item.length > 0"></div>
                   <h3>新机换购</h3>
                   <ul v-for="(item2,index2) in item1.newOrder.item">
                     <li>
@@ -86,6 +85,7 @@
               <a v-if="navbar=='ALL'?(item1.deliveryStatus != '02'):btn.ckwl" class="cancel-btn" href="javascript:;" title="查看物流">查看物流</a>
               <a v-if="navbar=='ALL'?(item1.type == '02' && item1.payStatus == '01'):btn.txjy" class="payment-btn" href="javascript:;" title="提醒检验">提醒检验</a>
             </div>
+            <div class="line" v-if="index1 != 0"></div>
           </div>
         </div>
         <div v-if="navbar == 'ALL'" class="footer-payment">
@@ -93,6 +93,7 @@
           <a href="javascript:;" title="合并付款">合并付款</a>
         </div>
       </div>
+
       <div style="height: 100%;" v-else>
         <div class="order-null">
           <img src="/static/image/shopping_trolley.png">
