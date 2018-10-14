@@ -27,17 +27,18 @@ const authentication = () => import('../views/user/authentication')
 const accountBingDing = () => import('../views/user/account-bingding')
 const bingDingSuccess = () => import('../views/user/bingding-success')
 const machine = () => import('../views/machine/machine')
+const orderDetail = () => import('../views/order/orderDetail')
 
 export const constantRouterMap = [
   {
-    path: '/login',
+    path: '/',
     name: 'login',
     component: Login,
     hidden: true,
     meta: { title: '授权' }
   },
   {
-    path: '/',
+    path: '/home',
     name: 'home',
     component: Home,
     hidden: true,
@@ -202,6 +203,12 @@ export const constantRouterMap = [
     name: 'machine',
     component: machine,
     meta: { title: '验机列表', icon: '/static/image/icon_li_07.png' }
+  },
+  {
+    path: '/orderDetail',
+    name: 'orderDetail',
+    component: orderDetail,
+    meta: { title: '订单详情' }
   }
 ]
 

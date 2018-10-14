@@ -27,7 +27,7 @@
               <div class="c-des-list" v-if="item1.oldOrder.item.length > 0 && item1.oldOrder.item[0].id != null">
                 <h3>旧机估价</h3>
                 <ul v-for="(item2,index2) in item1.oldOrder.item">
-                  <li>
+                  <li @click="cellClick(item2)" >
                     <div class="li-left-img">
                       <img :src="item2.imgs[0].url">
                     </div>
@@ -52,7 +52,7 @@
                   <div class="line" v-if="item1.oldOrder.item.length > 0"></div>
                   <h3>新机换购</h3>
                   <ul v-for="(item2,index2) in item1.newOrder.item">
-                    <li>
+                    <li @click="cellClick(item2)">
                       <div class="li-left-img">
                         <img :src="item2.imgs[0].url">
                       </div>
@@ -99,6 +99,15 @@
           <img src="/static/image/shopping_trolley.png">
           <p>什么都没有，快去下单吧！</p>
           <a @click="gujia">去估价吧</a>
+        </div>
+      </div>
+    </div>
+    <div class="popup-choice-wrap" title="是否删除弹窗">
+      <div class="choice-box">
+        <p>确定取消订单吗？</p>
+        <div>
+          <a class="cancel-btn" href="javascript:;" title="取消">取消</a>
+          <a class="confirm-btn" href="javascript:;" title="确定">确定</a>
         </div>
       </div>
     </div>
@@ -275,21 +284,30 @@
         })
       },
       qxcilck(item,index) {
-        this.temp.id = item.id
-        this.temp.paystatus = '03'
-        updateOrder(this.temp).then(response => {
-          Toast({
-            message: '订单取消成功！',
-            position: 'bottom',
-            duration: 5000
-          });
-          setTimeout(() => {
-            this.getList()
-          }, 1000)
-        }).catch(() => {
+        $('.popup-choice-wrap').fadeIn();
+        $('.popup-choice-wrap .cancel-btn').click(function() {
+          $('.popup-choice-wrap').fadeOut();
+          $('.model-box').removeClass('m-swipeleft');
+        });
+        $('.popup-choice-wrap .confirm-btn').click(function() {
+          this.temp.id = item.id
+          this.temp.paystatus = '03'
+          updateOrder(this.temp).then(response => {
+            Toast({
+              message: '订单取消成功！',
+              position: 'bottom',
+              duration: 5000
+            });
+            setTimeout(() => {
+              this.getList()
+            }, 1000)
+          }).catch(() => {
+          })
         })
       },
-
+      cellClick(item) {
+        this.$router.push({path: 'orderDetail', query: {item:item}})
+      },
 
 
       //调用微信支付
