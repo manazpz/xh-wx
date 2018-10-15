@@ -32,14 +32,14 @@ const testMachine = () => import('../views/machine/testMachine')
 
 export const constantRouterMap = [
   {
-    path: '/',
+    path: '/login',
     name: 'login',
     component: Login,
     hidden: true,
     meta: { title: '授权' }
   },
   {
-    path: '/home',
+    path: '/',
     name: 'home',
     component: Home,
     hidden: true,
@@ -126,6 +126,7 @@ export const constantRouterMap = [
     path: '/orderDetail',
     name: 'orderDetail',
     component: orderDetail,
+    hidden: true,
     meta: {title: '订单详情'}
   },
   {

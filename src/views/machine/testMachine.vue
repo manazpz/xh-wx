@@ -5,6 +5,7 @@
       v-model="rangeValue"
       :min="0"
       :max="maxp-1"
+      :disabled="true"
       :bar-height="15">
       <div slot="end">{{rangeValue+'/'+maxp}}</div>
     </mt-range>
@@ -16,23 +17,37 @@
             <span class="phonesname">{{phonename}}</span>
           </div>
         </li>
-        <li class="li" v-for="(item,index) in appraisalList"   :key='item.id'>
+        <li class="li" v-for="(item,index) in appraisalList"  :key='item.id'>
           <div @click="showFlag(index)">
             <!--<i v-if="!(item.tipsType === '01')" @click="chickProblem(item)"></i>-->
-            <span class="problem-xh">{{item.name}}</span>
+            <span class="problem-xh">{{item.name}}
+              <b class="state-01" v-if="yj[index] == '一致'">{{yj[index]}}</b>
+              <b class="state-02" v-if="yj[index] == '不一致'">{{yj[index]}}</b>
+            </span>
             <strong><a v-for="p in text[index]">{{p}}</a></strong>
           </div>
           <ul :class="{'show': index === flag }">
-            <li v-for="(items,index) in item.parameter" class=""  @click="selectClass(item,items,$event)" :data="index">{{items.spec_value_name}}</li>
+            <li v-for="(items,index1) in item.parameter" class=""  @click="selectClass(item,items,index,$event)" :data="index">{{items.spec_value_name}}</li>
           </ul>
         </li>
+        <div class="yjBtn">
+          <span>结论：<h v-if="btnFlag">{{jyPrice}}{{ygStr}}</h></span>
+          <mt-button type="danger" size="small" plain @click="onYanJi">查看验机结果</mt-button>
+        </div>
+        <div class="upload">
+          <a href="javascript:;" class="a-upload">
+            <input type="file" name="file" id="file" multiple @change="uploadFile">上传文件
+          </a>
+          <ul>
+            <li v-for="(itemsf,indexf) in files" class="fileClass" >{{itemsf.name}}<a @click="delFiles(indexf)">x</a></li>
+          </ul>
+        </div>
       </ul>
     </div>
 
     <div class="offer-btn-box1">
       <a class="" href="javascript:;" @click="confirm()" title="提交报告">提交报告</a>
     </div>
-
     <div class="appraisal-process-problem-wrap1" title="问号弹窗">
       <div class="problem-box">
         <h1></h1>
@@ -40,13 +55,15 @@
       </div>
       <div class="problem-close"></div>
     </div>
-
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import VHeader from 'components/v-header/v-header'
-  import { yanji } from 'api/yanji'
+  import { yanji,pushYanJi } from 'api/yanji'
+  import { calculatingPrice } from '../../utils/common'
+  import { Toast } from 'mint-ui'
+
   export default {
     data() {
       return {
@@ -56,9 +73,17 @@
           parameter: []
         },
         flag: 0,
+        btnFlag:false,
         appraisalList: [],
+        bllParameter: '',
+        ygPrice: 0,
+        ygStr: '',
+        jyPrice: 0,
         text: [],
+        yj: [],
+        files:[],
         phonename:this.$route.query.name,
+        banPrice:this.$route.query.banPrice,
         rangeValue: 0,
         maxp:0
       }
@@ -71,6 +96,7 @@
         yanji(this.temp).then(response => {
           if (response.code === 200) {
             this.appraisalList = response.data.items
+            this.bllParameter = response.data.bllParameter
             this.maxp = response.data.items.length
           }
         }).catch(() => {
@@ -79,7 +105,10 @@
       showFlag(index){
         this.flag = index
       },
-      selectClass(item,val,ent) {
+      selectClass(item,val,index,ent) {
+        if(index > this.text.length) {
+          return
+        }
         //判断是否多选
         if (item.obligate != '02') {
           //当前进度
@@ -140,7 +169,11 @@
             }
           }else {
             //单选添加
-            this.temp.parameter.push('{"id": "'+item.id+'","obligate": "'+item.obligate+'","spec": ['+JSON.stringify(val)+']}')
+            if(this.temp.parameter[index]){
+              this.temp.parameter[index] = '{"id": "'+item.id+'","obligate": "'+item.obligate+'","spec": ['+JSON.stringify(val)+']}'
+            }else {
+              this.temp.parameter.push('{"id": "'+item.id+'","obligate": "'+item.obligate+'","spec": ['+JSON.stringify(val)+']}')
+            }
           }
         }
         //回显
@@ -164,16 +197,77 @@
           $('.offer-btn-box a').addClass('open');
         }
       },
+      onYanJi() {
+        if(this.rangeValue == this.maxp) {
+          this.yj = []
+          var ff = true
+          this.btnFlag = true
+          var yg = this.bllParameter?JSON.parse(this.bllParameter):[]
+          var jy = this.temp.parameter?JSON.parse('['+this.temp.parameter+']'):[]
+          if(this.bllParameter) {
+            this.ygPrice = calculatingPrice(yg,this.banPrice)
+          }
+          if(this.temp.parameter) {
+            this.jyPrice = calculatingPrice(jy,this.banPrice)
+          }
+          for(var i = 0; i < yg.length; i++) {
+            var flag = true
+            var specs = yg[i].spec;
+            for(var j = 0; j < specs.length; j++) {
+              var t1 = specs[j].spec_sort;
+              if (jy[i].spec[j] == undefined) {
+                flag = false
+                break
+              }else {
+                var t2 = jy[i].spec[j].spec_sort;
+                if(t1 != t2) {
+                  flag = false
+                  break
+                }
+              }
+            }
+            if(flag) {
+              this.yj.push("一致")
+            }else {
+              this.yj.push("不一致")
+              ff = false
+            }
+          }
+          if(ff){
+            this.ygStr = '(一致)'
+          }else {
+            this.ygStr = '(不一致,预估' + this.ygPrice + ')'
+          }
+          this.flag = -1
+        }
+      },
       confirm() {
-        // let cur = this
-        // this.temp.parameter = JSON.parse('['+this.temp.parameter+']')
-        // insertReplacementCar(this.temp).then(response => {
-        //   if (response.code === 200) {
-        //     cur.$router.push('quote')
-        //     this.flag = 0
-        //   }
-        // }).catch(() => {
-        // })
+        var res = {
+          openid: 'http://thirdwx.qlogo.cn/mmopen/vi_32/y3l8f7K33GcgibEOHUquGLD2BR5kdJ6oZ4gznzPTX8xWDOJu0Nhr7aJ4zRFUibpQF7lzAGtTRicrCwmAksyo6ftHA/132',
+          no:this.temp.no,
+          orderNumber:this.temp.id,
+          parameter: '['+this.temp.parameter+']',
+          fileList: this.files
+        }
+        pushYanJi(res).then(response => {
+          if (response.code === 200) {
+            Toast({
+              message: "上传成功",
+              iconClass: 'mintui mintui-success'
+            });
+            // window.location.href = window.location.href.split('/#/')[0]
+          }
+        }).catch(() => {
+        })
+      },
+      uploadFile(doc){
+        for(var i=0;i<doc.currentTarget.files.length;i++) {
+          this.files.push(doc.currentTarget.files[i]);
+        }
+
+      },
+      delFiles(index) {
+        this.files.splice(index,1)
       },
       chickProblem(val){
         $('.appraisal-process-problem-wrap1').fadeIn();

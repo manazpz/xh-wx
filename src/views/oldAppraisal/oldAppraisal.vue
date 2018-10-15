@@ -5,6 +5,7 @@
       v-model="rangeValue"
       :min="0"
       :max="maxp-1"
+      :disabled="true"
       :bar-height="15">
       <div slot="end">{{rangeValue+'/'+maxp}}</div>
     </mt-range>
@@ -22,7 +23,7 @@
               <strong><a v-for="p in text[index]">{{p}}</a></strong>
             </div>
             <ul :class="{'show': index === flag }">
-              <li v-for="(items,index) in item.parameter" class=""  @click="selectClass(item,items,$event)" :data="index">{{items.spec_value_name}}</li>
+              <li v-for="(items,index1) in item.parameter" class=""  @click="selectClass(item,items,index,$event)" :data="index">{{items.spec_value_name}}</li>
             </ul>
           </li>
         </ul>
@@ -80,7 +81,10 @@
       showFlag(index){
         this.flag = index
       },
-      selectClass(item,val,ent) {
+      selectClass(item,val,index,ent) {
+        if(index > this.text.length) {
+          return
+        }
         //判断是否多选
         if (item.obligate != '02') {
           //当前进度
@@ -111,37 +115,41 @@
         }else{
           //判断是否多选
           if (item.obligate === '02') {
-              //定义已有数据下标
-              var xxx = -1
-              this.temp.parameter.forEach((value,index) => {
-                if(value.indexOf(item.id) > -1) {
-                  xxx = index
-                  return
+            //定义已有数据下标
+            var xxx = -1
+            this.temp.parameter.forEach((value,index) => {
+              if(value.indexOf(item.id) > -1) {
+                xxx = index
+                return
+              }
+            })
+            //判断选择项的选中与不选中
+            if(xxx != -1) {
+              //删除已选中的数据
+              var i = -1
+              var json = JSON.parse(this.temp.parameter[xxx])
+              json.spec.forEach((val2,index2) => {
+                if (val.spec_sort === val2.spec_sort) {
+                  i = index2
                 }
               })
-              //判断选择项的选中与不选中
-              if(xxx != -1) {
-                //删除已选中的数据
-                var i = -1
-                var json = JSON.parse(this.temp.parameter[xxx])
-                json.spec.forEach((val2,index2) => {
-                  if (val.spec_sort === val2.spec_sort) {
-                    i = index2
-                  }
-                })
-                if(i == -1) {
-                  json.spec.push(val)
-                }else {
-                  json.spec.splice(i,1)
-                }
-                this.temp.parameter[xxx] = JSON.stringify(json)
+              if(i == -1) {
+                json.spec.push(val)
               }else {
-                //添加已选择的数据
-                this.temp.parameter.push('{"id": "'+item.id+'","obligate": "'+item.obligate+'","spec": ['+JSON.stringify(val)+']}')
+                json.spec.splice(i,1)
               }
+              this.temp.parameter[xxx] = JSON.stringify(json)
+            }else {
+              //添加已选择的数据
+              this.temp.parameter.push('{"id": "'+item.id+'","obligate": "'+item.obligate+'","spec": ['+JSON.stringify(val)+']}')
+            }
           }else {
             //单选添加
-            this.temp.parameter.push('{"id": "'+item.id+'","obligate": "'+item.obligate+'","spec": ['+JSON.stringify(val)+']}')
+            if(this.temp.parameter[index]){
+              this.temp.parameter[index] = '{"id": "'+item.id+'","obligate": "'+item.obligate+'","spec": ['+JSON.stringify(val)+']}'
+            }else {
+              this.temp.parameter.push('{"id": "'+item.id+'","obligate": "'+item.obligate+'","spec": ['+JSON.stringify(val)+']}')
+            }
           }
         }
         //回显

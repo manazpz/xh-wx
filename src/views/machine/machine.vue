@@ -63,7 +63,7 @@
         })
       },
       yanji(item) {
-        this.$router.push({path: 'testMachine', query: {id:item.id,no:item.no,name:item.goodsName}})
+        this.$router.push({path: 'testMachine', query: {id:item.id,no:item.no,name:item.goodsName,banPrice:item.banPrice}})
       }
     },
     //注册组件
