@@ -23,15 +23,15 @@
 
     <div class="top-address-inf">
       <div class="address-inf-box">
-        <!-- <p class="p-null" title="未填写收货地址时">您的收货地址为空，为您的手机添加地址吧！</p> -->
-        <div class="div-des" title="已经收货地址时">
-          <h5>上门回收</h5>
+        <div  class="div-des" title="已选择收货地址时">
+          <h5 v-if="model.recovery != null">{{model.recovery}}</h5>
+          <h5 v-else >收货地址</h5>
           <p>
-            <span>李玉成</span>
-            <strong>13854218673</strong>
+            <span>{{model.address.name}}</span>
+            <strong>{{model.address.phone}}</strong>
           </p>
           <p>
-            <span>福建省厦门市集美区旺角新天地金逸影城</span>
+            <span>{{model.address.areaString}}{{model.address.streetString}}</span>
           </p>
         </div>
       </div>
@@ -39,16 +39,16 @@
 
     <div class="calculation-main" title="换购明细">
       <div class="c-des-list">
-        <div>
+        <div v-if="model.newOrder.item.length > 0 && model.newOrder.item[0].id != null">
           <h3>新机信息<i></i></h3>
           <ul>
-            <li>
+            <li v-for="(item1,index1) in model.newOrder.item">
               <div class="li-left-img">
-                <img src="" title="产品">
+                <img :src="item1.imgs[0].url" title="产品">
               </div>
               <div class="li-right-inf">
-                <h4><span>苹果 iphone x 换购价</span></h4>
-                <h5>黑色/64G/全网通</h5>
+                <h4><span>{{item1.goodsName}} 换购价</span></h4>
+                <h5>{{item1.parameterStr}}</h5>
                 <h6></h6>
                 <i class="i-img"></i>
                 <div>
@@ -57,41 +57,22 @@
                 </div>
               </div>
               <div class="subtotal-li-box">
-                <em>共2件商品</em>小计：
-                <b>￥1799.00</b>
-              </div>
-            </li>
-            <li>
-              <div class="li-left-img">
-                <img src="" title="产品">
-              </div>
-              <div class="li-right-inf">
-                <h4><span>苹果 iphone x 换购价</span></h4>
-                <h5>黑色/64G/全网通</h5>
-                <h6></h6>
-                <i class="i-img"></i>
-                <div>
-                  <p>价格￥9600.00<b></b></p>
-                  <span>x 1</span>
-                </div>
-              </div>
-              <div class="subtotal-li-box">
-                <em>共2件商品</em>小计：
-                <b>￥1799.00</b>
+                <em>共{{model.newOrder.item.length}}件商品</em>小计：
+                <b>￥{{model.newOrder.sum}}</b>
               </div>
             </li>
           </ul>
         </div>
-        <div>
-          <h3>新机信息<i></i></h3>
+        <div v-if="model.oldOrder.item.length > 0 && model.oldOrder.item[0].id != null">
+          <h3>旧机信息<i></i></h3>
           <ul>
-            <li>
+            <li v-for="(item2,index2) in model.oldOrder.item">
               <div class="li-left-img">
-                <img src="" title="产品">
+                <img :src="item2.imgs[0].url" title="产品">
               </div>
               <div class="li-right-inf">
-                <h4><span>苹果 iphone x 换购价</span></h4>
-                <h5>黑色/64G/全网通</h5>
+                <h4><span>{{item2.goodsName}} 换购价</span></h4>
+                <h5>{{item2.parameterStr}}</h5>
                 <h6></h6>
                 <i class="i-img"></i>
                 <div>
@@ -100,45 +81,26 @@
                 </div>
               </div>
               <div class="subtotal-li-box">
-                <em>共2件商品</em>小计：
-                <b>￥1799.00</b>
-              </div>
-            </li>
-            <li>
-              <div class="li-left-img">
-                <img src="" title="产品">
-              </div>
-              <div class="li-right-inf">
-                <h4><span>苹果 iphone x 换购价</span></h4>
-                <h5>黑色/64G/全网通</h5>
-                <h6></h6>
-                <i class="i-img"></i>
-                <div>
-                  <p>价格￥9600.00<b></b></p>
-                  <span>x 1</span>
-                </div>
-              </div>
-              <div class="subtotal-li-box">
-                <em>共2件商品</em>小计：
-                <b>￥1799.00</b>
+                <em>共{{model.oldOrder.item.length}}件商品</em>小计：
+                <b>￥{{model.oldOrder.sum}}</b>
               </div>
             </li>
           </ul>
         </div>
 
-        <div class="small-p clearfix">
-          <p>
-            <span>新用户优惠劵</span>
-            <strong>￥100</strong>
-          </p>
-          <p>
-            <span>运费</span>
-            <strong>￥0</strong>
-          </p>
-        </div>
+        <!--<div class="small-p clearfix">-->
+          <!--<p>-->
+            <!--<span>新用户优惠劵</span>-->
+            <!--<strong>￥100</strong>-->
+          <!--</p>-->
+          <!--<p>-->
+            <!--<span>运费</span>-->
+            <!--<strong>￥0</strong>-->
+          <!--</p>-->
+        <!--</div>-->
         <div class="subtotal-box">
           <em>订单总价</em>
-          <b>￥1799.00</b>
+          <b>￥{{model.sum}}</b>
         </div>
       </div>
     </div>
@@ -273,37 +235,18 @@
 
 <script type="text/ecmascript-6">
   import VHeader from 'components/v-header/v-header'
-  import { queryOrderList, updateOrder } from 'api/order'
-  import { payStatus,orderType } from '../../utils/filter'
-  import { pay } from 'api/wx'
+  import { queryOrderList } from 'api/order'
   import { Toast } from 'mint-ui'
 
   export default {
     data() {
       return {
-        selected: '1',
-        data: [],
-        navbar: 'ALL',
-        types: '',
         openId: '',
-        temp:{
-          id: '',
-          orderId: '',
-          openId: '',
-          goodsName: '',
-          price: ''
-        },
-        btn: {
-          fk:false,
-          qxfk:false,
-          qrsh:false,
-          qrsk:false,
-          ckwl:false,
-          pl:false,
-          txjy:false
-        },
+        model: '',
+        check: [],
         query: {
-          openId:'oaCWN0ns9o_IjsXbeRQtAqIeHhhg'
+          openId:'oaCWN0ns9o_IjsXbeRQtAqIeHhhg',
+          id: ''
         }
       }
     },
@@ -313,9 +256,11 @@
     },
     methods: {
       getList() {
+        this.query.id = this.$route.query.id
         queryOrderList(this.query).then(response => {
           if (response.code === 200) {
-            this.data = response.data.items;
+            this.model = response.data.items[0];
+            debugger
           }
         }).catch(() => {
         })

@@ -73,7 +73,7 @@
           <span>售后服务</span>
           <a href="javascript:;">全国联保</a>
         </li>
-        <li v-for="(item,index) in list">
+        <li v-if="data.oldGoods.length >0" v-for="(item,index) in list">
           <span>回收方式</span>
           <router-link :to="{path:'/order/recovery',query:{}}">{{item.types}}
           </router-link>
@@ -166,61 +166,34 @@
         })
       },
       submit() {
-        this.data.price = this.sData.sumNewPrice - this.sData.sumOldPrice
-        this.data.openId = this.openid
-        if(this.data.oldGoods.length === 0){
-          pay(this.data).then(response => {
-            this.weixinPay(response.data)
-          }).catch(() => {
-          })
-        }else{
-          instertOrder(this.data).then(response => {
-            Toast({
-              message: '订单已提交，请等待工作人员上门验机！',
-              position: 'bottom',
-              duration: 5000
-            });
-            setTimeout(() => {
-              this.$router.back(-1)
-            }, 1000)
-          }).catch(() => {
-          })
-        }
-      },
-      weixinPay:function(data){
-        var vm= this;
-        if (typeof WeixinJSBridge == "undefined"){//微信浏览器内置对象。参考微信官方文档
-          if( document.addEventListener ){
-            document.addEventListener('WeixinJSBridgeReady', vm.onBridgeReady(data), false);
-          }else if (document.attachEvent){
-            document.attachEvent('WeixinJSBridgeReady', vm.onBridgeReady(data));
-            document.attachEvent('onWeixinJSBridgeReady',vm.onBridgeReady(data));
+        if(this.address.length > 0){
+          this.data.price = this.sData.sumNewPrice - this.sData.sumOldPrice
+          this.data.openId = 'oaCWN0ns9o_IjsXbeRQtAqIeHhhg'
+          this.data.type = this.list.id
+          this.data.address = this.address
+          if(this.data.oldGoods.length === 0){
+            this.$router.push({path: 'payment', query: {item:this.data}})
+          }else{
+            instertOrder(this.data).then(response => {
+              Toast({
+                message: '订单已提交，请等待工作人员上门验机！',
+                position: 'bottom',
+                duration: 5000
+              });
+              setTimeout(() => {
+                this.$router.back(-1)
+              }, 1000)
+            }).catch(() => {
+            })
           }
         }else{
-          vm.onBridgeReady(data);
+          Toast({
+            message: '请填写收货/上门地址！',
+            position: 'bottom',
+            duration: 5000
+          });
         }
-      },
-      onBridgeReady:function(data){
-        var  vm = this;
-        WeixinJSBridge.invoke(
-          'getBrandWCPayRequest',{
-            debug:true,
-            "appId":data.appId,     //公众号名称，由商户传入
-            "timeStamp":data.timeStamp, //时间戳，自1970年以来的秒数
-            "nonceStr":data.nonceStr, //随机串
-            "package":data.packAge,
-            "signType":data.signType, //微信签名方式：
-            "paySign":data.paySign, //微信签名
-          },
-          function(res){
-            // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
-            if(res.err_msg == "get_brand_wcpay_request:ok" ){
 
-            }else{
-
-            }
-          }
-        );
       }
     },
     //注册组件

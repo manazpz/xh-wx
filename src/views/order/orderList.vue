@@ -50,7 +50,8 @@
             <div class="calculation-main" title="换购明细">
               <div class="c-des-list" v-if="item1.newOrder.item.length > 0 && item1.newOrder.item[0].id != null">
                   <div class="line" v-if="item1.oldOrder.item.length > 0"></div>
-                  <h3>新机换购</h3>
+                  <h3 v-if="item1.oldOrder.item.length > 0">新机换购</h3>
+                  <h3 v-else>购买新机</h3>
                   <ul v-for="(item2,index2) in item1.newOrder.item">
                     <li @click="cellClick(item2)">
                       <div class="li-left-img">
@@ -306,7 +307,8 @@
         })
       },
       cellClick(item) {
-        this.$router.push({path: 'orderDetail', query: {item:item}})
+        debugger
+        this.$router.push({path: 'orderDetail', query: {id:item.id}})
       },
 
 

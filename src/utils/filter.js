@@ -23,7 +23,7 @@ export function orderType(status) {
     case '01' :
       return '购买新机';
     case '02' :
-      return '卖旧机';
+      return '出售旧机';
     case '03' :
       return '换机订单';
   }
