@@ -35,11 +35,12 @@
           <mt-button type="danger" size="small" plain @click="onYanJi">查看验机结果</mt-button>
         </div>
         <div class="upload">
-          <a href="javascript:;" class="a-upload">
-            <input type="file" name="file" id="file" multiple @change="uploadFile">上传文件
-          </a>
+          <!--<a href="javascript:;" class="a-upload">-->
+            <!--<input type="file" name="file" id="file" multiple @change="uploadFile">上传文件-->
+          <!--</a>-->
+          <mt-button type="default" plain @click="openUploadPop">上传文件</mt-button>
           <ul>
-            <li v-for="(itemsf,indexf) in files" class="fileClass" >{{itemsf.name}}<a @click="delFiles(indexf)">x</a></li>
+            <li v-for="(itemsf,indexf) in files" class="fileClass" >{{itemsf.name}}<a @click="delFiles(itemsf,indexf)">x</a></li>
           </ul>
         </div>
       </ul>
@@ -55,12 +56,36 @@
       </div>
       <div class="problem-close"></div>
     </div>
+
+    <mt-popup v-model="popupVisible" class="zPopup">
+      <mt-cell>
+        <mt-radio
+          title="附件归属"
+          v-model="popupTemp.guishu"
+          :options="checksData">
+        </mt-radio>
+      </mt-cell>
+      <mt-cell class ="ms">
+        <p>附件描述</p>
+      </mt-cell>
+      <mt-cell>
+        <textarea rows="3" cols="35" v-model="popupTemp.msg">
+        </textarea>
+      </mt-cell>
+      <mt-cell>
+          <input type="file" name="file" id="file" multiple @change="uploadFile">
+      </mt-cell>
+      <mt-cell>
+        <mt-button type="primary" plain @click="sure">确定</mt-button>
+      </mt-cell>
+    </mt-popup>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import VHeader from 'components/v-header/v-header'
   import { yanji,pushYanJi } from 'api/yanji'
+  import { uploadFiles,deleteResources } from 'api/resource'
   import { calculatingPrice } from '../../utils/common'
   import { Toast } from 'mint-ui'
 
@@ -82,10 +107,17 @@
         text: [],
         yj: [],
         files:[],
+        popFiles:{},
         phonename:this.$route.query.name,
         banPrice:this.$route.query.banPrice,
         rangeValue: 0,
-        maxp:0
+        maxp:0,
+        popupVisible:false,
+        checksData: [],
+        popupTemp:{
+          guishu: '',
+          msg: ''
+        }
       }
     },
     created() {
@@ -98,6 +130,9 @@
             this.appraisalList = response.data.items
             this.bllParameter = response.data.bllParameter
             this.maxp = response.data.items.length
+            this.appraisalList.forEach(obj => {
+              this.checksData.push({value:obj.id,label:obj.name})
+            })
           }
         }).catch(() => {
         })
@@ -135,7 +170,7 @@
         }
         //选择数据存储
         if(this.temp.parameter.length == 0){
-          this.temp.parameter.push('{"id": "'+item.id+'","obligate": "'+item.obligate+'","spec": ['+JSON.stringify(val)+']}')
+          this.temp.parameter.push('{"id": "'+item.id+'","obligate": "'+item.obligate+'","name": "'+item.name+'","spec": ['+JSON.stringify(val)+']}')
         }else{
           //判断是否多选
           if (item.obligate === '02') {
@@ -165,14 +200,14 @@
               this.temp.parameter[xxx] = JSON.stringify(json)
             }else {
               //添加已选择的数据
-              this.temp.parameter.push('{"id": "'+item.id+'","obligate": "'+item.obligate+'","spec": ['+JSON.stringify(val)+']}')
+              this.temp.parameter.push('{"id": "'+item.id+'","obligate": "'+item.obligate+'","name": "'+item.name+'","spec": ['+JSON.stringify(val)+']}')
             }
           }else {
             //单选添加
             if(this.temp.parameter[index]){
-              this.temp.parameter[index] = '{"id": "'+item.id+'","obligate": "'+item.obligate+'","spec": ['+JSON.stringify(val)+']}'
+              this.temp.parameter[index] = '{"id": "'+item.id+'","obligate": "'+item.obligate+'","name": "'+item.name+'","spec": ['+JSON.stringify(val)+']}'
             }else {
-              this.temp.parameter.push('{"id": "'+item.id+'","obligate": "'+item.obligate+'","spec": ['+JSON.stringify(val)+']}')
+              this.temp.parameter.push('{"id": "'+item.id+'","obligate": "'+item.obligate+'","name": "'+item.name+'","spec": ['+JSON.stringify(val)+']}')
             }
           }
         }
@@ -243,11 +278,10 @@
       },
       confirm() {
         var res = {
-          openid: 'http://thirdwx.qlogo.cn/mmopen/vi_32/y3l8f7K33GcgibEOHUquGLD2BR5kdJ6oZ4gznzPTX8xWDOJu0Nhr7aJ4zRFUibpQF7lzAGtTRicrCwmAksyo6ftHA/132',
+          openid: 'oaCWN0ns9o_IjsXbeRQtAqIeHhhg',
           no:this.temp.no,
           orderNumber:this.temp.id,
-          parameter: '['+this.temp.parameter+']',
-          fileList: this.files
+          parameter: JSON.stringify(this.temp.parameter)
         }
         pushYanJi(res).then(response => {
           if (response.code === 200) {
@@ -260,14 +294,60 @@
         }).catch(() => {
         })
       },
-      uploadFile(doc){
-        for(var i=0;i<doc.currentTarget.files.length;i++) {
-          this.files.push(doc.currentTarget.files[i]);
+      openUploadPop() {
+        if(this.temp.parameter.length > 0) {
+          this.popupTemp = {
+            guishu: '',
+            msg: ''
+          }
+          this.popupVisible = true
+        }else {
+          Toast({
+            message: '请先验机！',
+            duration: 3000
+          });
         }
 
       },
-      delFiles(index) {
-        this.files.splice(index,1)
+      uploadFile(doc){
+        this.popFiles = []
+        for(var i=0;i<doc.currentTarget.files.length;i++) {
+          this.popFiles.push(doc.currentTarget.files[i]);
+        }
+      },
+      sure() {
+        uploadFiles({fileList:this.popFiles,path:'yanji'}).then(response => {
+          if(response.code == '200') {
+            var xxx = JSON.parse('['+this.temp.parameter+']')
+            xxx.forEach(obj => {
+              if(obj.id == this.popupTemp.guishu) {
+                obj.imgs = response.data.files
+                obj.msg = this.popupTemp.msg
+              }
+            })
+            for(var i=0;i< response.data.files.length;i++) {
+              this.files.push(response.data.files[i])
+            }
+            this.temp.parameter = xxx
+            this.popupVisible = false
+          }
+        }).catch(() => {
+
+        })
+      },
+      delFiles(obj,index) {
+        deleteResources({path:'yanji',id:obj.id,extend:obj.extend}).then(response => {
+          if(response.code == '200') {
+            Toast({
+              message: '删除成功！',
+              duration: 3000
+            });
+            this.files.splice(index,1)
+          }
+        }).catch(() => {
+
+        })
+
       },
       chickProblem(val){
         $('.appraisal-process-problem-wrap1').fadeIn();

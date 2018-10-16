@@ -6,7 +6,7 @@
       <mt-tab-item id="xq">详情</mt-tab-item>
     </mt-navbar>
     <mt-tab-container v-model="selected">
-      <mt-tab-container-item id="sp">
+      <mt-tab-container-item id="sp" class="sp">
         <mt-swipe :stopPropagation="true" :prevent="true" :auto="5000" class="banner" style="height: 250px;">
           <mt-swipe-item v-for="item in detail.imgs">
             <img :src="item.url" style="height: 100%;width: 100%">
