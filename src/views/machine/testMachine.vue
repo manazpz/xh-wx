@@ -281,7 +281,8 @@
           openid: 'oaCWN0ns9o_IjsXbeRQtAqIeHhhg',
           no:this.temp.no,
           orderNumber:this.temp.id,
-          parameter: JSON.stringify(this.temp.parameter)
+          parameter: JSON.stringify(this.temp.parameter),
+          bllPrice: this.jyPrice
         }
         pushYanJi(res).then(response => {
           if (response.code === 200) {
