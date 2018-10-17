@@ -49,7 +49,7 @@
     },
     methods: {
       getList() {
-        this.listQuery.openId = listQuery
+        this.listQuery.openId = this.openId
         recoveryList(this.listQuery).then(response => {
           if (response.code === 200) {
             this.list = response.data.items

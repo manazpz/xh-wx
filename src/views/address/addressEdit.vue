@@ -240,6 +240,7 @@
           }).catch(() => {
           })
         }else{
+          this.temp.openId = this.openId
           insertAddress(this.temp).then(response => {
             if (response.code === 200) {
               Toast({
