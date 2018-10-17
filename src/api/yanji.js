@@ -17,4 +17,12 @@ export function pushYanJi(params) {
   })
 }
 
+export function amslerList(query) {
+  return request({
+    url: '/api/yanji/amsler',
+    method: 'get',
+    params: query
+  })
+}
+
 

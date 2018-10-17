@@ -307,7 +307,6 @@
         })
       },
       cellClick(item) {
-        debugger
         this.$router.push({path: 'orderDetail', query: {id:item.id}})
       },
 

@@ -113,89 +113,20 @@
                     </li>
                 </ul>
             </div> -->
-    <div class="quality-testing-inf">
-      <h3 class="title-tab">
-        <span class="select">质检报告1</span>
-        <span>质检报告2</span>
+    <div v-for="(item4,index4) in parameter" class="quality-testing-inf">
+      <h3  class="title-tab">
+        <span  v-if="index4 == 0" class="select">质检报告{{index4+1}}</span>
+        <span v-else>质检报告{{index4+1}}</span>
       </h3>
       <div class="option-list">
         <div class="show">
-          <h4>苹果 ipone 7 plus</h4>
+          <h4>{{model.oldOrder.item[index4].goodsName}}</h4>
           <ul>
-            <li>
-              <span>制式</span>
-              <em>大陆全网通</em>
-              <strong class="identical">一致</strong>
-            </li>
-            <li>
-              <span>容量</span>
-              <em>256G</em>
-              <strong class="identical">一致</strong>
-            </li>
-            <li>
-              <span>功能</span>
-              <em>其他</em>
-              <strong class="identical">一致</strong>
-            </li>
-            <li>
-              <span>屏幕与显示</span>
-              <em>显示正常</em>
-              <strong class="atypism">不一致<i></i></strong>
-            </li>
-            <li>
-              <span>锁机</span>
-              <em>iCloud已注销</em>
-              <strong class="atypism">不一致<i></i></strong>
-            </li>
-            <li>
-              <span>相关实情描述</span>
-              <em>通话不正常</em>
-              <strong class="atypism">不一致<i></i></strong>
-            </li>
-            <li>
-              <span>旧机检测结果：</span>
-              <!-- <em>通话不正常</em> -->
-              <strong class="normal">￥2200.00</strong>
-            </li>
-            <li>
-              <span>需补差价：</span>
-              <!-- <em>通话不正常</em> -->
-              <strong class="atypism">￥200.00</strong>
-            </li>
-          </ul>
-        </div>
-        <div>
-          <h4>苹果 ipone 10 plus</h4>
-          <ul>
-            <li>
-              <span>制式</span>
-              <em>大陆全网通</em>
-              <strong class="identical">一致</strong>
-            </li>
-            <li>
-              <span>容量</span>
-              <em>256G</em>
-              <strong class="identical">一致</strong>
-            </li>
-            <li>
-              <span>功能</span>
-              <em>其他</em>
-              <strong class="identical">一致</strong>
-            </li>
-            <li>
-              <span>屏幕与显示</span>
-              <em>显示正常</em>
-              <strong class="atypism">不一致<i></i></strong>
-            </li>
-            <li>
-              <span>锁机</span>
-              <em>iCloud已注销</em>
-              <strong class="atypism">不一致<i></i></strong>
-            </li>
-            <li>
-              <span>相关实情描述</span>
-              <em>通话不正常</em>
-              <strong class="atypism">不一致<i></i></strong>
+            <li v-for="(item6,index6) in item4">
+              <span>{{item6.name}}</span>
+              <em>{{item6.spec[0].spec_value_name}}</em>
+              <strong v-if="checks[index4][index6].spec[0].spec_sort == item6.spec[0].spec_sort" class="identical">一致</strong>
+              <strong v-else class="identical">不一致<i></i></strong>
             </li>
             <li>
               <span>旧机检测结果：</span>
@@ -216,10 +147,10 @@
 
     <div class="copy-and-time">
       <p>订单编号：
-        <textarea name="" id="bar" readonly="readonly">76232424998</textarea>
+        <textarea readonly="readonly">{{model.number}}</textarea>
         <button class="copy-btn" href="javascript:;"  data-clipboard-target="#bar">复制</button>
       </p>
-      <p>创建时间：<span>2018.07.04  16:28:19</span></p>
+      <p>创建时间：<span>{{model.createTime}}</span></p>
       <p>发货时间：<span>2018.07.08  12:20:16</span></p>
       <p>收款时间：<span>2018.07.09  22:10:26</span></p>
     </div>
@@ -236,6 +167,7 @@
 <script type="text/ecmascript-6">
   import VHeader from 'components/v-header/v-header'
   import { queryOrderList } from 'api/order'
+  import { amslerList } from 'api/yanji'
   import { Toast } from 'mint-ui'
 
   export default {
@@ -243,10 +175,16 @@
       return {
         openId: '',
         model: '',
-        check: [],
+        amsler: [],
+        parameter: [],
+        checks: [],
+        checkPrice: [],
         query: {
           openId:'oaCWN0ns9o_IjsXbeRQtAqIeHhhg',
           id: ''
+        },
+        temp: {
+          orderId: ''
         }
       }
     },
@@ -260,7 +198,28 @@
         queryOrderList(this.query).then(response => {
           if (response.code === 200) {
             this.model = response.data.items[0];
-            debugger
+            this.model.createTime = this.model.createTime.split(':000')[0]
+            this.model.oldOrder.item.forEach((value,index) => {
+              this.checks.push(JSON.parse(value.parameter))
+              var tr = this
+              debugger
+            })
+          }
+        }).catch(() => {
+        })
+        this.temp.orderId = this.$route.query.id
+        amslerList(this.temp).then(response => {
+          if (response.code === 200) {
+            this.amsler = response.data.items
+            this.amsler.forEach((value,index) => {
+              debugger
+              this.parameter.push(JSON.parse(value.parameter))
+              // var price = 0
+              // this.parameter[index].forEach((value1,index1) => {
+              //   price  += parseFloat(value1.spec[0].correntPrice)
+              // })
+              // this.checkPrice.push(Math.abs(price))
+            })
           }
         }).catch(() => {
         })
