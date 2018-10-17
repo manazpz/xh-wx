@@ -59,15 +59,17 @@
   export default {
     data() {
       return {
+        openid: '',
         list: null
       }
     },
     created() {
+      this.openid = window.localStorage.getItem("openId");
       this.getList();
     },
     methods: {
       getList() {
-        queryAddress({openId:'123456'}).then(response => {
+        queryAddress({openId:this.openid}).then(response => {
           if (response.code === 200) {
             this.list = response.data.items
           }

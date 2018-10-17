@@ -45,7 +45,6 @@
           confirmButtonText: '拨号'
         }).then(action => {
           if (action === 'confirm') {
-            debugger
           }
         });
       }

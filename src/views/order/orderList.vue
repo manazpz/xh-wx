@@ -147,7 +147,7 @@
           txjy:false
         },
         query: {
-          openId:'oaCWN0ns9o_IjsXbeRQtAqIeHhhg'
+          openId:this.openId
         }
       }
     },
@@ -171,10 +171,10 @@
       restQuery(v) {
         if(v != undefined) {
           this.query = v
-          this.query.openId = 'oaCWN0ns9o_IjsXbeRQtAqIeHhhg'
+          this.query.openId = this.openId
         }else {
           this.query = {
-            openId:'oaCWN0ns9o_IjsXbeRQtAqIeHhhg'
+            openId:this.openId
           }
         }
       },
@@ -272,7 +272,7 @@
             this.types = '换机订单：'
         }
         // this.temp.openId = this.openId
-        this.temp.openId = 'oaCWN0ns9o_IjsXbeRQtAqIeHhhg'
+        this.temp.openId = this.openId
         this.temp.orderId = item.number
         this.temp.price = item.sum
         this.temp.goodsName = this.types + item.goodsName

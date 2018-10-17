@@ -3,20 +3,61 @@
     <v-header title="订单详情"></v-header>
     <div class="order-waiting-payment">
     <div class="top-process-box">
-      <div class="three-process-box process-2">
+      <div v-if="model.payStatus == '01' && parameter.length == 0" class="three-process-box process-1">
         <div>
           <strong>1</strong>
-          <b>等待上门</b>
+          <b v-if="model.oldOrder.item.length == 0">未付款</b>
+          <b v-else>等待上门</b>
         </div>
         <span>...........</span>
         <div>
           <strong>2</strong>
-          <b>验机确认</b>
+          <b v-if="model.oldOrder.item.length == 0">已发货</b>
+          <b v-else>验机确认</b>
         </div>
         <span>...........</span>
         <div>
           <strong>3</strong>
-          <b>发送货款</b>
+          <b v-if="model.oldOrder.item.length == 0">已收货</b>
+          <b v-else>发送货款</b>
+        </div>
+      </div>
+      <div v-if="model.payStatus == '01' && parameter.length > 0" class="three-process-box process-2">
+        <div>
+          <strong>1</strong>
+          <b v-if="model.oldOrder.item.length == 0">未付款</b>
+          <b v-else>等待上门</b>
+        </div>
+        <span>...........</span>
+        <div>
+          <strong>2</strong>
+          <b v-if="model.oldOrder.item.length == 0">已发货</b>
+          <b v-else>验机确认</b>
+        </div>
+        <span>...........</span>
+        <div>
+          <strong>3</strong>
+          <b v-if="model.oldOrder.item.length == 0">已收货</b>
+          <b v-else>发送货款</b>
+        </div>
+      </div>
+      <div v-if="model.payStatus == '02'" class="three-process-box process-3">
+        <div>
+          <strong>1</strong>
+          <b v-if="model.oldOrder.item.length == 0">未付款</b>
+          <b v-else>等待上门</b>
+        </div>
+        <span>...........</span>
+        <div>
+          <strong>2</strong>
+          <b v-if="model.oldOrder.item.length == 0">已发货</b>
+          <b v-else>验机确认</b>
+        </div>
+        <span>...........</span>
+        <div>
+          <strong>3</strong>
+          <b v-if="model.oldOrder.item.length == 0">已收货</b>
+          <b v-else>发送货款</b>
         </div>
       </div>
     </div>
@@ -105,14 +146,6 @@
       </div>
     </div>
 
-    <!-- 		<div class="details-inf">
-                <ul>
-                    <li>
-                        <span>质检报告</span>
-                        <a class="color-green" href="javascript:;">检测中</a>
-                    </li>
-                </ul>
-            </div> -->
     <div v-for="(item4,index4) in parameter" class="quality-testing-inf">
       <h3  class="title-tab">
         <span  v-if="index4 == 0" class="select">质检报告{{index4+1}}</span>
@@ -131,12 +164,12 @@
             <li>
               <span>旧机检测结果：</span>
               <!-- <em>通话不正常</em> -->
-              <strong class="normal">￥2200.00</strong>
+              <strong class="normal">￥{{amsler[index4].price}}</strong>
             </li>
             <li>
-              <span>需补差价：</span>
+              <span>验机差异金额：</span>
               <!-- <em>通话不正常</em> -->
-              <strong class="atypism">￥200.00</strong>
+              <strong class="atypism">{{difference[index4]}}</strong>
             </li>
           </ul>
         </div>
@@ -151,14 +184,14 @@
         <button class="copy-btn" href="javascript:;"  data-clipboard-target="#bar">复制</button>
       </p>
       <p>创建时间：<span>{{model.createTime}}</span></p>
-      <p>发货时间：<span>2018.07.08  12:20:16</span></p>
-      <p>收款时间：<span>2018.07.09  22:10:26</span></p>
+      <p>发货时间：<span></span></p>
+      <p>收款时间：<span></span></p>
     </div>
 
     <div class="footer-payment">
       <!-- <a class="revise-btn" href="javascript:;" title="修改地址">修改地址</a> -->
-      <a class="payment-btn" href="javascript:;" title="确认付款">确认付款</a>
-      <a class="cancel-btn" href="javascript:;" title="查看物流">查看物流</a>
+      <a v-if="model.payStatus == '01'" @click="pay" class="payment-btn" href="javascript:;" title="确认付款">确认付款</a>
+      <a v-if="model.recovery == '快递回收' || (model.oldOrder.item.length == 0 && model.payStatus == '02') " class="cancel-btn" href="javascript:;" title="查看物流">查看物流</a>
     </div>
   </div>
   </div>
@@ -178,52 +211,68 @@
         amsler: [],
         parameter: [],
         checks: [],
-        checkPrice: [],
+        difference: [],
         query: {
-          openId:'oaCWN0ns9o_IjsXbeRQtAqIeHhhg',
+          openId:'',
           id: ''
         },
         temp: {
           orderId: ''
+        },
+        data: {
+          openId: '',
+          price: '',
+          orderId: '',
+          goodsName: ''
         }
       }
     },
     created() {
-      this.getList();
       this.openId = window.localStorage.getItem("openId")
+      this.getList();
     },
     methods: {
       getList() {
+        this.temp.orderId = this.$route.query.id
+        amslerList(this.temp).then(response => {
+          if (response.code === 200) {
+            this.amsler = response.data.items
+            this.amsler.forEach((value,index) => {
+              this.parameter.push(JSON.parse(value.parameter))
+              // this.checkPrice.push(Math.abs(price))
+            })
+          }
+        }).catch(() => {
+        })
         this.query.id = this.$route.query.id
+        this.query.openId = this.openId
         queryOrderList(this.query).then(response => {
           if (response.code === 200) {
             this.model = response.data.items[0];
             this.model.createTime = this.model.createTime.split(':000')[0]
             this.model.oldOrder.item.forEach((value,index) => {
               this.checks.push(JSON.parse(value.parameter))
-              var tr = this
-              debugger
-            })
-          }
-        }).catch(() => {
-        })
-        this.temp.orderId = this.$route.query.id
-        amslerList(this.temp).then(response => {
-          if (response.code === 200) {
-            this.amsler = response.data.items
-            this.amsler.forEach((value,index) => {
-              debugger
-              this.parameter.push(JSON.parse(value.parameter))
-              // var price = 0
-              // this.parameter[index].forEach((value1,index1) => {
-              //   price  += parseFloat(value1.spec[0].correntPrice)
-              // })
-              // this.checkPrice.push(Math.abs(price))
+              if((parseFloat(value.guJia) - parseFloat(this.amsler[index].price)) > 0 ){
+                this.difference.push('比实际高：￥' + (parseFloat(value.guJia) - parseFloat(this.amsler[index].price))  )
+              }else{
+                this.difference.push('比实际低：￥' + (parseFloat(value.guJia) - parseFloat(this.amsler[index].price)) )
+              }
             })
           }
         }).catch(() => {
         })
       },
+      pay(){
+        var price = 0
+        this.difference.forEach((value,index) => {
+          price += parseFloat(value.split('￥')[1])
+        })
+        this.data.price = this.model.sum + price
+        this.data.goodsName = this.model.goodsName
+        this.data.orderId = this.model.number
+        this.data.openId = this.openId
+        this.$router.push({path: 'payment', query: {item:this.data}})
+      }
     },
     //注册组件
     components: {

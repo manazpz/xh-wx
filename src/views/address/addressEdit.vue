@@ -102,7 +102,7 @@
         temp: {
           id: '',
           no: '',
-          openId: '123456',
+          openId: '',
           name: '',
           phone: '',
           areaString: '',
@@ -147,6 +147,7 @@
       }
     },
     created() {
+      this.openId = window.localStorage.getItem("openId")
       this.item = this.$route.query.item
       if(this.item !== undefined){
         this.name = this.item.name
@@ -223,7 +224,7 @@
         if(this.item !== undefined){
           this.temp.id = this.item.id
           this.temp.no = this.item.no
-          debugger
+          this.temp.openId = this.openId
           updateAddress(this.temp).then(response => {
             if (response.code === 200) {
               Toast({

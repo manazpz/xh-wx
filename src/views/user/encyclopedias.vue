@@ -56,11 +56,12 @@
   export default {
     data() {
       return {
-        openId: "123456",
+        openId: '',
         info: {}
       }
     },
     created() {
+      this.openId = window.localStorage.getItem("openId")
       this.getUserInfo();
     },
     methods: {

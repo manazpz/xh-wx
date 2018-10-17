@@ -97,6 +97,7 @@
           no: this.$route.query.no,
           parameter: []
         },
+        openId: '',
         flag: 0,
         btnFlag:false,
         appraisalList: [],
@@ -121,6 +122,7 @@
       }
     },
     created() {
+      this.openId = window.localStorage.getItem("openId")
       this.getList()
     },
     methods: {
@@ -278,7 +280,7 @@
       },
       confirm() {
         var res = {
-          openid: 'oaCWN0ns9o_IjsXbeRQtAqIeHhhg',
+          openid: this.openId,
           no:this.temp.no,
           orderNumber:this.temp.id,
           parameter: JSON.stringify(this.temp.parameter),

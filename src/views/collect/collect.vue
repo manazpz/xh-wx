@@ -53,12 +53,13 @@
   export default {
     data() {
       return {
-        openId: '123456',
+        openId: '',
         collects: [],
         checks: []
       }
     },
     created() {
+      this.openId = window.localStorage.getItem("openId")
       this.getList()
     },
     methods: {

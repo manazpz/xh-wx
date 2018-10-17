@@ -133,7 +133,7 @@
     },
     methods: {
       getList() {
-        queryrecoveryList({openId:'123456'}).then(response => {
+        queryrecoveryList({openId: this.openid}).then(response => {
           if (response.code === 200) {
             if(response.data.items.length >1){
               this.list = response.data.items[0]
@@ -143,7 +143,7 @@
           }
         }).catch(() => {
         })
-        queryAddress({openId:'123456',isVisit:'Y'}).then(response => {
+        queryAddress({openId:this.openid,isVisit:'Y'}).then(response => {
           if (response.code === 200) {
             this.address = response.data.items
           }
@@ -168,7 +168,7 @@
       submit() {
         if(this.address.length > 0){
           this.data.price = this.sData.sumNewPrice - this.sData.sumOldPrice
-          this.data.openId = 'oaCWN0ns9o_IjsXbeRQtAqIeHhhg'
+          this.data.openId = this.openid
           this.data.type = this.list.id
           this.data.address = this.address
           if(this.data.oldGoods.length === 0){

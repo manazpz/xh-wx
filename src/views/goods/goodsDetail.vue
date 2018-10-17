@@ -68,6 +68,7 @@
   export default {
     data() {
       return {
+        openId: '',
         detail: {imgs:[],specParameter:[{spec:[]}]},
         price: 0,
         maxPrice: 0,
@@ -77,6 +78,7 @@
       }
     },
     created() {
+      this.openId = window.localStorage.getItem("openId")
       this.getDetail()
     },
     methods: {
@@ -99,7 +101,7 @@
         this.specText = value.specText
       },
       addCollect() {
-        insertCollect({openId:'123456',basicId:this.detail.id}).then(response => {
+        insertCollect({openId:this.openId,basicId:this.detail.id}).then(response => {
           Toast({
             message: response.message,
             iconClass: 'mintui mintui-success'

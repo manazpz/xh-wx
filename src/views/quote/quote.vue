@@ -141,7 +141,7 @@
     data() {
       return {
         updateNewGoods: {imgs:[],specParameter:[{spec:[]}]},
-        openId: '123456',
+        openId: '',
         oldGoods: [],
         flag: -1,
         newGoods: [],
@@ -167,6 +167,7 @@
       }
     },
     created() {
+      this.openId = window.localStorage.getItem("openId")
       this.getList()
     },
     methods: {

@@ -33,20 +33,23 @@
       return {
         list: [],
         check: [],
+        openId: '',
         listQuery: {
-          openId: '123456'
+          openId: ''
         },
         temp: {
-          openId: '123456',
+          openId: '',
           prete: ''
         },
       }
     },
     created() {
+      this.openId = window.localStorage.getItem("openId")
       this.getList()
     },
     methods: {
       getList() {
+        this.listQuery.openId = listQuery
         recoveryList(this.listQuery).then(response => {
           if (response.code === 200) {
             this.list = response.data.items
@@ -92,6 +95,7 @@
         }
       },
       confirm(){
+        this.temp.openId = this.openId
         insertRecoveryUser(this.temp).then(response => {
           if (response.code === 200) {
             Toast({

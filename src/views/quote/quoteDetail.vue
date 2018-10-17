@@ -39,13 +39,14 @@
   export default {
     data() {
       return {
-        openId: '123456',
+        openId: '',
         id: '',
         chart: null,
         goods: []
       }
     },
     created() {
+      this.openId = window.localStorage.getItem("openId")
       this.id = this.$route.query.id
       this.getList()
       this.$nextTick(function () {

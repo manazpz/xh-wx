@@ -51,7 +51,7 @@
     data() {
       return {
         temp: {
-          openId: '123456',
+          openId: '',
           goodsId:this.$route.query.id,
           banPrice: this.$route.query.price,
           model: '02',
@@ -66,6 +66,7 @@
       }
     },
     created() {
+      this.temp.openId = window.localStorage.getItem("openId")
       this.getList()
     },
     methods: {

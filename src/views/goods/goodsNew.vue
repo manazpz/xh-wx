@@ -49,7 +49,7 @@
         checksData: [],
         specpar: [],
         temp: {
-          openId: '123456',
+          openId: '',
           goodsId: '',
           price: 0,
           model: '01',
@@ -58,6 +58,7 @@
       }
     },
     created() {
+      this.openId = window.localStorage.getItem("openId")
       this.getDetail()
     },
     methods: {
@@ -154,6 +155,7 @@
         })
         this.temp.goodsId = this.$route.query.id
         this.temp.price = this.price
+        this.temp.openId = this.openId
         this.temp.parameter = JSON.parse(this.temp.parameter)
         insertReplacementCar(this.temp).then(response => {
           if (response.code === 200) {
