@@ -152,8 +152,8 @@
       }
     },
     created() {
-      this.getList();
       this.openId = window.localStorage.getItem("openId")
+      this.getList();
     },
     filters: {
       payStatus,

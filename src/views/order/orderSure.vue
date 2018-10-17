@@ -73,10 +73,10 @@
           <span>售后服务</span>
           <a href="javascript:;">全国联保</a>
         </li>
-        <li v-if="data.oldGoods.length >0" v-for="(item,index) in list">
-          <span>回收方式</span>
-          <router-link :to="{path:'/order/recovery',query:{}}">{{item.types}}
-          </router-link>
+        <li v-if="data.oldGoods.length >0" >
+          <span >回收方式</span>
+            <router-link :to="{path:'/order/recovery',query:{}}" >{{list.types}}
+            </router-link>
         </li>
         <!--<li>-->
           <!--<span>新用户优惠劵</span>-->
@@ -115,7 +115,7 @@
       return {
         newTile: this.$route.query.model == 'new'?'购买新机':'新机换购',
         data: {newGoods:[{imgs:[]}],oldGoods:[{imgs:[]}]},
-        list: null,
+        list: {types: ''},
         wx: null,
         openid: '',
         price: '',

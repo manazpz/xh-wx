@@ -31,7 +31,7 @@
           </ul>
         </li>
         <div class="yjBtn">
-          <span>结论：<h v-if="btnFlag">{{jyPrice}}{{ygStr}}</h></span>
+          <span>结论：<a v-if="btnFlag">{{jyPrice}}{{ygStr}}</a></span>
           <mt-button type="danger" size="small" plain @click="onYanJi">查看验机结果</mt-button>
         </div>
         <div class="upload">
@@ -73,7 +73,7 @@
         </textarea>
       </mt-cell>
       <mt-cell>
-          <input type="file" name="file" id="file" multiple @change="uploadFile">
+          <input type="file" ref="files" multiple @change="uploadFile">
       </mt-cell>
       <mt-cell>
         <mt-button type="primary" plain @click="sure">确定</mt-button>
@@ -319,9 +319,16 @@
         }
       },
       sure() {
+
         uploadFiles({fileList:this.popFiles,path:'yanji'}).then(response => {
           if(response.code == '200') {
-            var xxx = JSON.parse('['+this.temp.parameter+']')
+            var xxx
+            if(this.temp.parameter[0].id){
+              xxx = this.temp.parameter
+            }else {
+              xxx = JSON.parse('['+this.temp.parameter+']')
+            }
+
             xxx.forEach(obj => {
               if(obj.id == this.popupTemp.guishu) {
                 obj.imgs = response.data.files
@@ -333,7 +340,9 @@
             }
             this.temp.parameter = xxx
             this.popupVisible = false
+            this.$refs.files.value = ''
           }
+
         }).catch(() => {
 
         })
@@ -351,14 +360,6 @@
 
         })
 
-      },
-      chickProblem(val){
-        $('.appraisal-process-problem-wrap1').fadeIn();
-        $('.problem-box').addClass('p-top-ani').find('h1').html(val.name).siblings('p').html(val.tipsText);
-        $('.appraisal-process-problem-wrap1').on('click','.problem-close',function () {
-          $('.appraisal-process-problem-wrap1').fadeOut();
-          $('.problem-box').removeClass('p-top-ani');
-        });
       }
     },
     //注册组件

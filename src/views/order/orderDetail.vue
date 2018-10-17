@@ -67,7 +67,7 @@
         <div  class="div-des" title="已选择收货地址时">
           <h5 v-if="model.recovery != null">{{model.recovery}}</h5>
           <h5 v-else >收货地址</h5>
-          <p>
+          <p v-if="model.address != ''">
             <span>{{model.address.name}}</span>
             <strong>{{model.address.phone}}</strong>
           </p>
@@ -80,7 +80,7 @@
 
     <div class="calculation-main" title="换购明细">
       <div class="c-des-list">
-        <div v-if="model.newOrder.item.length > 0 && model.newOrder.item[0].id != null">
+        <div v-if="model.newOrder.item.length > 0 && model.newOrder.item[0].id != null ">
           <h3>新机信息<i></i></h3>
           <ul>
             <li v-for="(item1,index1) in model.newOrder.item">
@@ -207,7 +207,7 @@
     data() {
       return {
         openId: '',
-        model: '',
+        model: {payStatus: '',address:[{name:[]}]},
         amsler: [],
         parameter: [],
         checks: [],
