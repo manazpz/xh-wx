@@ -72,8 +72,11 @@
         <textarea rows="3" cols="35" v-model="popupTemp.msg">
         </textarea>
       </mt-cell>
-      <mt-cell>
-          <input type="file" ref="files" multiple @change="uploadFile">
+      <mt-cell class ="ms">
+        <a href="javascript:;" class="a-upload">
+          <input type="file" ref="files" multiple @change="uploadFile">选择文件
+        </a>
+        <a>文件数：{{popFiles.length}}</a>
       </mt-cell>
       <mt-cell>
         <mt-button type="primary" plain @click="sure">确定</mt-button>
@@ -108,7 +111,7 @@
         text: [],
         yj: [],
         files:[],
-        popFiles:{},
+        popFiles:[],
         phonename:this.$route.query.name,
         banPrice:this.$route.query.banPrice,
         rangeValue: 0,
@@ -131,6 +134,7 @@
           if (response.code === 200) {
             this.appraisalList = response.data.items
             this.bllParameter = response.data.bllParameter
+            this.maxp = response.data.items.length
             this.maxp = response.data.items.length
             this.appraisalList.forEach(obj => {
               this.checksData.push({value:obj.id,label:obj.name})
@@ -250,18 +254,22 @@
           for(var i = 0; i < yg.length; i++) {
             var flag = true
             var specs = yg[i].spec;
-            for(var j = 0; j < specs.length; j++) {
-              var t1 = specs[j].spec_sort;
-              if (jy[i].spec[j] == undefined) {
-                flag = false
-                break
-              }else {
-                var t2 = jy[i].spec[j].spec_sort;
-                if(t1 != t2) {
+            if(jy[i].spec.length == specs.length) {
+              for(var j = 0; j < specs.length; j++) {
+                var t1 = specs[j].spec_sort;
+                if (jy[i].spec[j] == undefined) {
                   flag = false
                   break
+                }else {
+                  var t2 = jy[i].spec[j].spec_sort;
+                  if(t1 != t2) {
+                    flag = false
+                    break
+                  }
                 }
               }
+            }else {
+              flag = false
             }
             if(flag) {
               this.yj.push("一致")
@@ -313,13 +321,12 @@
 
       },
       uploadFile(doc){
-        this.popFiles = []
+        // this.popFiles = []
         for(var i=0;i<doc.currentTarget.files.length;i++) {
           this.popFiles.push(doc.currentTarget.files[i]);
         }
       },
       sure() {
-
         uploadFiles({fileList:this.popFiles,path:'yanji'}).then(response => {
           if(response.code == '200') {
             var xxx
@@ -341,6 +348,7 @@
             this.temp.parameter = xxx
             this.popupVisible = false
             this.$refs.files.value = ''
+            this.popFiles = []
           }
 
         }).catch(() => {
