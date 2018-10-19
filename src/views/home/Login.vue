@@ -20,7 +20,6 @@
     created() {
       this.token = window.localStorage.getItem("user_token");
       //判断当前的url有没有token参数,如果不存在那就跳转到微信授权的url
-      debugger
       if (!GetQueryString("token")) {
         if(!GetQueryString("code")){
           this.ReturnGetCodeUrl();

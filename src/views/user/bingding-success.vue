@@ -13,7 +13,7 @@
         </dl>
       </div>
       <div class="success-btn">
-        <a href="javascript:;" title="确定">确定</a>
+        <a href="javascript:;" @click="sure" title="确定">确定</a>
       </div>
     </div>
   </div>
@@ -30,6 +30,10 @@
     created() {
     },
     methods: {
+      sure(){
+        this.$router.push('/quote')
+      }
+
     },
     //注册组件
     components: {

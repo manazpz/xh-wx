@@ -107,6 +107,7 @@
   import { queryAddress } from 'api/address'
   import { queryReplacementCar, queryrecoveryList } from 'api/goods'
   import { pay } from 'api/wx'
+  import { queryUserinfos } from 'api/system'
   import VHeader from 'components/v-header/v-header'
   import { Toast } from 'mint-ui'
 
@@ -167,6 +168,14 @@
       },
       submit() {
         if(this.address.length > 0){
+          queryUserinfos({openId:this.openid}).then(response => {
+            if (response.code === 200) {
+              if(response.data.items[0].phone == null || response.data.items[0].phone == '' ){
+                this.$router.push({path: '/user/accountBingDing', query: {id:this.openid}})
+              }
+            }
+          }).catch(() => {
+          })
           this.data.price = this.sData.sumNewPrice - this.sData.sumOldPrice
           this.data.openId = this.openid
           this.data.type = this.list.id
