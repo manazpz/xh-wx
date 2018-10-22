@@ -66,7 +66,9 @@
       getList() {
         collectList({openId:this.openId}).then(response => {
           if (response.code === 200) {
-            this.collects = response.data.items
+            if(response.data.items != undefined){
+              this.collects = response.data.items
+            }
           }
         }).catch(() => {
         })
