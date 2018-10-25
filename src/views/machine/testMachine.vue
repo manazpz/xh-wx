@@ -156,11 +156,11 @@
           if (this.flag < this.appraisalList.length-1)
             this.flag++
           //获取控件
-          var li = ent.path[1].getElementsByTagName('li')
+          var li = ent.target.parentNode.children
           //清空选择项
           for(var i=0;i<li.length;i++) {
-            if(ent.path[1].getElementsByTagName('li')[i].className == 'select')
-              ent.path[1].getElementsByTagName('li')[i].classList.remove("select")
+            if(ent.target.parentNode.children[i].className == 'select')
+              ent.target.parentNode.children[i].classList.remove("select")
           }
           //添加当前选择项
           ent.toElement.classList.add("select")

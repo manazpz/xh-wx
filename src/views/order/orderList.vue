@@ -123,6 +123,7 @@
   import { Toast } from 'mint-ui'
 
   export default {
+    inject: ['reload'],
     data() {
       return {
         selected: '1',
@@ -147,7 +148,7 @@
           txjy:false
         },
         query: {
-          openId:this.openId
+          openId:''
         }
       }
     },
@@ -161,6 +162,7 @@
     },
     methods: {
       getList() {
+        this.query.openId = this.openId
         queryOrderList(this.query).then(response => {
           if (response.code === 200) {
             this.data = response.data.items;
@@ -279,7 +281,7 @@
         pay(this.temp).then(response => {
           this.weixinPay(response.data)
           setTimeout(() => {
-            this.getList()
+            this.reload()
           }, 1000)
         }).catch(() => {
         })
@@ -300,7 +302,7 @@
               duration: 5000
             });
             setTimeout(() => {
-              this.getList()
+              this.reload()
             }, 1000)
           }).catch(() => {
           })

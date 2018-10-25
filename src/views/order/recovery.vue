@@ -33,7 +33,9 @@
       return {
         list: [],
         check: [],
+        types: '',
         openId: '',
+        ids: '',
         listQuery: {
           openId: ''
         },
@@ -44,6 +46,7 @@
       }
     },
     created() {
+      this.ids = this.$route.query.ids
       this.openId = window.localStorage.getItem("openId")
       this.getList()
     },
@@ -79,16 +82,17 @@
       chicks(item,index,ent){
         $('.recovery-box li dt i').removeClass('dt-hook');
         $('.recovery-box li dd i').removeClass('dd-hook');
-        if(ent.path[1].getElementsByTagName('i')[0].className == 'dt-hook'){
-          ent.path[1].getElementsByTagName('i')[0].classList.remove("dt-hook")
+        if(ent.toElement.className.className == 'dt-hook'){
+          ent.toElement.className.classList.remove("dt-hook")
         }else{
           ent.toElement.classList.add("dt-hook")
+          this.types = item.types
         }
       },
       chickPrete(item,index,ent){
         $('.recovery-box li dd i').removeClass('dd-hook');
-        if(ent.path[1].getElementsByTagName('i')[0].className == 'dd-hook'){
-          ent.path[1].getElementsByTagName('i')[0].classList.remove("dd-hook")
+        if(ent.toElement.className.className == 'dd-hook'){
+          ent.toElement.className.classList.remove("dd-hook")
         }else{
           ent.toElement.classList.add("dd-hook")
           this.temp.prete = item.id
@@ -104,7 +108,8 @@
               duration: 5000
             });
             setTimeout(() => {
-              this.$router.back(-1)
+              // this.$router.back(-1)
+              this.$router.push({path: 'sure', query: {ids:this.ids,check:this.types}})
             }, 1000)
 
           }

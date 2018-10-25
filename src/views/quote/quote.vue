@@ -336,10 +336,10 @@
         if (item.obligate != '02') {
           //已选择切换
           if(ent.toElement.className != 'select') {
-            var li = ent.path[1].getElementsByTagName('li')
+            var li = ent.target.parentNode.children
             for(var i=0;i<li.length;i++) {
-              if(ent.path[1].getElementsByTagName('li')[i].className == 'select')
-                ent.path[1].getElementsByTagName('li')[i].classList.remove("select")
+              if(ent.target.parentNode.children[i].className == 'select')
+                ent.target.parentNode.children[i].classList.remove("select")
             }
             ent.toElement.classList.add("select")
             this.text[index] = val.spec_value_name
@@ -365,7 +365,7 @@
               this.text[index] += ';' + val.spec_value_name
             }
           }
-          ent.path[2].childNodes[0].childNodes[2].innerText = this.text[index]
+          ent.target.parentNode.parentNode.childNodes[0].childNodes[2].innerText = this.text[index]
         }
         if(this.temp.parameter.length == 0){
           this.temp.parameter.push('{"id": "'+item.id+'","obligate": "'+item.obligate+'","spec": ['+JSON.stringify(val)+']}')

@@ -30,6 +30,7 @@ const bingDingSuccess = () => import('../views/user/bingding-success')
 const machine = () => import('../views/machine/machine')
 const testMachine = () => import('../views/machine/testMachine')
 const payment = () => import('../views/order/payment')
+const visitRecovery = () => import('../views/order/visitRecovery')
 
 export const constantRouterMap = [
   {
@@ -224,6 +225,13 @@ export const constantRouterMap = [
     path: '/order/payment',
     name: 'payment',
     component: payment,
+    hidden: true,
+    meta: { title: '选择收款方式' }
+  },
+  {
+    path: '/order/visitRecovery',
+    name: 'visitRecovery',
+    component: visitRecovery,
     hidden: true,
     meta: { title: '选择收款方式' }
   }

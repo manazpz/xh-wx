@@ -22,7 +22,7 @@
           <b v-else>发送货款</b>
         </div>
       </div>
-      <div v-if="(model.payStatus == '01' && parameter.length > 0) || model.orderStatus == '03'" class="three-process-box process-2">
+      <div v-if="(model.payStatus == '01' && parameter.length > 0) || (model.orderStatus == '03' && parameter.length > 0)"  class="three-process-box process-2">
         <div>
           <strong>1</strong>
           <b v-if="model.oldOrder.item.length == 0">未付款</b>
@@ -79,7 +79,7 @@
     </div>
 
     <div class="calculation-main" title="换购明细">
-      <div class="c-des-list">
+      <div v-if="model.newOrder != undefined" class="c-des-list">
         <div v-if="model.newOrder.item.length > 0 && model.newOrder.item[0].id != null ">
           <h3>新机信息<i></i></h3>
           <ul>
@@ -191,7 +191,7 @@
     <div class="footer-payment">
       <!-- <a class="revise-btn" href="javascript:;" title="修改地址">修改地址</a> -->
       <a v-if="model.payStatus == '01'" @click="pay" class="payment-btn" href="javascript:;" title="确认付款">确认付款</a>
-      <a v-if="model.recovery == '快递回收' || (model.oldOrder.item.length == 0 && model.payStatus == '02') " class="cancel-btn" href="javascript:;" title="查看物流">查看物流</a>
+      <a v-if="model.recovery == '快递回收' || (model.oldOrder == undefined && model.payStatus == '02') " class="cancel-btn" href="javascript:;" title="查看物流">查看物流</a>
     </div>
   </div>
   </div>

@@ -36,7 +36,7 @@
           </div>
           <div class="btn-box">
             <a class="maintain-btn" href="javascript:;" title="保持登陆">保持登陆</a>
-            <a class="quit-btn" href="javascript:;" title="退出登陆">退出登陆</a>
+            <a @click="close" class="quit-btn" href="javascript:;" title="退出登陆">退出登陆</a>
           </div>
         </div>
 
@@ -72,7 +72,13 @@
           }
         }).catch(() => {
         })
+      },
+      close() {
+        window.opener = null
+        window.open('about:blank', '_self')
+        window.close();
       }
+
     },
     //注册组件
     components: {

@@ -88,6 +88,7 @@
       }
     },
     created() {
+      // window.localStorage.setItem('openId','oaCWN0ns9o_IjsXbeRQtAqIeHhhg')
       this.getBanners('HB')
       this.getStatement()
       this.getHgGoods()
@@ -132,7 +133,6 @@
       },
       getNewGoods() {
         var query = {
-          shopId: '8496770D-6772-4CC2-9508-D08B8DD881Z1',
           model: '01'
         }
         queryGoodsList(query).then(response => {

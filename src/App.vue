@@ -7,6 +7,11 @@
 <script>
   export default {
     name: 'app',
+    provide() {
+      return {
+        reload: this.reload
+      }
+    },
     methods: {
     },
     components: {

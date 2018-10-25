@@ -169,8 +169,8 @@
         };
       },
       clicks(ent) {
-        if(ent.path[0].className == 'i-on'){
-          ent.path[0].classList.remove("i-on")
+        if(ent.toElement.className == 'i-on'){
+          ent.toElement.classList.remove("i-on")
           this.isCheck = 'N'
         }else{
           ent.toElement.classList.add("i-on")

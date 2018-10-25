@@ -5,9 +5,9 @@
         <div class="top-pic">
           <dl>
             <dt>
-              <img src="/static/image/pic_img.png" @click="jumpUser" title="头像">
+              <img clsss="imgs" :src="list.headPortrait" @click="jumpUser" title="头像">
             </dt>
-            <p>Acid</p>
+            <p>{{list.nickName}}</p>
           </dl>
         </div>
         <scroll :data="data" class="themes-list" ref="scroll">
@@ -43,6 +43,7 @@
   import Scroll from 'base/scroll/scroll'
   import {mapGetters, mapMutations} from 'vuex'
   import store from '../../store'
+  import { queryUserinfos } from 'api/system'
 
   export default {
     //接收父组件传值
@@ -61,9 +62,21 @@
     },
     //生命周期创建观察数据
     created() {
+      this.openId = window.localStorage.getItem("openId")
+      this.getList();
       this.fetchData();
     },
     methods: {
+      getList() {
+        queryUserinfos({openId:this.openId}).then(response => {
+          if (response.code === 200) {
+            if(response.data.items != undefined){
+              this.list = response.data.items[0]
+            }
+          }
+        }).catch(() => {
+        })
+      },
       open() {
         this.showFlag = true
         this.$nextTick(() => {
@@ -115,5 +128,5 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-  @import "sidebar.styl"
+  @import "sidebar.styl";
 </style>

@@ -75,7 +75,7 @@
         </li>
         <li v-if="data.oldGoods.length >0" >
           <span >回收方式</span>
-            <router-link :to="{path:'/order/recovery',query:{}}" >{{list.types}}
+            <router-link :to="{path:'/order/recovery',query:{ids:this.$route.query.ids}}" >{{list.types}}
             </router-link>
         </li>
         <!--<li>-->
@@ -129,6 +129,7 @@
     },
     created() {
       this.openid = window.localStorage.getItem("openId");
+      this.list.types = this.$route.query.check
       this.getData();
       this.getList();
     },
@@ -136,10 +137,10 @@
       getList() {
         queryrecoveryList({openId: this.openid}).then(response => {
           if (response.code === 200) {
-            if(response.data.items.length >1){
-              this.list = response.data.items[0]
+            if(this.$route.query.check !== undefined){
+              this.list.types = this.$route.query.check
             }else{
-              this.list = response.data.items
+              this.list = response.data.items[0]
             }
           }
         }).catch(() => {
@@ -178,19 +179,15 @@
           })
           this.data.price = this.sData.sumNewPrice - this.sData.sumOldPrice
           this.data.openId = this.openid
-          this.data.type = this.list.id
+          this.data.type = this.list.types
           this.data.address = this.address
           if(this.data.oldGoods.length === 0){
             this.$router.push({path: 'payment', query: {item:this.data}})
           }else{
             instertOrder(this.data).then(response => {
-              Toast({
-                message: '订单已提交，请等待工作人员上门验机！',
-                position: 'bottom',
-                duration: 5000
-              });
+              this.data.orderId = response.data.items[0].orderId
               setTimeout(() => {
-                this.$router.back(-1)
+                this.$router.push({path: 'visitRecovery', query: {item:this.data}})
               }, 1000)
             }).catch(() => {
             })

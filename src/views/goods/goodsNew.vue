@@ -93,14 +93,14 @@
         }
       },
       onRadio(item,index) {
-        if (item.path[4].className === 'mint-cell') {
+        if (item.target.parentElement.parentElement.parentElement.parentElement.className === 'mint-cell') {
           var cell = this.$refs['radio'+index][0].$el.getElementsByClassName('mint-cell')
           for (var i = 0; i < cell.length; i++) {
             cell[i].style.background = ''
             cell[i].getElementsByClassName('mint-radio-label')[0].style.color="#000"
           }
-          item.path[4].style.background="#28c081"
-          item.path[4].getElementsByClassName('mint-radio-label')[0].style.color="#fff"
+          item.target.parentElement.parentElement.parentElement.parentElement.style.background="#28c081"
+          item.target.parentElement.parentElement.parentElement.parentElement.getElementsByClassName('mint-radio-label')[0].style.color="#fff"
         }
       },
       formatData(data) {
