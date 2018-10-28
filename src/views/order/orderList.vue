@@ -80,9 +80,9 @@
             <div  class="btn-box">
               <a v-if="navbar=='ALL'?(item1.type == '03' && item1.payStatus == '01' && item1.price >0):btn.fk" class="payment-btn" href="javascript:;" @click="fkcilck(item1,index1)" title="付款">付款</a>
               <a v-if="navbar=='ALL'?(item1.orderStatus != '01' && item1.payStatus != '02'):btn.qxfk" class="cancel-btn" href="javascript:;" @click="qxcilck(item1,index1)" title="取消订单">取消订单</a>
-              <a v-if="navbar=='ALL'?(item1.deliveryStatus != '03' && item1.payStatus != '01'):btn.qrsh" class="payment-btn" href="javascript:;" title="确认收货">确认收货</a>
-              <a v-if="navbar=='ALL'?(item1.type == '02'  && item1.checkStatus == '01'):btn.qrsk" class="payment-btn" href="javascript:;" title="确认收款">确认收款</a>
-              <a v-if="navbar=='ALL'?(item1.deliveryStatus == '03' && item1.orderStatus == '01'):btn.pl" class="payment-btn" href="javascript:;" title="评价">评价</a>
+              <a v-if="navbar=='ALL'?(item1.deliveryStatus != '03' && item1.payStatus != '01' && item1.type == '01'):btn.qrsh" class="payment-btn" href="javascript:;" title="确认收货">确认收货</a>
+              <a v-if="navbar=='ALL'?(item1.type == '02'  && item1.checkStatus == true && item1.orderStatus != '01'):btn.qrsk" class="payment-btn" href="javascript:;" @click="skcilck(item1,index1)" title="确认收款">确认收款</a>
+              <a v-if="navbar=='ALL'?(item1.type != '02' && item1.deliveryStatus == '03' && item1.orderStatus == '01'):btn.pl" class="payment-btn" href="javascript:;" title="评价">评价</a>
               <a v-if="navbar=='ALL'?(item1.deliveryStatus != '02'):btn.ckwl" class="cancel-btn" href="javascript:;" title="查看物流">查看物流</a>
               <a v-if="navbar=='ALL'?(item1.type == '02' && item1.payStatus == '01'):btn.txjy" class="payment-btn" href="javascript:;" title="提醒检验">提醒检验</a>
             </div>
@@ -311,7 +311,24 @@
       cellClick(item) {
         this.$router.push({path: 'orderDetail', query: {id:item.id}})
       },
-
+      skcilck(item,index){
+        var res = {
+          id: item.id,
+          orderstatus:'01',
+          deliverystatus:'03'
+        }
+        updateOrder(res).then(response => {
+          Toast({
+            message: '确认收款成功！',
+            position: 'bottom',
+            duration: 5000
+          });
+          setTimeout(() => {
+            this.reload()
+          }, 1000)
+        }).catch(() => {
+        })
+      },
 
       //调用微信支付
       weixinPay:function(data){
