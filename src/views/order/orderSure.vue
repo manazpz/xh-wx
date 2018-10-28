@@ -78,18 +78,21 @@
             <router-link :to="{path:'/order/recovery',query:{ids:this.$route.query.ids}}" >{{list.types}}
             </router-link>
         </li>
-        <!--<li>-->
-          <!--<span>新用户优惠劵</span>-->
-          <!--<a href="javascript:;" class="number-color">￥300</a>-->
-        <!--</li>-->
-        <!--<li>-->
-          <!--<span>优惠劵</span>-->
-          <!--<a href="javascript:;" class="right-arrow popip-discount-btn">3张可用</a>-->
-        <!--</li>-->
-        <!--<li>-->
-          <!--<span>换机专享优惠</span>-->
-          <!--<a href="javascript:;" class="right-arrow">6张可用</a>-->
-        <!--</li>-->
+        <li v-if="xcList.length >0">
+          <span>{{xcList[0].typeName}}</span>
+          <a v-if="couponPrice != 0" @click="queryCoupon('XC')" href="javascript:;" class="number-color">￥{{couponPrice}}</a>
+          <a v-else @click="queryCoupon('XC')" href="javascript:;" class="number-color">{{xcList.length}}张可用</a>
+        </li>
+        <li v-if="pcList.length >0">
+          <span>{{pcList[0].typeName}}</span>
+          <a v-if="ptCouponPrice != 0" @click="queryCoupon('PC')" href="javascript:;" class="right-arrow popip-discount-btn">{{ptCouponPrice}}</a>
+          <a v-else @click="queryCoupon('PC')" href="javascript:;" class="right-arrow popip-discount-btn">{{pcList.length}}张可用</a>
+        </li>
+        <li v-if="hcList.length >0">
+          <span>{{hcList[0].typeName}}</span>
+          <a v-if="hjCouponPrice != 0" @click="queryCoupon(HC)" href="javascript:;" class="right-arrow">{{hjCouponPrice}}</a>
+          <a v-else @click="queryCoupon(HC)" href="javascript:;" class="right-arrow">{{hcList.length}}张可用</a>
+        </li>
       </ul>
       <!--<div class="rule-p">-->
         <!--<p><span>优惠规则</span><i></i></p>-->
@@ -97,7 +100,7 @@
     </div>
 
     <div class="footer-appraisal">
-      <span>合计：<strong><b>￥</b> <em v-model="price" class="aggregate-amount">{{sData.sumNewPrice - sData.sumOldPrice}}</em></strong></span>
+      <span>合计：<strong><b>￥</b> <em v-model="price" class="aggregate-amount">{{sData.sumNewPrice - sData.sumOldPrice - couponPrice -ptCouponPrice - hjCouponPrice}}</em></strong></span>
       <a href="javascript:;" title="订单提交" @click="submit">订单提交</a>
     </div>
   </div>
@@ -106,6 +109,7 @@
   import {  instertOrder } from 'api/order'
   import { queryAddress } from 'api/address'
   import { queryReplacementCar, queryrecoveryList } from 'api/goods'
+  import { queryCouponUser } from 'api/coupon'
   import { pay } from 'api/wx'
   import { queryUserinfos } from 'api/system'
   import VHeader from 'components/v-header/v-header'
@@ -118,7 +122,13 @@
         data: {newGoods:[{imgs:[]}],oldGoods:[{imgs:[]}]},
         list: {types: ''},
         wx: null,
+        xcList: [],
+        pcList: [],
+        hcList: [],
         openid: '',
+        couponPrice: 0,
+        ptCouponPrice: 0,
+        hjCouponPrice: 0,
         price: '',
         address: [],
         sData: {
@@ -130,8 +140,16 @@
     created() {
       this.openid = window.localStorage.getItem("openId");
       this.list.types = this.$route.query.check
+      if(this.$route.query.type === 'XC'){
+        this.couponPrice = this.$route.query.price
+      }else if(this.$route.query.type === 'PC'){
+        this.ptCouponPrice = this.$route.query.price
+      }else if(this.$route.query.type === 'HC'){
+        this.hjCouponPrice = this.$route.query.price
+      }
       this.getData();
       this.getList();
+      this.getCoupon();
     },
     methods: {
       getList() {
@@ -167,6 +185,31 @@
         }).catch(() => {
         })
       },
+      getCoupon(){
+        queryCouponUser({openId:this.openId}).then(response => {
+          if (response.code === 200) {
+            if(response.data.items != undefined){
+              response.data.items .forEach((value,index) => {
+                switch (value.type) {
+                  case 'XC' :
+                    this.xcList.push(value)
+                    return;
+                  case 'PC' :
+                    this.pcList.push(value)
+                    return;
+                  case 'HC' :
+                    this.hcList.push(value)
+                    return;
+                }
+              })
+            }
+          }
+        }).catch(() => {
+        })
+      },
+      queryCoupon(item){
+        this.$router.push({path: '/coupon/getCoupon', query: {ids:this.$route.query.ids,item:item}})
+      },
       submit() {
         if(this.address.length > 0){
           queryUserinfos({openId:this.openid}).then(response => {
@@ -177,7 +220,7 @@
             }
           }).catch(() => {
           })
-          this.data.price = this.sData.sumNewPrice - this.sData.sumOldPrice
+          this.data.price = this.sData.sumNewPrice - this.sData.sumOldPrice - this.couponPrice - this.ptCouponPrice - this.hjCouponPrice
           this.data.openId = this.openid
           this.data.type = this.list.types
           this.data.address = this.address

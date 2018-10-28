@@ -35,7 +35,7 @@
             <span>————————— 确定要退出登陆？ —————————</span>
           </div>
           <div class="btn-box">
-            <a class="maintain-btn" href="javascript:;" title="保持登陆">保持登陆</a>
+            <a @click="keepLoading" class="maintain-btn" href="javascript:;" title="保持登陆">保持登陆</a>
             <a @click="close" class="quit-btn" href="javascript:;" title="退出登陆">退出登陆</a>
           </div>
         </div>
@@ -77,6 +77,9 @@
         window.opener = null
         window.open('about:blank', '_self')
         window.close();
+      },
+      keepLoading(){
+        this.$router.push({path: '/home', query: {}})
       }
 
     },

@@ -56,6 +56,7 @@
     data() {
       return {
         data: [],                        //初始化主题列表数据,
+        list:[{headPortrait:''}],
         showFlag: false,
         openId: undefined
       }

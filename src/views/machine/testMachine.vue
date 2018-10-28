@@ -288,7 +288,7 @@
       },
       confirm() {
         var res = {
-          openid: this.openId,
+          openId: this.openId,
           no:this.temp.no,
           orderNumber:this.temp.id,
           parameter: JSON.stringify(this.temp.parameter),
@@ -300,7 +300,10 @@
               message: "上传成功",
               iconClass: 'mintui mintui-success'
             });
-            // window.location.href = window.location.href.split('/#/')[0]
+            setTimeout(() => {
+              this.$router.back(-1)
+            }, 1000)
+
           }
         }).catch(() => {
         })

@@ -17,7 +17,7 @@
                           <img :src="item.imgs.length>0?item.imgs[0].url:''" >
                       </div>
                       <div class="inf-right">
-                          <h4>{{item.goodsName}} <span v-if="item.del === 'N' || item.logIstcs === '02'">已失效</span></h4>
+                          <h4>{{item.goodsName}} <span v-if="item.del === 'Y' || item.logIstcs === '02'">已失效</span></h4>
                           <p @click="oldSpec(item)">
                              <span>{{item.bllParameterStr}}</span>
                           </p>
@@ -56,7 +56,7 @@
                                 <img :src="item.imgs.length>0?item.imgs[0].url:''">
                             </div>
                             <div class="inf-right">
-                                <h4>{{item.goodsName}}<span v-if="item.del === 'N' || item.logIstcs === '02'">已失效</span></h4>
+                                <h4>{{item.goodsName}}<span v-if="item.del === 'Y' || item.logIstcs === '02'">已失效</span></h4>
                                 <p class="p-inf">
                                     <a href="javascript:;" target="_top" @click="newSpec(item)">
                                         <span class="pXh">{{item.bllParameterStr}}</span>

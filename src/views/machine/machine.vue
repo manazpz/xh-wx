@@ -46,11 +46,13 @@
       return {
         data: [],
         query: {
-          checkStatus:'01'
+          checkStatus:'01',
+          openId: ''
         }
       }
     },
     created() {
+      this.openId = window.localStorage.getItem("openId")
       this.getList();
     },
     methods: {

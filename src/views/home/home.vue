@@ -33,7 +33,7 @@
               </a>
             </li>
             <li>
-              <!--<p>新人可领取200元大礼包</p>-->
+              <p @click="couponList">新人可领取{{price}}元大礼包</p>
             </li>
           </ul>
           <mt-button size="large" class="exchange-btn" @click="tradeUp">换购新机</mt-button>
@@ -74,6 +74,7 @@
   import { queryBanners, queryChoiceList } from 'api/home'
   import { queryStatement } from 'api/statement'
   import { queryGoodsList, queryGoodsLableList } from 'api/goods'
+  import { queryCouponList } from 'api/coupon'
   import VHeader from 'components/v-header/v-header'
   import Sidebar from 'components/sidebar/sidebar'
 
@@ -84,6 +85,7 @@
         newGoods: [],
         banners: [],
         statements: [],
+        price: 0,
         hgGoods: undefined
       }
     },
@@ -93,6 +95,7 @@
       this.getStatement()
       this.getHgGoods()
       this.getNewGoods()
+      this.getCoupon()
     },
     methods: {
       showSidebar() {
@@ -110,6 +113,18 @@
         queryBanners(val).then(response => {
           if (response.code === 200) {
             this.banners = response.data.items
+          }
+        }).catch(() => {
+        })
+      },
+      getCoupon(){
+        queryCouponList({status:'01',type:'XC'}).then(response => {
+          if (response.code === 200) {
+            if(response.data.items != undefined){
+              response.data.items .forEach((value,index) => {
+                this.price += value.price
+              })
+            }
           }
         }).catch(() => {
         })
@@ -141,6 +156,9 @@
           }
         }).catch(() => {
         })
+      },
+      couponList(){
+        this.$router.push({path: '/coupon/couponList', query: {}})
       }
     },
     //注册组件

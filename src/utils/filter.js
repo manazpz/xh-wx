@@ -19,7 +19,7 @@ export function payStatus(status) {
 }
 
 export function orderType(status) {
-  switch (status.payStatus) {
+  switch (status.type) {
     case '01' :
       return '购买新机';
     case '02' :

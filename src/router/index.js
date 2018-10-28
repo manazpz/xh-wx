@@ -31,6 +31,9 @@ const machine = () => import('../views/machine/machine')
 const testMachine = () => import('../views/machine/testMachine')
 const payment = () => import('../views/order/payment')
 const visitRecovery = () => import('../views/order/visitRecovery')
+const couponList = () => import('../views/coupon/couponList')
+const myCoupon = () => import('../views/coupon/myCoupon')
+const getCoupon = () => import('../views/coupon/getCoupon')
 
 export const constantRouterMap = [
   {
@@ -66,9 +69,9 @@ export const constantRouterMap = [
     meta: { title: '置换车', icon: '/static/image/icon_li_03.png' }
   },
   {
-    path: '/coupon',
-    name: 'coupon',
-    component: Home,
+    path: '/coupon/myCoupon',
+    name: 'myCoupon',
+    component: myCoupon,
     meta: { title: '优惠券', icon: '/static/image/icon_li_04.png' }
   },
   // {
@@ -234,6 +237,27 @@ export const constantRouterMap = [
     component: visitRecovery,
     hidden: true,
     meta: { title: '选择收款方式' }
+  },
+  {
+    path: '/coupon/couponList',
+    name: 'couponList',
+    component: couponList,
+    hidden: true,
+    meta: { title: '优惠券' }
+  },
+  {
+    path: '/coupon/myCoupon',
+    name: 'myCoupon',
+    component: myCoupon,
+    hidden: true,
+    meta: { title: '我的优惠券' }
+  },
+  {
+    path: '/coupon/getCoupon',
+    name: 'getCoupon',
+    component: getCoupon,
+    hidden: true,
+    meta: { title: '可使用优惠券' }
   }
 ]
 

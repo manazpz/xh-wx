@@ -21,7 +21,7 @@
             <div class="calculation-main" title="换购明细">
               <div class="big-title">
                 <i></i>
-                <span>{{item1.type|orderType}}</span>
+                <span>{{item1|orderType}}</span>
                 <strong>{{item1|payStatus}}</strong>
               </div>
               <div class="c-des-list" v-if="item1.oldOrder.item.length > 0 && item1.oldOrder.item[0].id != null">
@@ -73,16 +73,16 @@
                     共<span>{{item1.newOrder.item.length}}</span>件商品&nbsp;&nbsp;小计：<strong>￥{{item1.newOrder.sum}}</strong>
                   </div>
                   <div v-if="item1.newOrder.item.length > 0 && item1.oldOrder.item.length > 0" class="subtotal-box">
-                    合计：<strong class="color-red">￥{{item1.sum}}</strong>
+                    合计：<strong class="color-red">￥{{item1.price}}</strong>
                   </div>
               </div>
             </div>
             <div  class="btn-box">
-              <a v-if="navbar=='ALL'?(item1.type == '03' && item1.payStatus == '01'):btn.fk" class="payment-btn" href="javascript:;" @click="fkcilck(item1,index1)" title="付款">付款</a>
-              <a v-if="navbar=='ALL'?(item1.type == '03' && item1.payStatus == '01'):btn.qxfk" class="cancel-btn" href="javascript:;" @click="qxcilck(item1,index1)" title="取消订单">取消订单</a>
-              <a v-if="navbar=='ALL'?(item1.deliveryStatus == '01'):btn.qrsh" class="payment-btn" href="javascript:;" title="确认收款">确认收货</a>
-              <a v-if="navbar=='ALL'?(item1.deliveryStatus == '01'):btn.qrsk" class="payment-btn" href="javascript:;" title="确认收款">确认收款</a>
-              <a v-if="navbar=='ALL'?(item1.deliveryStatus == '03'):btn.pl" class="payment-btn" href="javascript:;" title="评价">评价</a>
+              <a v-if="navbar=='ALL'?(item1.type == '03' && item1.payStatus == '01' && item1.price >0):btn.fk" class="payment-btn" href="javascript:;" @click="fkcilck(item1,index1)" title="付款">付款</a>
+              <a v-if="navbar=='ALL'?(item1.orderStatus != '01' && item1.payStatus != '02'):btn.qxfk" class="cancel-btn" href="javascript:;" @click="qxcilck(item1,index1)" title="取消订单">取消订单</a>
+              <a v-if="navbar=='ALL'?(item1.deliveryStatus != '03' && item1.payStatus != '01'):btn.qrsh" class="payment-btn" href="javascript:;" title="确认收货">确认收货</a>
+              <a v-if="navbar=='ALL'?(item1.type == '02'  && item1.checkStatus == '01'):btn.qrsk" class="payment-btn" href="javascript:;" title="确认收款">确认收款</a>
+              <a v-if="navbar=='ALL'?(item1.deliveryStatus == '03' && item1.orderStatus == '01'):btn.pl" class="payment-btn" href="javascript:;" title="评价">评价</a>
               <a v-if="navbar=='ALL'?(item1.deliveryStatus != '02'):btn.ckwl" class="cancel-btn" href="javascript:;" title="查看物流">查看物流</a>
               <a v-if="navbar=='ALL'?(item1.type == '02' && item1.payStatus == '01'):btn.txjy" class="payment-btn" href="javascript:;" title="提醒检验">提醒检验</a>
             </div>
