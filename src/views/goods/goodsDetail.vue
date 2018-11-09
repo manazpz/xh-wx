@@ -46,6 +46,34 @@
         </li>
       </ul>
     </div>
+    <div class="pl-list">
+      <ul class="clearfix">
+        <li class="pl-li">
+          <span>评价</span>
+          <div>
+            <p v-if="avar == ''"><em>好评率：暂无评价</em></p>
+            <p v-else><em>好评率：{{avar}}%</em></p>
+          </div>
+        </li>
+        <li class="pl-li" v-for="item in commentShort">
+          <span class="span-pl">评论：{{item.content}}</span>
+          <div class="name-pl">
+            <p><em>{{item.nick_name}}</em></p>
+          </div>
+          <ul class="clearfix" v-if="replays.length> 0">
+            <li v-for="item1 in replays">
+              <span v-if="item1.orderId == item.orderId" class="span-pl">回复:{{item1.content}}</span>
+              <div class="name-pl">
+                <p><em v-if="item1.orderId == item.orderId">{{item1.revierer_nick_name}}</em></p>
+              </div>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <div class="pl-btn">
+        <a @click="showAll" href="javascript:;">全部评论</a>
+      </div>
+    </div>
     <!-->
     <popup v-model="detail" :popupVisible="showPopup" ref="popup" @submit-update="updatePop"></popup>
     <div class="footer-shopping-cart">
@@ -59,7 +87,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import { queryGoodsDetail } from 'api/goods'
+  import { queryGoodsDetail, queryGoodsComment } from 'api/goods'
   import { insertCollect } from 'api/collect'
   import VHeader from 'components/v-header/v-header'
   import { Toast } from 'mint-ui'
@@ -74,12 +102,20 @@
         maxPrice: 0,
         minPrice: 0,
         specText: '机身颜色，套餐类型，存储容量，版本类型',
-        showPopup: true
+        showPopup: true,
+        comment: [],
+        replays: [],
+        commentShort: [],
+        list: [],
+        count: 0,
+        num: 0,
+        avar: ''
       }
     },
     created() {
       this.openId = window.localStorage.getItem("openId")
       this.getDetail()
+      this.getComment()
     },
     methods: {
       getDetail() {
@@ -92,6 +128,30 @@
           }
         }).catch(() => {
         })
+      },
+      getComment(){
+        queryGoodsComment({goodsId:this.$route.query.id}).then(response => {
+          if (response.code === 200) {
+            response.data.items .forEach((value,index) => {
+              if(value.ref_no == null || value.ref_no == ''){
+                this.count += parseInt(value.star)
+                this.num ++;
+                this.comment.push(value)
+              }else{
+                this.replays.push(value)
+              }
+            })
+            if(response.data.items.length > 0){
+              this.commentShort.push(this.comment[0])
+              this.avar = this.count/this.num/5*100
+              this.avar.toFixed(2)
+            }
+          }
+        }).catch(() => {
+        })
+      },
+      showAll(){
+        this.commentShort = this.comment
       },
       openPopup() {
         this.$refs.popup.open()

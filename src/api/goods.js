@@ -93,3 +93,11 @@ export function queryrecoveryList(query) {
     params: query
   })
 }
+
+export function queryGoodsComment(query) {
+  return request({
+    url: '/api/goods/queryGoodsComment',
+    method: 'get',
+    params: query
+  })
+}

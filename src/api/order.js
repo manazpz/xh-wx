@@ -21,6 +21,12 @@ export function updateOrder(params) {
     data: params
   })
 }
-
+export function insertRate(params) {
+  return request({
+    url: '/api/order/insertRate',
+    method: 'POST',
+    data: params
+  })
+}
 
 

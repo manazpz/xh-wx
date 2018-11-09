@@ -10,9 +10,9 @@
           <li @click="qh('DSXJ',{deliveryStatus:'01',model:'01'})" ref="DSXJ"><a href="javascript:;">待收新机</a></li>
           <li @click="qh('DSJJ',{deliveryStatus:'01',model:'02'})" ref="DSJJ"><a href="javascript:;">待收旧机</a></li>
 
-          <li @click="qh('DSK',{payStatus:'04',model:'02'})" ref="DSK"><a href="javascript:;">待收款</a></li>
+          <li @click="qh('DSK',{checkStatus:'02',model:'02'})" ref="DSK"><a href="javascript:;">待收款</a></li>
 
-          <li @click="qh('DPL',{deliveryStatus:'03',model:'01'})" ref="DPL"><a href="javascript:;">待评价</a></li>
+          <li @click="qh('DPL',{deliveryStatus:'04',model:'01'})" ref="DPL"><a href="javascript:;">待评价</a></li>
         </ul>
       </div>
       <div v-if="data.length > 0">
@@ -78,13 +78,13 @@
               </div>
             </div>
             <div  class="btn-box">
-              <a v-if="navbar=='ALL'?(item1.type == '03' && item1.payStatus == '01' && item1.price >0):btn.fk" class="payment-btn" href="javascript:;" @click="fkcilck(item1,index1)" title="付款">付款</a>
-              <a v-if="navbar=='ALL'?(item1.orderStatus != '01' && item1.payStatus != '02'):btn.qxfk" class="cancel-btn" href="javascript:;" @click="qxcilck(item1,index1)" title="取消订单">取消订单</a>
-              <a v-if="navbar=='ALL'?(item1.deliveryStatus != '03' && item1.payStatus != '01' && item1.type == '01'):btn.qrsh" class="payment-btn" href="javascript:;" title="确认收货">确认收货</a>
-              <a v-if="navbar=='ALL'?(item1.type == '02'  && item1.checkStatus == true && item1.orderStatus != '01'):btn.qrsk" class="payment-btn" href="javascript:;" @click="skcilck(item1,index1)" title="确认收款">确认收款</a>
-              <a v-if="navbar=='ALL'?(item1.type != '02' && item1.deliveryStatus == '03' && item1.orderStatus == '01'):btn.pl" class="payment-btn" href="javascript:;" title="评价">评价</a>
-              <a v-if="navbar=='ALL'?(item1.deliveryStatus != '02'):btn.ckwl" class="cancel-btn" href="javascript:;" title="查看物流">查看物流</a>
-              <a v-if="navbar=='ALL'?(item1.type == '02' && item1.payStatus == '01'):btn.txjy" class="payment-btn" href="javascript:;" title="提醒检验">提醒检验</a>
+              <a v-if="navbar=='ALL'?(item1.type != '02' && item1.payStatus == '01' && item1.price >0):btn.fk" class="payment-btn" href="javascript:;" @click="fkcilck(item1,index1)" title="付款">付款</a>
+              <a v-if="navbar=='ALL'?(item1.orderStatus != '01' && item1.payStatus == '01'):btn.qxfk" class="cancel-btn" href="javascript:;" @click="qxcilck(item1,index1)" title="取消订单">取消订单</a>
+              <a v-if="navbar=='ALL'?((item1.deliveryStatus == '01' || item1.deliveryStatus == '03') && item1.payStatus == '02' && item1.type == '01'):btn.qrsh" class="payment-btn" href="javascript:;" @click="qrshcilck(item1,index1)" title="确认收货">确认收货</a>
+              <a v-if="navbar=='ALL'?(item1.type != '01' && item1.price < 0 && item1.checkStatus == true && item1.orderStatus != '01'):btn.qrsk" class="payment-btn" href="javascript:;" @click="skcilck(item1,index1)" title="确认收款">确认收款</a>
+              <a v-if="navbar=='ALL'?(item1.type == '01' && item1.deliveryStatus == '03' && item1.orderStatus == '01'):btn.pl" class="payment-btn" href="javascript:;" @click="pjcilck(item1,index1)" title="评价">评价</a>
+              <a v-if="navbar=='ALL'?(item1.payStatus == '02' && item1.orderStatus != '01'):btn.ckwl" class="cancel-btn" href="javascript:;" title="查看物流">查看物流</a>
+              <a v-if="navbar=='ALL'?(item1.type != '01' && item1.checkStatus == false):btn.txjy" class="payment-btn" href="javascript:;" @click="txjccilck(item1,index1)" title="提醒检验">提醒检验</a>
             </div>
             <div class="line" v-if="index1 != 0"></div>
           </div>
@@ -133,6 +133,7 @@
         openId: '',
         temp:{
           id: '',
+          type: '',
           orderId: '',
           openId: '',
           goodsName: '',
@@ -226,8 +227,8 @@
           case 'DSXJ' :
             this.btn.fk = false
             this.btn.qxfk = false
-            this.btn.qrsh = false
-            this.btn.qrsk = true
+            this.btn.qrsh = true
+            this.btn.qrsk = false
             this.btn.ckwl = true
             this.btn.pl = false
             this.btn.txjy = false
@@ -286,6 +287,26 @@
         }).catch(() => {
         })
       },
+      qrshcilck(item,index){
+        var res = {
+          id: item.id,
+          openId: this.openId,
+          orderstatus:'01',
+          deliverystatus:'04',
+          status: '05'
+        }
+        updateOrder(res).then(response => {
+          Toast({
+            message: '确认收货成功！',
+            position: 'bottom',
+            duration: 5000
+          });
+          setTimeout(() => {
+            this.reload()
+          }, 1000)
+        }).catch(() => {
+        })
+      },
       qxcilck(item,index) {
         $('.popup-choice-wrap').fadeIn();
         $('.popup-choice-wrap .cancel-btn').click(function() {
@@ -295,6 +316,8 @@
         $('.popup-choice-wrap .confirm-btn').click(function() {
           this.temp.id = item.id
           this.temp.paystatus = '03'
+          this.temp.openId = this.openId
+          this.temp.type = '03'
           updateOrder(this.temp).then(response => {
             Toast({
               message: '订单取消成功！',
@@ -308,14 +331,23 @@
           })
         })
       },
+      txjccilck(item,index){
+        Toast({
+          message: '已提醒工作人员上门检测！',
+          position: 'bottom',
+          duration: 5000
+        });
+      },
       cellClick(item) {
         this.$router.push({path: 'orderDetail', query: {id:item.id}})
       },
       skcilck(item,index){
         var res = {
           id: item.id,
+          openId: this.openId,
           orderstatus:'01',
-          deliverystatus:'03'
+          deliverystatus:'03',
+          status: '04'
         }
         updateOrder(res).then(response => {
           Toast({
@@ -329,7 +361,9 @@
         }).catch(() => {
         })
       },
-
+      pjcilck(item,index){
+        this.$router.push({path: '/order/evaluate', query: {item:item.newOrder}})
+      },
       //调用微信支付
       weixinPay:function(data){
         var vm= this;

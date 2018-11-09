@@ -20,9 +20,11 @@ const collect = () => import('../views/collect/collect')
 const AddressEdit = () => import('../views/address/addressEdit')
 const ManaAddress = () => import('../views/address/manaAddress')
 const customService = () => import('../views/customService/customService')
+const layIm = () => import('../views/customService/layIm')
 const setting = () => import('../views/setting/setting')
 const about = () => import('../views/setting/about')
 const user = () => import('../views/user/user')
+const news = () => import('../views/news/myNews')
 const encyclopedias = () => import('../views/user/encyclopedias')
 const authentication = () => import('../views/user/authentication')
 const accountBingDing = () => import('../views/user/account-bingding')
@@ -34,6 +36,7 @@ const visitRecovery = () => import('../views/order/visitRecovery')
 const couponList = () => import('../views/coupon/couponList')
 const myCoupon = () => import('../views/coupon/myCoupon')
 const getCoupon = () => import('../views/coupon/getCoupon')
+const evaluate = () => import('../views/order/evaluate')
 
 export const constantRouterMap = [
   {
@@ -74,17 +77,24 @@ export const constantRouterMap = [
     component: myCoupon,
     meta: { title: '优惠券', icon: '/static/image/icon_li_04.png' }
   },
-  // {
-  //   path: '/news',
-  //   name: 'news',
-  //   component: Home,
-  //   meta: { title: '消息', icon: '/static/image/icon_li_05.png' }
-  // },
   {
-    path: '/cs',
-    name: 'cs',
+    path: '/news',
+    name: 'news',
+    component: news,
+    meta: { title: '消息', icon: '/static/image/icon_li_05.png' }
+  },
+  {
+    path: '/customService',
+    name: 'customService ',
     component: customService,
     meta: { title: '客服', icon: '/static/image/icon_li_06.png' }
+  },
+  {
+    path: '/customService/layIm',
+    name: 'layIm',
+    hidden: true,
+    component: layIm,
+    meta: { title: '客服' }
   },
   {
     path: '/setting',
@@ -237,6 +247,13 @@ export const constantRouterMap = [
     component: visitRecovery,
     hidden: true,
     meta: { title: '选择收款方式' }
+  },
+  {
+    path: '/order/evaluate',
+    name: 'evaluate',
+    component: evaluate,
+    hidden: true,
+    meta: { title: '评价' }
   },
   {
     path: '/coupon/couponList',

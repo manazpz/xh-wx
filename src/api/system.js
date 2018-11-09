@@ -3,7 +3,8 @@ import request from '../utils/request'
 export function queryCustomService(query) {
   return request({
     url: '/sys/customServices',
-    method: 'get'
+    method: 'get',
+    params: query
   })
 }
 
@@ -34,5 +35,12 @@ export function sendmsg(params) {
     url: '/api/user/send',
     method: 'POST',
     data: params
+  })
+}
+export function getUserIminfo(query) {
+  return request({
+    url: '/api/user/imList',
+    method: 'get',
+    params: query
   })
 }

@@ -16,7 +16,7 @@
                       <div class="pic-left">
                           <img :src="item.imgs.length>0?item.imgs[0].url:''" >
                       </div>
-                      <div class="inf-right">
+                      <div class="inf-right"  @click="goodsDetail(item)">
                           <h4>{{item.goodsName}} <span v-if="item.del === 'Y' || item.logIstcs === '02'">已失效</span></h4>
                           <p @click="oldSpec(item)">
                              <span>{{item.bllParameterStr}}</span>
@@ -26,9 +26,7 @@
                           </div>
                           <div class="inf-r-price">
                               <span>预计一周后再降￥30</span>
-                            <router-link :to="{path:'/quote/detail',query:{id:item.bllId,openId:'123456'}}">
                               <strong><b>￥</b><em>{{item.bllPrice}}</em></strong>
-                            </router-link>
                           </div>
                       </div>
                   </div>
@@ -49,13 +47,13 @@
                 {content: '删除',
                 style: { background: '#27c080', color: '#fff', lineHeight: '115px' },
                 handler: () => deleteGoods(item)}]">
-                    <div class="model-box">
+                    <div class="model-box" >
                         <div class="left-b-box">
                             <i class="sign-i" @click="oldCheck(item,$event,item.bllId)"></i>
                             <div class="pic-left">
                                 <img :src="item.imgs.length>0?item.imgs[0].url:''">
                             </div>
-                            <div class="inf-right">
+                            <div class="inf-right" @click="goodsDetail(item)">
                                 <h4>{{item.goodsName}}<span v-if="item.del === 'Y' || item.logIstcs === '02'">已失效</span></h4>
                                 <p class="p-inf">
                                     <a href="javascript:;" target="_top" @click="newSpec(item)">
@@ -67,9 +65,7 @@
                                 </div>
                                 <div class="inf-r-price">
                                     <span>预计一周后再降￥30</span>
-                                  <router-link :to="{path:'/quote/detail',query:{id:item.bllId,openId:'123456'}}">
                                     <strong><b>￥</b><em>{{item.bllPrice}}</em></strong>
-                                  </router-link>
                                 </div>
                             </div>
                         </div>
@@ -85,7 +81,8 @@
     </div>
     <div class="footer-appraisal1" @click="confirm">
       <span>合计：<strong><b>￥</b> <em class="aggregate-amount">{{temp.price}}</em></strong></span>
-      <p>提交</p>
+      <!--<p>提交</p>-->
+      <a href="javascript:;" title="订单提交">订单提交</a>
     </div>
     <div class="popup-choice-wrap" title="是否删除弹窗">
       <div class="choice-box">
@@ -190,6 +187,9 @@
         }else{
           this.$router.push({path: 'screening', query: {model:'02'}})
         }
+      },
+      goodsDetail(item){
+        this.$router.push({path: '/quote/detail', query: {id:item.bllId,openId:this.openId}})
       },
       deleteGoods(item) {
         this.bllId = item.bllId

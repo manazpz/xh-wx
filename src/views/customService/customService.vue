@@ -1,11 +1,11 @@
 <template>
   <div class="customService" ref="customService">
     <v-header title="客服"></v-header>
-    <div class="my-custom-service layer-load">
+    <div class="my-custom-service">
       <div class="service-main-list">
         <ul>
           <li><a class="telephone-btn" href="javascript:;" @click="dialing" :title="info.phone"><img src="/static/image/icon_li_08.png">400-489-8855</a></li>
-          <li><a href="javascript:;" title="在线客服"><img src="/static/image/icon_li_06.png">在线客服</a></li>
+          <li><a href="javascript:;" @click="customIm" title="在线客服"><img src="/static/image/icon_li_06.png">在线客服</a></li>
         </ul>
         <p class="service-p">服务时间：每日  9：00 - 18：00</p>
       </div>
@@ -21,14 +21,14 @@
   export default {
     data() {
       return {
-        info: undefined
+        info: {phone:''}
       }
     },
     created() {
-      this.getInfo()
+      this.getList()
     },
     methods: {
-      getInfo() {
+      getList() {
         queryCustomService().then(response => {
           if (response.code === 200) {
             this.info = response.data.items
@@ -47,13 +47,15 @@
           if (action === 'confirm') {
           }
         });
+      },
+      customIm(){
+        this.$router.push({path: '/customService/layIm', query: {}})
       }
     },
     //注册组件
     components: {
       VHeader
     }
-
   }
 </script>
 
