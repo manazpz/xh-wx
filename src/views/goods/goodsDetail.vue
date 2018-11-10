@@ -60,14 +60,10 @@
           <div class="name-pl">
             <p><em>{{item.nick_name}}</em></p>
           </div>
-          <ul class="clearfix" v-if="replays.length> 0">
-            <li v-for="item1 in replays">
-              <span v-if="item1.orderId == item.orderId" class="span-pl">回复:{{item1.content}}</span>
-              <div class="name-pl">
-                <p><em v-if="item1.orderId == item.orderId">{{item1.revierer_nick_name}}</em></p>
-              </div>
-            </li>
-          </ul>
+          <span class="span-pl">回复：{{item.replaycontent}}</span>
+          <div class="name-pl">
+            <p><em>{{item.revierer_nick_name}}</em></p>
+          </div>
         </li>
       </ul>
       <div class="pl-btn">
@@ -130,6 +126,7 @@
         })
       },
       getComment(){
+        var tar =this
         queryGoodsComment({goodsId:this.$route.query.id}).then(response => {
           if (response.code === 200) {
             response.data.items .forEach((value,index) => {
@@ -141,11 +138,20 @@
                 this.replays.push(value)
               }
             })
+
             if(response.data.items.length > 0){
               this.commentShort.push(this.comment[0])
               this.avar = this.count/this.num/5*100
               this.avar.toFixed(2)
             }
+            this.comment.forEach((value1,index1) => {
+              this.replays.forEach((value2,index2) => {
+                  if(value2.orderId === value1.orderId){
+                    value1['replaycontent'] = value2.content;
+                    value1['revierer_nick_name'] = value2.revierer_nick_name;
+                  }
+              })
+            })
           }
         }).catch(() => {
         })

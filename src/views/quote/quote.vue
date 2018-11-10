@@ -22,7 +22,7 @@
                              <span>{{item.bllParameterStr}}</span>
                           </p>
                           <div class="increase-change">
-                              <span class="reduce">-</span><i class="number">1</i><span class="add">+</span>
+                              <span @click="numreduceclick(item,$event,'reduce')" class="reduce">-</span><i class="number">1</i><span @click="numaddclick(item,$event,'add')" class="add">+</span>
                           </div>
                           <div class="inf-r-price">
                               <span>预计一周后再降￥30</span>
@@ -147,6 +147,9 @@
         checksCheck: '',
         checksData: [],
         bllId: '',
+        number: 1,
+        count: 0,
+        jump: true,
         updateOldGoods: '',
         popupVisibleOld: false,
         popupVisibleNew: false,
@@ -189,7 +192,11 @@
         }
       },
       goodsDetail(item){
-        this.$router.push({path: '/quote/detail', query: {id:item.bllId,openId:this.openId}})
+       if(this.jump){
+         this.$router.push({path: '/quote/detail', query: {id:item.bllId,openId:this.openId}})
+       }else {
+         this.jump = true
+       }
       },
       deleteGoods(item) {
         this.bllId = item.bllId
@@ -281,24 +288,58 @@
       showFlag(index){
         this.flag = index
       },
+      numreduceclick(item,evn,pro){
+        this.jump = false
+        this.number = evn.target.parentElement.children[1].innerHTML
+        this.count = this.number
+        this.number --
+        if (this.number < 1) {
+          this.number = 1;
+        }
+        evn.target.parentElement.children[1].innerHTML = this.number
+        var price = $('.footer-appraisal1').find('em').html()
+        if( this.count > 1){
+          var sum = evn.target.parentElement.nextElementSibling.children[1].children[1].innerHTML
+          evn.target.parentElement.nextElementSibling.children[1].children[1].innerHTML = parseFloat(sum)-parseFloat(item.bllPrice)
+          $('.footer-appraisal1').find('em').html(parseFloat(price) + parseFloat(item.bllPrice))
+        }else{
+          $('.footer-appraisal1').find('em').html(parseFloat(price))
+        }
+      },
+      numaddclick(item,evn){
+        this.jump = false
+        this.number = evn.target.parentElement.children[1].innerHTML
+        this.number ++
+        if (this.number >= 99) {
+          this.number = 99;
+        }
+        evn.target.parentElement.children[1].innerHTML = this.number
+        evn.target.parentElement.nextElementSibling.children[1].children[1].innerHTML = parseFloat(item.bllPrice)*this.number
+        var price = $('.footer-appraisal1').find('em').html()
+        $('.footer-appraisal1').find('em').html(parseFloat(price) - parseFloat(item.bllPrice))
+      },
       oldCheck(item,evn,val) {
         if(this.oldChecks.indexOf(val) > -1) {
           this.oldChecks.splice(this.oldChecks.indexOf(val),1)
           evn.toElement.className = "sign-i"
           if(item.model === '01') {
             this.temp.price = parseFloat(this.temp.price) - parseFloat(item.bllPrice)
+            $('.footer-appraisal1').find('em').html(this.temp.price)
           }
           if(item.model === '02') {
             this.temp.price = parseFloat(this.temp.price) + parseFloat(item.bllPrice)
+            $('.footer-appraisal1').find('em').html(this.temp.price)
           }
         }else {
           this.oldChecks.push(val)
           evn.toElement.className = "sign-on"
           if(item.model === '01') {
             this.temp.price = parseFloat(this.temp.price) + parseFloat(item.bllPrice)
+            $('.footer-appraisal1').find('em').html(this.temp.price)
           }
           if(item.model === '02') {
             this.temp.price = parseFloat(this.temp.price) - parseFloat(item.bllPrice)
+            $('.footer-appraisal1').find('em').html(this.temp.price)
           }
         }
       },
