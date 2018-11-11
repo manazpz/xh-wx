@@ -37,6 +37,7 @@ const couponList = () => import('../views/coupon/couponList')
 const myCoupon = () => import('../views/coupon/myCoupon')
 const getCoupon = () => import('../views/coupon/getCoupon')
 const evaluate = () => import('../views/order/evaluate')
+const logistics = () => import('../views/order/logistics')
 
 export const constantRouterMap = [
   {
@@ -143,6 +144,13 @@ export const constantRouterMap = [
     component: orderDetail,
     hidden: true,
     meta: {title: '订单详情'}
+  },
+  {
+    path: '/logistics',
+    name: 'logistics',
+    component: logistics,
+    hidden: true,
+    meta: {title: '物流详情'}
   },
   {
     path: '/statement',

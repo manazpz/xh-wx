@@ -83,7 +83,7 @@
               <a v-if="navbar=='ALL'?((item1.deliveryStatus == '01' || item1.deliveryStatus == '03') && item1.payStatus == '02' && item1.type == '01'):btn.qrsh" class="payment-btn" href="javascript:;" @click="qrshcilck(item1,index1)" title="确认收货">确认收货</a>
               <a v-if="navbar=='ALL'?(item1.type != '01' && item1.price < 0 && item1.checkStatus == true && item1.orderStatus != '01'):btn.qrsk" class="payment-btn" href="javascript:;" @click="skcilck(item1,index1)" title="确认收款">确认收款</a>
               <a v-if="navbar=='ALL'?(item1.type == '01' && item1.deliveryStatus == '03' && item1.orderStatus == '01'):btn.pl" class="payment-btn" href="javascript:;" @click="pjcilck(item1,index1)" title="评价">评价</a>
-              <a v-if="navbar=='ALL'?(item1.payStatus == '02' && item1.orderStatus != '01'):btn.ckwl" class="cancel-btn" href="javascript:;" title="查看物流">查看物流</a>
+              <a v-if="navbar=='ALL'?(item1.payStatus == '02' && item1.orderStatus != '01'):btn.ckwl" class="cancel-btn" href="javascript:;" @click="ckwlcilck(item1,index1)" title="查看物流">查看物流</a>
               <a v-if="navbar=='ALL'?(item1.type != '01' && item1.checkStatus == false):btn.txjy" class="payment-btn" href="javascript:;" @click="txjccilck(item1,index1)" title="提醒检验">提醒检验</a>
             </div>
             <div class="line" v-if="index1 != 0"></div>
@@ -330,6 +330,9 @@
           }).catch(() => {
           })
         })
+      },
+      ckwlcilck(item,index){
+        this.$router.push({path: 'logistics', query: {id:item.id}})
       },
       txjccilck(item,index){
         Toast({

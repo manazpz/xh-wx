@@ -28,5 +28,12 @@ export function insertRate(params) {
     data: params
   })
 }
+export function queryLogistics(query) {
+  return request({
+    url: '/api/order/logistics',
+    method: 'get',
+    params: query
+  })
+}
 
 
