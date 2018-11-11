@@ -92,5 +92,5 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-  @import "encyclopedias.styl";
+  @import "quit.styl";
 </style>

@@ -4,10 +4,10 @@
     <div class="set-main-list">
       <ul>
         <li><a href="javascript:;" @click="jump('/setting/about')" title="关于小换">关于小换</a></li>
-        <li><a href="javascript:;" title="意见反馈">意见反馈</a></li>
-        <li><a href="javascript:;" title="服务条款">服务条款</a></li>
+        <li><a href="javascript:;" @click="jump('/setting/suggestion')" title="意见反馈">意见反馈</a></li>
+        <li><a href="javascript:;" @click="jump('/setting/term?type=FT')" title="服务条款">服务条款</a></li>
         <li><a href="javascript:;" @click="jump('/statement?type=YT')" title="隐私政策">隐私政策</a></li>
-        <li><a href="javascript:;" title="使用帮助">使用帮助</a></li>
+        <li><a href="javascript:;" @click="jump('/setting/help?type=SB')" title="使用帮助">使用帮助</a></li>
       </ul>
     </div>
   </div>

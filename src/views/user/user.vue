@@ -23,9 +23,8 @@
           <li><router-link :to="{path:'/manaAddress',query:{}}">
             收货地址管理
           </router-link></li>
-          <!--<li><a href="javascript:;" @click="jump('/user/encyclopedias')" title="账号百科">账号百科</a></li>-->
-          <li><a href="javascript:;"  title="账号百科">账号百科</a></li>
-          <li><router-link :to="{path:'/user/encyclopedias',query:{}}">
+          <li><a href="javascript:;" @click="jump('/user/encyclopedia?type=ZB')" title="账号百科">账号百科</a></li>
+          <li><router-link :to="{path:'/user/quit',query:{}}">
             退出登陆
           </router-link></li>
         </ul>
@@ -42,7 +41,7 @@
     data() {
       return {
         openId: '',
-        list: null
+        list: {headPortrait:''}
       }
     },
     created() {

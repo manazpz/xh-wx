@@ -23,9 +23,13 @@ const customService = () => import('../views/customService/customService')
 const layIm = () => import('../views/customService/layIm')
 const setting = () => import('../views/setting/setting')
 const about = () => import('../views/setting/about')
+const help = () => import('../views/setting/help')
+const term = () => import('../views/setting/term')
+const suggestion = () => import('../views/setting/suggestion')
 const user = () => import('../views/user/user')
 const news = () => import('../views/news/myNews')
-const encyclopedias = () => import('../views/user/encyclopedias')
+const quit = () => import('../views/user/quit')
+const encyclopedia = () => import('../views/user/encyclopedia')
 const authentication = () => import('../views/user/authentication')
 const accountBingDing = () => import('../views/user/account-bingding')
 const bingDingSuccess = () => import('../views/user/bingding-success')
@@ -108,7 +112,28 @@ export const constantRouterMap = [
     name: 'about',
     hidden: true,
     component: about,
-    meta: { title: '设置' }
+    meta: { title: '关于小换' }
+  },
+  {
+    path: '/setting/help',
+    name: 'help',
+    hidden: true,
+    component: help,
+    meta: { title: '使用帮助' }
+  },
+  {
+    path: '/setting/term',
+    name: 'term',
+    hidden: true,
+    component: term,
+    meta: { title: '服务条款' }
+  },
+  {
+    path: '/setting/suggestion',
+    name: 'suggestion',
+    hidden: true,
+    component: suggestion,
+    meta: { title: '意见反馈' }
   },
   {
     path: '/screening',
@@ -202,11 +227,18 @@ export const constantRouterMap = [
     meta: { title: '用户管理' }
   },
   {
-    path: '/user/encyclopedias',
-    name: 'encyclopedias',
-    component: encyclopedias,
+    path: '/user/quit',
+    name: 'quit',
+    component: quit,
     hidden: true,
-    meta: { title: '用户认证' }
+    meta: { title: '退出登录' }
+  },
+  {
+    path: '/user/encyclopedia',
+    name: 'encyclopedia',
+    component: encyclopedia,
+    hidden: true,
+    meta: { title: '账号百科' }
   },
   {
     path: '/user/authentication',

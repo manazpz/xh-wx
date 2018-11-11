@@ -44,3 +44,10 @@ export function getUserIminfo(query) {
     params: query
   })
 }
+export function insertSuggestion(params) {
+  return request({
+    url: '/api/user/insertSuggestion',
+    method: 'POST',
+    data: params
+  })
+}
