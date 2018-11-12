@@ -1,6 +1,10 @@
 <template>
   <div class="home" ref="home">
-    <v-header title="小换"></v-header>
+    <div class="header" ref="header">
+      <mt-header fixed title="小换" class="osStyle">
+        <mt-button icon="back" slot="left" @click="$router.back(-1)"></mt-button>
+      </mt-header>
+    </div>
     <sidebar ref="sidebar"></sidebar>
     <div class="homeHead">
       <span class="navigation" @click="showSidebar"></span>

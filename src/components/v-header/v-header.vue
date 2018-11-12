@@ -2,6 +2,7 @@
   <div class="header" ref="header">
     <mt-header fixed :title="title" class="osStyle">
       <mt-button icon="back" slot="left" @click="$router.back(-1)"></mt-button>
+      <mt-button style="font-size:15px" slot="right" @click="homeback">返回首页</mt-button>
     </mt-header>
   </div>
 </template>
@@ -16,7 +17,9 @@
       }
     },
     methods: {
-
+      homeback(){
+        this.$router.push({path: '/home', query: {}})
+      }
     }
   };
 </script>
