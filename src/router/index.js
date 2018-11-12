@@ -42,17 +42,25 @@ const myCoupon = () => import('../views/coupon/myCoupon')
 const getCoupon = () => import('../views/coupon/getCoupon')
 const evaluate = () => import('../views/order/evaluate')
 const logistics = () => import('../views/order/logistics')
+const webError = () => import('../views/error/webError')
 
 export const constantRouterMap = [
   {
-    path: '/',
+    path: '/login',
     name: 'login',
     component: Login,
     hidden: true,
     meta: { title: '授权' }
   },
   {
-    path: '/home',
+    path: '/webError',
+    name: 'webError',
+    component: webError,
+    hidden: true,
+    meta: { title: '站点关闭' }
+  },
+  {
+    path: '/',
     name: 'home',
     component: Home,
     hidden: true,

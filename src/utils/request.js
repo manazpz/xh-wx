@@ -33,7 +33,9 @@ service.interceptors.response.use(
     }
   },
   error => {
-    console.log('err' + error)// for debug
+    if(error.request.status === 403) {
+      window.location.href = window.location.origin + '/#/webError'
+    }
     return Promise.reject(error)
   }
 )

@@ -2,7 +2,6 @@
   <div class="home" ref="home">
     <div class="header" ref="header">
       <mt-header fixed title="小换" class="osStyle">
-        <mt-button icon="back" slot="left" @click="$router.back(-1)"></mt-button>
       </mt-header>
     </div>
     <sidebar ref="sidebar"></sidebar>
@@ -94,7 +93,7 @@
       }
     },
     created() {
-      // window.localStorage.setItem('openId','oaCWN0ns9o_IjsXbeRQtAqIeHhhg')
+      window.localStorage.setItem('openId','oaCWN0ns9o_IjsXbeRQtAqIeHhhg')
       this.getBanners('HB')
       this.getStatement()
       this.getHgGoods()
