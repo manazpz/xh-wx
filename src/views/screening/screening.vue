@@ -10,6 +10,14 @@
         <input type="text" v-model="searchs" @change="search(searchs)" placeholder="搜索您想要的机型">
       </label>
     </div>
+    <div class="his">
+      <mt-radio
+        ref="radio"
+        title="历史搜索"
+        @click.native="onRadio($event)"
+        :options="his">
+      </mt-radio>
+    </div>
     <div v-if="isSearch === false" class="tab-change-main" title="手机查询切换列表">
       <div class="left-tab-nav">
         <ul>
@@ -18,9 +26,9 @@
       </div>
       <div class="right-tab-main">
         <ul class="show">
-          <router-link v-for="(item,index) in goods" :to="item.model === '01'?{path:'/goods/new',query:{id:item.id}}:{path:'/oldAppraisal',query:{id:item.id,name:item.name,price:item.banPrice}}">
+          <div v-for="(item,index) in goods" @click="tz(item)">
             <li :class="{'select': index ===flags }">{{item.name}}</li>
-          </router-link>
+          </div>
         </ul>
       </div>
     </div>
@@ -33,7 +41,7 @@
 
 <script type="text/ecmascript-6">
   import VHeader from 'components/v-header/v-header'
-  import { queryChoiceList, queryGoodsList } from 'api/goods'
+  import { queryChoiceList, queryGoodsList, updateHomeGoods } from 'api/goods'
   export default {
     data() {
       return {
@@ -44,15 +52,30 @@
         searchGoods: [],
         selected: '',
         selecteds: [],
+        his:[],
         data: undefined,
         isSearch: false,
+        searchText: '',
         searchs: undefined
       }
     },
-    created() {
+    created: function () {
       this.getList()
+      this.hisSearch();
     },
     methods: {
+      hisSearch() {
+        this.his = []
+        var search1 = window.localStorage.getItem("hs").split(';');
+        for(var i=0;i<5;i++) {
+          if(!(search1[i] === '')) {
+            this.his.push(search1[i])
+          }
+          if(search1.length-1===i) {
+            break
+          }
+        }
+      },
       getList() {
         queryChoiceList({model:this.$route.query.model}).then(response => {
           if (response.code === 200) {
@@ -78,6 +101,10 @@
         this.flag = index
       },
       tz(item) {
+        updateHomeGoods({model:this.$route.query.model,goodsId:item.id,openId:window.localStorage.getItem("openId")}).then(response => {
+        }).catch(() => {
+        })
+
         if(item.model === '01') {
           this.$router.push({path: '/goods/new', query: {id:item.id}})
         }
@@ -90,11 +117,42 @@
         this.goods = this.data[index].detail.length >0?this.data[index].detail[index].goods:[]
       },
       search(val) {
+        var hs = window.localStorage.getItem("hs")
+        if(hs === null) {
+          window.localStorage.setItem('hs',val+';')
+        }else {
+          if(!(val === '')) {
+            window.localStorage.setItem('hs',val+';'+hs.replace(val+';',''))
+          }
+        }
+        this.hisSearch();
         if (!val) {
           this.isSearch = false
         }else {
           this.isSearch = true
           this.getSearchList(val)
+        }
+      },
+      onRadio(item) {
+        var val = item.toElement.innerHTML
+        if(!('历史搜索' === val || val.indexOf('<') !== -1)) {
+          if(!(val === '')) {
+            var cell = this.$refs.radio.$el.getElementsByClassName('mint-cell');
+            for (var i = 0; i < cell.length; i++) {
+              cell[i].style.background = ''
+              cell[i].getElementsByClassName('mint-radio-label')[0].style.color="#000"
+            }
+            if (this.searchText === val) {
+              this.isSearch = false
+              this.searchText = ''
+            }else {
+              item.target.parentElement.parentElement.parentElement.parentElement.style.background="#28c081"
+              item.target.parentElement.parentElement.parentElement.parentElement.getElementsByClassName('mint-radio-label')[0].style.color="#fff"
+              this.isSearch = true
+              this.searchText = val
+              this.getSearchList(val)
+            }
+          }
         }
       }
     },

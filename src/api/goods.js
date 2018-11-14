@@ -101,3 +101,11 @@ export function queryGoodsComment(query) {
     params: query
   })
 }
+
+export function updateHomeGoods(params) {
+  return request({
+    url: '/api/goods/homeGoods/update',
+    method: 'POST',
+    data: params
+  })
+}

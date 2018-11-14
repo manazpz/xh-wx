@@ -105,9 +105,9 @@
         this.$refs.sidebar.open()
       },
       getHgGoods() {
-        queryGoodsLableList({lable:'=01'}).then(response => {
+        queryGoodsLableList({lable:'=01',openId:window.localStorage.getItem("openId")}).then(response => {
           if (response.code === 200) {
-            this.hgGoods = response.data.items[0]
+            this.hgGoods = response.data
           }
         }).catch(() => {
         })
