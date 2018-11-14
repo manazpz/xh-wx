@@ -67,7 +67,7 @@
       hisSearch() {
         this.his = []
         var search1 = window.localStorage.getItem("hs").split(';');
-        for(var i=0;i<5;i++) {
+        for(var i=0;i<4;i++) {
           if(!(search1[i] === '')) {
             this.his.push(search1[i])
           }
