@@ -1,9 +1,5 @@
 <template>
   <div class="home" ref="home">
-    <div class="header" ref="header">
-      <mt-header fixed title="小换" class="osStyle">
-      </mt-header>
-    </div>
     <sidebar ref="sidebar"></sidebar>
     <div class="homeHead">
       <span class="navigation" @click="showSidebar"></span>
