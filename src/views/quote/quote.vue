@@ -61,7 +61,8 @@
                                     </a>
                                 </p>
                                 <div class="increase-change">
-                                    <span class="reduce">-</span><i class="number">1</i><span class="add">+</span>
+                                    <!--<span class="reduce">-</span><i class="number">1</i><span class="add">+</span>-->
+                                  <span @click="numreduceclick(item,$event,'reduce')" class="reduce">-</span><i class="number">1</i><span @click="numaddclick(item,$event,'add')" class="add">+</span>
                                 </div>
                                 <div class="inf-r-price">
                                     <span>预计一周后再降￥30</span>
@@ -301,7 +302,12 @@
         if( this.count > 1){
           var sum = evn.target.parentElement.nextElementSibling.children[1].children[1].innerHTML
           evn.target.parentElement.nextElementSibling.children[1].children[1].innerHTML = parseFloat(sum)-parseFloat(item.bllPrice)
-          $('.footer-appraisal1').find('em').html(parseFloat(price) + parseFloat(item.bllPrice))
+          if(item.model === '01'){
+            $('.footer-appraisal1').find('em').html(parseFloat(price) - parseFloat(item.bllPrice))
+          }else{
+            $('.footer-appraisal1').find('em').html(parseFloat(price) + parseFloat(item.bllPrice))
+          }
+
         }else{
           $('.footer-appraisal1').find('em').html(parseFloat(price))
         }
@@ -316,7 +322,12 @@
         evn.target.parentElement.children[1].innerHTML = this.number
         evn.target.parentElement.nextElementSibling.children[1].children[1].innerHTML = parseFloat(item.bllPrice)*this.number
         var price = $('.footer-appraisal1').find('em').html()
-        $('.footer-appraisal1').find('em').html(parseFloat(price) - parseFloat(item.bllPrice))
+        if(item.model === '01'){
+          $('.footer-appraisal1').find('em').html(parseFloat(price) + parseFloat(item.bllPrice))
+        }else{
+          $('.footer-appraisal1').find('em').html(parseFloat(price) - parseFloat(item.bllPrice))
+        }
+
       },
       oldCheck(item,evn,val) {
         if(this.oldChecks.indexOf(val) > -1) {

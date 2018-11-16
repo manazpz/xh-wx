@@ -10,7 +10,7 @@
         <input type="text" v-model="searchs" @change="search(searchs)" placeholder="搜索您想要的机型">
       </label>
     </div>
-    <div class="his">
+    <div v-if="his.length>0" class="his">
       <mt-radio
         ref="radio"
         title="历史搜索"
@@ -66,13 +66,15 @@
     methods: {
       hisSearch() {
         this.his = []
-        var search1 = window.localStorage.getItem("hs").split(';');
-        for(var i=0;i<4;i++) {
-          if(!(search1[i] === '')) {
-            this.his.push(search1[i])
-          }
-          if(search1.length-1===i) {
-            break
+        if(window.localStorage.getItem("hs")!= null){
+          var search1 = window.localStorage.getItem("hs").split(';');
+          for(var i=0;i<4;i++) {
+            if(!(search1[i] === '')) {
+              this.his.push(search1[i])
+            }
+            if(search1.length-1===i) {
+              break
+            }
           }
         }
       },

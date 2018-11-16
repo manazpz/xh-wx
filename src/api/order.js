@@ -35,5 +35,11 @@ export function queryLogistics(query) {
     params: query
   })
 }
-
+export function insertReturn(params) {
+  return request({
+    url: '/api/order/insertReturn',
+    method: 'POST',
+    data: params
+  })
+}
 

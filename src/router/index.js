@@ -10,6 +10,7 @@ const GoodsDetail = () => import('../views/goods/goodsDetail')
 const GoodsNew = () => import('../views/goods/goodsNew')
 const OrderSure = () => import('../views/order/orderSure')
 const orderDetail = () => import('../views/order/orderDetail')
+const returns = () => import('../views/order/returns')
 const Statement = () => import('../views/statement/statement')
 const OldAppraisal = () => import('../views/oldAppraisal/oldAppraisal')
 const Quote = () => import('../views/quote/quote')
@@ -302,6 +303,13 @@ export const constantRouterMap = [
     component: evaluate,
     hidden: true,
     meta: { title: '评价' }
+  },
+  {
+    path: '/order/returns',
+    name: 'returns',
+    component: returns,
+    hidden: true,
+    meta: { title: '退款申请' }
   },
   {
     path: '/coupon/couponList',

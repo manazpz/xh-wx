@@ -1,14 +1,24 @@
 <template>
   <div class="customService" ref="customService">
     <v-header title="意见反馈"></v-header>
-    <div class="set-main-list">
-      <mt-field label="意见反馈" placeholder="请输入意见反馈内容" type="textarea" rows="4" v-model="temp.content"></mt-field>
+    <!--<div class="set-main-list" style="border: none;">-->
+      <!--<mt-field label="意见反馈" placeholder="请输入意见反馈内容" type="textarea" rows="4" v-model="temp.content"></mt-field>-->
+    <!--</div>-->
+
+    <div class="label-box">
+      <div class="form">
+        <h3>意见反馈</h3>
+        <textarea name="" id="" cols="30" rows="10"></textarea>
+      </div>
+      <div class="label-btn">
+        <a href="javascript:;" @click="submit">提交</a>
+      </div>
     </div>
-    <div style="text-align:center">
-      <mt-button @click="submit" type="danger">提交</mt-button>
-    </div>
+
   </div>
+
 </template>
+
 
 <script type="text/ecmascript-6">
   import VHeader from 'components/v-header/v-header'
@@ -54,5 +64,5 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-  @import "setting.styl";
+  @import "suggestion.styl";
 </style>

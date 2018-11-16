@@ -85,6 +85,7 @@
               <a v-if="navbar=='ALL'?(item1.type == '01' && item1.deliveryStatus == '03' && item1.orderStatus == '01'):btn.pl" class="payment-btn" href="javascript:;" @click="pjcilck(item1,index1)" title="评价">评价</a>
               <a v-if="navbar=='ALL'?(item1.payStatus == '02' && item1.orderStatus != '01'):btn.ckwl" class="cancel-btn" href="javascript:;" @click="ckwlcilck(item1,index1)" title="查看物流">查看物流</a>
               <a v-if="navbar=='ALL'?(item1.type != '01' && item1.checkStatus == false):btn.txjy" class="payment-btn" href="javascript:;" @click="txjccilck(item1,index1)" title="提醒检验">提醒检验</a>
+              <a v-if="navbar=='ALL'?((item1.deliveryStatus == '01' || item1.deliveryStatus == '03') && item1.payStatus == '02' && item1.type == '01'):btn.sqth" class="payment-btn" href="javascript:;" @click="sqthcilck(item1,index1)" title="申请退款">申请退货</a>
             </div>
             <div class="line" v-if="index1 != 0"></div>
           </div>
@@ -146,7 +147,8 @@
           qrsk:false,
           ckwl:false,
           pl:false,
-          txjy:false
+          txjy:false,
+          sqth:false
         },
         query: {
           openId:''
@@ -205,6 +207,7 @@
             this.btn.ckwl = true
             this.btn.pl = true
             this.btn.txjy = true
+            this.btn.sqth = true
             return;
           case 'DFK' :
             this.btn.fk = true
@@ -214,6 +217,7 @@
             this.btn.ckwl = false
             this.btn.pl = false
             this.btn.txjy = false
+            this.btn.sqth = false
             return;
           case 'DJY' :
             this.btn.fk = false
@@ -222,7 +226,7 @@
             this.btn.qrsk = false
             this.btn.ckwl = false
             this.btn.pl = false
-            this.btn.txjy = true
+            this.btn.sqth = false
             return;
           case 'DSXJ' :
             this.btn.fk = false
@@ -232,6 +236,7 @@
             this.btn.ckwl = true
             this.btn.pl = false
             this.btn.txjy = false
+            this.btn.sqth = true
             return;
           case 'DSJJ' :
             this.btn.fk = false
@@ -250,6 +255,7 @@
             this.btn.ckwl = false
             this.btn.pl = false
             this.btn.txjy = false
+            this.btn.sqth = true
             return;
           case 'DPL' :
             this.btn.fk = false
@@ -259,6 +265,7 @@
             this.btn.ckwl = true
             this.btn.pl = true
             this.btn.txjy = false
+            this.btn.sqth = false
             return;
         }
       },
@@ -266,6 +273,7 @@
         this.$router.push("/screening?model=02")
       },
       fkcilck(item,index) {
+        var tar = this
         switch (item.type) {
           case '01' :
             this.types = '购买新机：'
@@ -282,7 +290,7 @@
         pay(this.temp).then(response => {
           this.weixinPay(response.data)
           setTimeout(() => {
-            this.reload()
+            tar.reload()
           }, 1000)
         }).catch(() => {
         })
@@ -295,6 +303,7 @@
           deliverystatus:'04',
           status: '05'
         }
+        var tar = this
         updateOrder(res).then(response => {
           Toast({
             message: '确认收货成功！',
@@ -302,12 +311,13 @@
             duration: 5000
           });
           setTimeout(() => {
-            this.reload()
+            tar.reload()
           }, 1000)
         }).catch(() => {
         })
       },
       qxcilck(item,index) {
+        var tar = this
         $('.popup-choice-wrap').fadeIn();
         $('.popup-choice-wrap .cancel-btn').click(function() {
           $('.popup-choice-wrap').fadeOut();
@@ -325,7 +335,7 @@
               duration: 5000
             });
             setTimeout(() => {
-              this.reload()
+              tar.reload()
             }, 1000)
           }).catch(() => {
           })
@@ -341,10 +351,15 @@
           duration: 5000
         });
       },
+      sqthcilck(item,index){
+        debugger
+        this.$router.push({path: '/order/returns', query: {id:item.id}})
+      },
       cellClick(item) {
         this.$router.push({path: 'orderDetail', query: {id:item.id}})
       },
       skcilck(item,index){
+        var tar = this
         var res = {
           id: item.id,
           openId: this.openId,
@@ -359,7 +374,7 @@
             duration: 5000
           });
           setTimeout(() => {
-            this.reload()
+            tar.reload()
           }, 1000)
         }).catch(() => {
         })

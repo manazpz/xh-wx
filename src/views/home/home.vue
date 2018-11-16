@@ -8,7 +8,7 @@
         <mt-tab-item id="js" @click.native="qh('JB')">集市</mt-tab-item>
       </mt-navbar>
     </div>
-    <mt-swipe :stopPropagation="true" :auto="5000" class="banner" style="height: 200px;margin-top: 89px;">
+    <mt-swipe :stopPropagation="true" :auto="5000" class="banner" style="height: 200px;margin-top: 50px;">
       <mt-swipe-item v-for="item in banners">
         <a :href="item.link" rel="external nofollow" >
           <img :src="item.url" style="height: 100%;width: 100%">

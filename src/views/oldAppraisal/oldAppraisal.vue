@@ -170,7 +170,7 @@
           //进度条，可用flag
           this.rangeValue++
         }
-        if(this.rangeValue >= 5) {
+        if(this.rangeValue >= this.maxp - 1) {
           $('.offer-btn-box a').addClass('open');
         }
       },

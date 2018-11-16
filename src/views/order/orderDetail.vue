@@ -3,7 +3,7 @@
     <v-header title="订单详情"></v-header>
     <div class="order-waiting-payment">
     <div class="top-process-box">
-      <div v-if="model.payStatus == '01' && parameter.length == 0 " class="three-process-box process-1">
+      <div v-if="(model.payStatus == '01' && parameter.length == 0)||(model.type == '02' && parameter.length == 0) " class="three-process-box process-1">
         <div>
           <strong>1</strong>
           <b v-if="model.oldOrder.item.length == 0">未付款</b>
@@ -22,7 +22,7 @@
           <b v-else>发送货款</b>
         </div>
       </div>
-      <div v-if="(model.payStatus == '01' && parameter.length > 0) || (model.orderStatus == '03' && parameter.length > 0)"  class="three-process-box process-2">
+      <div v-if="(model.payStatus == '01' && parameter.length > 0) || (model.orderStatus == '03' && parameter.length > 0)||(model.orderStatus == '03' && model.deliveryStatus =='01' ) ||(parameter.length > 0 && model.type == '02' && model.orderStatus == '03')"  class="three-process-box process-2">
         <div>
           <strong>1</strong>
           <b v-if="model.oldOrder.item.length == 0">未付款</b>
@@ -41,7 +41,7 @@
           <b v-else>发送货款</b>
         </div>
       </div>
-      <div v-if="model.payStatus == '02' && (model.orderStatus == '01' || model.orderStatus == '04')" class="three-process-box process-3">
+      <div v-if="(model.payStatus == '02' && (model.orderStatus == '01' || model.orderStatus == '04'))|| (model.type == '02' && (model.orderStatus == '01' || model.orderStatus == '04'))" class="three-process-box process-3">
         <div>
           <strong>1</strong>
           <b v-if="model.oldOrder.item.length == 0">未付款</b>

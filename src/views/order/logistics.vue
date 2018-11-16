@@ -31,6 +31,12 @@
               expCode: response.data.items[0].com_code,
               expNo: response.data.items[0].log_code,
             })
+          }else{
+            Toast({
+              message: '暂无相关物流信息！',
+              position: 'bottom',
+              duration: 5000
+            });
           }
         }).catch(() => {
         })
