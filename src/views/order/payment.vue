@@ -35,6 +35,7 @@
 
 <script type="text/ecmascript-6">
   import VHeader from 'components/v-header/v-header'
+  import { deleteReplacementCar } from 'api/goods'
   import { pay } from 'api/wx'
   import { Toast } from 'mint-ui'
 
@@ -46,6 +47,7 @@
     },
     created() {
       this.list = this.$route.query.item
+      this.openId = window.localStorage.getItem("openId")
     },
     methods: {
       pay() {
@@ -82,10 +84,32 @@
           },
           function(res){
             // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
-            if(res.err_msg == "get_brand_wcpay_request:ok" ){
-
-            }else{
-
+            if (res.err_msg === 'get_brand_wcpay_request:ok') {
+              deleteReplacementCar({id:vm.list.quoteId}).then(response => {
+                if (response.code === 200) {
+                  Toast({
+                    message: '支付成功！',
+                    position: 'bottom',
+                    duration: 5000
+                  })
+                  setTimeout(() => {
+                    vm.$router.push('/quote')
+                  }, 1000)
+                }
+              }).catch(() => {
+              })
+            } else if (res.err_msg === 'get_brand_wcpay_request:cancel') {
+              Toast({
+                message: '已取消支付！',
+                position: 'bottom',
+                duration: 5000
+              })
+            } else if (res.err_msg === 'get_brand_wcpay_request:fail') {
+              Toast({
+                message: '网络异常，请重试！',
+                position: 'bottom',
+                duration: 5000
+              })
             }
           }
         );

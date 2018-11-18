@@ -130,6 +130,7 @@
         ptCouponPrice: 0,
         hjCouponPrice: 0,
         price: '',
+        quoteId: [],
         address: [],
         sData: {
           sumNewPrice: 0,
@@ -140,6 +141,7 @@
     created() {
       this.openid = window.localStorage.getItem("openId");
       this.list.types = this.$route.query.check
+      this.quoteId = this.$route.query.ids
       if(this.$route.query.type === 'XC'){
         this.couponPrice = this.$route.query.price
       }else if(this.$route.query.type === 'PC'){
@@ -224,6 +226,7 @@
           this.data.openId = this.openid
           this.data.type = this.list.types
           this.data.address = this.address
+          this.data.quoteId = this.quoteId
           if(this.data.oldGoods.length === 0){
             this.$router.push({path: 'payment', query: {item:this.data}})
           }else{

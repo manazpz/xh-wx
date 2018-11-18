@@ -12,7 +12,7 @@
             handler: () => deleteGoods(item)}]">
               <div class="model-box" >
                   <div class="left-b-box">
-                      <i class="sign-i" @click="oldCheck(item,$event,item.bllId)"></i>
+                      <i class="sign-i" @click="goodsCheck(item,$event,item.bllId)"></i>
                       <div class="pic-left">
                           <img :src="item.imgs.length>0?item.imgs[0].url:''" >
                       </div>
@@ -49,7 +49,7 @@
                 handler: () => deleteGoods(item)}]">
                     <div class="model-box" >
                         <div class="left-b-box">
-                            <i class="sign-i" @click="oldCheck(item,$event,item.bllId)"></i>
+                            <i class="sign-i" @click="goodsCheck(item,$event,item.bllId)"></i>
                             <div class="pic-left">
                                 <img :src="item.imgs.length>0?item.imgs[0].url:''">
                             </div>
@@ -143,7 +143,7 @@
         oldGoods: [],
         flag: -1,
         newGoods: [],
-        oldChecks: [],
+        goodsChecks: [],
         checks: [],
         checksCheck: '',
         checksData: [],
@@ -223,9 +223,9 @@
         });
       },
       confirm(){
-        if (this.oldChecks.length > 0) {
-          this.$router.push({path: '/order/sure', query: {ids:this.oldChecks.join(',')}})
-          this.oldChecks = []
+        if (this.goodsChecks.length > 0) {
+          this.$router.push({path: '/order/sure', query: {ids:this.goodsChecks.join(',')}})
+          this.goodsChecks = []
         }else {
           Toast({
             message: '请选择商品！',
@@ -329,9 +329,9 @@
         }
 
       },
-      oldCheck(item,evn,val) {
-        if(this.oldChecks.indexOf(val) > -1) {
-          this.oldChecks.splice(this.oldChecks.indexOf(val),1)
+      goodsCheck(item,evn,val) {
+        if(this.goodsChecks.indexOf(val) > -1) {
+          this.goodsChecks.splice(this.goodsChecks.indexOf(val),1)
           evn.toElement.className = "sign-i"
           if(item.model === '01') {
             this.temp.price = parseFloat(this.temp.price) - parseFloat(item.bllPrice)
@@ -342,7 +342,7 @@
             $('.footer-appraisal1').find('em').html(this.temp.price)
           }
         }else {
-          this.oldChecks.push(val)
+          this.goodsChecks.push(val)
           evn.toElement.className = "sign-on"
           if(item.model === '01') {
             this.temp.price = parseFloat(this.temp.price) + parseFloat(item.bllPrice)
