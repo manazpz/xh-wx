@@ -1,6 +1,6 @@
 <template>
   <div class="testMachine" ref="testMachine">
-    <v-header title="验机报告"></v-header>
+    <v-header title="验机"></v-header>
     <mt-range
       v-model="rangeValue"
       :min="0"
@@ -116,6 +116,7 @@
         banPrice:this.$route.query.banPrice,
         rangeValue: 0,
         maxp:0,
+        uploadVisible:false,
         popupVisible:false,
         checksData: [],
         popupTemp:{
@@ -134,7 +135,6 @@
           if (response.code === 200) {
             this.appraisalList = response.data.items
             this.bllParameter = response.data.bllParameter
-            this.maxp = response.data.items.length
             this.maxp = response.data.items.length
             this.appraisalList.forEach(obj => {
               this.checksData.push({value:obj.id,label:obj.name})
@@ -284,6 +284,7 @@
             this.ygStr = '(不一致,预估' + this.ygPrice + ')'
           }
           this.flag = -1
+          this.uploadVisible = true
         }
       },
       confirm() {
@@ -291,7 +292,7 @@
           openId: this.openId,
           no:this.temp.no,
           orderNumber:this.temp.id,
-          parameter: JSON.stringify(this.temp.parameter),
+          parameter: JSON.stringify(JSON.parse('['+this.temp.parameter+']')),
           bllPrice: this.jyPrice
         }
         pushYanJi(res).then(response => {
@@ -301,7 +302,7 @@
               iconClass: 'mintui mintui-success'
             });
             setTimeout(() => {
-              this.$router.back(-1)
+              this.$router.push({path: 'machineOrder', query: {}})
             }, 1000)
 
           }
@@ -309,7 +310,7 @@
         })
       },
       openUploadPop() {
-        if(this.temp.parameter.length > 0) {
+        if(this.uploadVisible) {
           this.popupTemp = {
             guishu: '',
             msg: ''
@@ -317,7 +318,7 @@
           this.popupVisible = true
         }else {
           Toast({
-            message: '请先验机！',
+            message: '请先查看验机！',
             duration: 3000
           });
         }
@@ -333,6 +334,7 @@
         uploadFiles({fileList:this.popFiles,path:'yanji'}).then(response => {
           if(response.code == '200') {
             var xxx
+            var jjj = []
             if(this.temp.parameter[0].id){
               xxx = this.temp.parameter
             }else {
@@ -344,11 +346,13 @@
                 obj.imgs = response.data.files
                 obj.msg = this.popupTemp.msg
               }
+              jjj.push(JSON.stringify(obj))
             })
+
             for(var i=0;i< response.data.files.length;i++) {
               this.files.push(response.data.files[i])
             }
-            this.temp.parameter = xxx
+            this.temp.parameter = jjj
             this.popupVisible = false
             this.$refs.files.value = ''
             this.popFiles = []

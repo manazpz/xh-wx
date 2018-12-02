@@ -44,6 +44,7 @@
   import {mapGetters, mapMutations} from 'vuex'
   import store from '../../store'
   import { queryUserinfos } from 'api/system'
+  import router from '../../router'
 
   export default {
     //接收父组件传值
@@ -73,6 +74,11 @@
           if (response.code === 200) {
             if(response.data.items != undefined){
               this.list = response.data.items[0]
+              const roles = this.list.roles
+              store.dispatch('GenerateRoutes', { roles }).then(() => { // 根据roles权限生成可访问的路由表
+                router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
+                this.fetchData()
+              })
             }
           }
         }).catch(() => {

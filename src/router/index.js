@@ -34,7 +34,10 @@ const encyclopedia = () => import('../views/user/encyclopedia')
 const authentication = () => import('../views/user/authentication')
 const accountBingDing = () => import('../views/user/account-bingding')
 const bingDingSuccess = () => import('../views/user/bingding-success')
+const machineReport = () => import('../views/machine/machineReport')
 const machine = () => import('../views/machine/machine')
+const machineOrder = () => import('../views/machine/machineOrder')
+const machineDetail = () => import('../views/machine/machineDetail')
 const testMachine = () => import('../views/machine/testMachine')
 const payment = () => import('../views/order/payment')
 const visitRecovery = () => import('../views/order/visitRecovery')
@@ -47,7 +50,7 @@ const webError = () => import('../views/error/webError')
 
 export const constantRouterMap = [
   {
-    path: '/',
+    path: '/login',
     name: 'login',
     component: Login,
     hidden: true,
@@ -61,7 +64,7 @@ export const constantRouterMap = [
     meta: { title: '站点关闭' }
   },
   {
-    path: '/home',
+    path: '/',
     name: 'home',
     component: Home,
     hidden: true,
@@ -109,6 +112,12 @@ export const constantRouterMap = [
     hidden: true,
     component: layIm,
     meta: { title: '客服' }
+  },
+  {
+    path: '/machineReport',
+    name: 'machineReport',
+    component: machineReport,
+    meta: { title: '验机报告', icon: '/static/image/icon_li_10.png'  }
   },
   {
     path: '/setting',
@@ -271,10 +280,11 @@ export const constantRouterMap = [
     meta: { title: '成功绑定' }
   },
   {
-    path: '/machine',
-    name: 'machine',
-    component: machine,
-    meta: { title: '验机列表', icon: '/static/image/icon_li_07.png' }
+    path: '/machineDetail',
+    name: 'machineDetail',
+    component: machineDetail,
+    hidden: true,
+    meta: { title: '报告详情' }
   },
   {
     path: '/testMachine',
@@ -331,6 +341,27 @@ export const constantRouterMap = [
     component: getCoupon,
     hidden: true,
     meta: { title: '可使用优惠券' }
+  },
+  {
+    path: '/machineOrder',
+    name: 'machineOrder',
+    hidden: true,
+    component: machineOrder,
+  },
+  {
+    path: '/machine',
+    name: 'machine',
+    hidden: true,
+    component: machine,
+  }
+]
+
+export const asyncRouterMap = [
+  {
+    path: '/machineOrder',
+    name: 'machineOrder',
+    component: machineOrder,
+    meta: { title: '验机', icon: '/static/image/icon_li_09.png', roles: ['QP']  }
   }
 ]
 

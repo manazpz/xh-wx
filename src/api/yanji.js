@@ -1,5 +1,4 @@
 import request from '../utils/request'
-import { dataToFormData } from '../utils/common'
 
 export function yanji(query) {
   return request({
@@ -12,6 +11,14 @@ export function yanji(query) {
 export function pushYanJi(params) {
   return request({
     url: '/api/yanji/push',
+    method: 'post',
+    data: params
+  })
+}
+
+export function updateYanJi(params) {
+  return request({
+    url: '/api/yanji/update',
     method: 'post',
     data: params
   })

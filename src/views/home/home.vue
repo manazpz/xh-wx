@@ -89,7 +89,8 @@
       }
     },
     created() {
-      // window.localStorage.setItem('openId','oaCWN0ns9o_IjsXbeRQtAqIeHhhg')
+      //oaCWN0sZrB1zR7SGL2V55ej1OK9M
+      window.localStorage.setItem('openId','oaCWN0sZrB1zR7SGL2V55ej1OK9M')
       this.getBanners('HB')
       this.getStatement()
       this.getHgGoods()

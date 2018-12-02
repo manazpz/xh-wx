@@ -1,8 +1,7 @@
 <template>
   <div class="machine" ref="machine">
-    <v-header title="验机列表"></v-header>
+    <v-header title="验机详情"></v-header>
     <div class="machine-all">
-      <div v-if="data.length > 0">
         <div class="machine-main">
           <div v-for="(item1,index1) in data" class="machine-tab-box machine-show" >
             <div class="calculation-main">
@@ -22,18 +21,9 @@
                 </ul>
               </div>
             </div>
-            <div class="line"></div>
           </div>
-
         </div>
       </div>
-      <div style="height: 100%;" v-else>
-        <div class="machine-null">
-          <img src="/static/image/shopping_trolley.png">
-          <p>无验机订单！</p>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -44,20 +34,15 @@
   export default {
     data() {
       return {
-        data: [],
-        query: {
-          checkStatus:'01',
-          openId: ''
-        }
+        data: []
       }
     },
     created() {
-      this.openId = window.localStorage.getItem("openId")
       this.getList();
     },
     methods: {
       getList() {
-        queryOrderList(this.query).then(response => {
+        queryOrderList({id:this.$route.query.id}).then(response => {
           if (response.code === 200) {
             this.data = response.data.items;
           }
