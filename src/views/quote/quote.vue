@@ -14,9 +14,9 @@
                   <div class="left-b-box">
                       <i class="sign-i" @click="goodsCheck(item,$event,item.bllId)"></i>
                       <div class="pic-left">
-                          <img :src="item.imgs.length>0?item.imgs[0].url:''" >
+                          <img :src="item.imgs.length>0?item.imgs[0].url:''" @click="goodsDetail(item)" >
                       </div>
-                      <div class="inf-right"  @click="goodsDetail(item)">
+                      <div class="inf-right">
                           <h4>{{item.goodsName}} <span v-if="item.del === 'Y' || item.logIstcs === '02'">已失效</span></h4>
                           <p @click="oldSpec(item)">
                              <span>{{item.bllParameterStr}}</span>
@@ -51,9 +51,9 @@
                         <div class="left-b-box">
                             <i class="sign-i" @click="goodsCheck(item,$event,item.bllId)"></i>
                             <div class="pic-left">
-                                <img :src="item.imgs.length>0?item.imgs[0].url:''">
+                                <img :src="item.imgs.length>0?item.imgs[0].url:''" @click="goodsDetail(item)">
                             </div>
-                            <div class="inf-right" @click="goodsDetail(item)">
+                            <div class="inf-right" >
                                 <h4>{{item.goodsName}}<span v-if="item.del === 'Y' || item.logIstcs === '02'">已失效</span></h4>
                                 <p class="p-inf">
                                     <a href="javascript:;" target="_top" @click="newSpec(item)">
@@ -113,9 +113,11 @@
             </div>
           </li>
           <li class="li" v-for="(item,index) in updateOldGoods.goodsParameter">
-            <div @click="showFlag(index)">
-              <span class="problem-xh">{{item.name}}<i></i></span>
-              <strong><a>{{text[index]}}</a></strong>
+            <div>
+              <span class="problem-xh">{{item.name}}
+                <!--<i v-if="!(item.tipsType === '01')" @click="chickProblem(item)"></i>-->
+              </span>
+              <strong><a @click="showFlag(index)">{{text[index]}}</a></strong>
               <!--<strong><a v-if="updateOldGoods.bllParameter[index]" v-for="p in updateOldGoods.bllParameter[index].spec">{{updateOldGoods.bllParameter[index].spec.length==1?p.spec_value_name:p.spec_value_name+','}}</a></strong>-->
             </div>
             <ul :class="{'show': index === flag }">
@@ -460,6 +462,14 @@
             }
           }
         }
+      },
+      chickProblem(val){
+        $('.appraisal-process-problem-wrap').fadeIn();
+        $('.problem-box').addClass('p-top-ani').find('h1').html(val.name).siblings('p').html(val.tipsText);
+        $('.appraisal-process-problem-wrap').on('click','.problem-close',function () {
+          $('.appraisal-process-problem-wrap').fadeOut();
+          $('.problem-box').removeClass('p-top-ani');
+        });
       }
     },
     //注册组件

@@ -14,3 +14,11 @@ export function GetQueryString  (name) {
   else
     return false;
 };
+
+export function homeLabelList(query) {
+  return request({
+    url: '/config/homeLabels',
+    method: 'get',
+    params: query
+  })
+}

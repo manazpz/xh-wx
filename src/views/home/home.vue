@@ -4,8 +4,9 @@
     <div class="homeHead">
       <span class="navigation" @click="showSidebar"></span>
       <mt-navbar  class="navbar" v-model="selected">
-        <mt-tab-item id="sy" @click.native="qh('HB')">首页</mt-tab-item>
-        <mt-tab-item id="js" @click.native="qh('JB')">集市</mt-tab-item>
+        <span>{{}}</span>
+        <mt-tab-item v-if="homeLable[0]&&homeLable[0].isEnable === 'Y'" id="sy" @click.native="qh('HB')">首页</mt-tab-item>
+        <mt-tab-item v-if="homeLable[1]&&homeLable[1].isEnable === 'Y'" id="js" @click.native="qh('JB')">集市</mt-tab-item>
       </mt-navbar>
     </div>
     <mt-swipe :stopPropagation="true" :auto="5000" class="banner" style="height: 200px;margin-top: 50px;">
@@ -69,8 +70,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  // import {mapGetters} from 'vuex'
-  import { queryBanners, queryChoiceList } from 'api/home'
+  import { queryBanners, queryChoiceList, homeLabelList } from 'api/home'
   import { queryStatement } from 'api/statement'
   import { queryGoodsList, queryGoodsLableList } from 'api/goods'
   import { queryCouponList } from 'api/coupon'
@@ -81,6 +81,7 @@
     data() {
       return {
         selected: 'sy',
+        homeLable: [],
         newGoods: [],
         banners: [],
         statements: [],
@@ -91,6 +92,7 @@
     created() {
       //oaCWN0sZrB1zR7SGL2V55ej1OK9M
       window.localStorage.setItem('openId','oaCWN0sZrB1zR7SGL2V55ej1OK9M')
+      this.getHomeLabel()
       this.getBanners('HB')
       this.getStatement()
       this.getHgGoods()
@@ -100,6 +102,14 @@
     methods: {
       showSidebar() {
         this.$refs.sidebar.open()
+      },
+      getHomeLabel() {
+        homeLabelList({pageSize: 20}).then(response => {
+          if (response.code === 200) {
+            this.homeLable = response.data.items
+          }
+        }).catch(() => {
+        })
       },
       getHgGoods() {
         queryGoodsLableList({lable:'=01',openId:window.localStorage.getItem("openId")}).then(response => {
