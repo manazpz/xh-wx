@@ -28,8 +28,11 @@
         <mt-button class="confirm-btn" @click="confirm()">确定</mt-button>
       </mt-tab-container-item>
       <mt-tab-container-item id="xq">
-        <div style="padding: 10px" v-html="detail.detail">
+        <div class="detail">
+          <div class="detail1" v-html="detail.detail">
+          </div>
         </div>
+
       </mt-tab-container-item>
     </mt-tab-container>
   </div>
@@ -38,6 +41,7 @@
 <script type="text/ecmascript-6">
   import { queryGoodsDetail, insertReplacementCar } from 'api/goods'
   import VHeader from 'components/v-header/v-header'
+
 
   export default {
     data() {

@@ -10,9 +10,9 @@ import './common/js/common.js'
 
 import 'common/stylus/index.styl'
 
+
 Vue.config.productionTip = false
 Vue.use(MintUI)
-
 
 /* eslint-disable no-new */
 new Vue({
