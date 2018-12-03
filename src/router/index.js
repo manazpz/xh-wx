@@ -50,7 +50,7 @@ const webError = () => import('../views/error/webError')
 
 export const constantRouterMap = [
   {
-    path: '/login',
+    path: '/',
     name: 'login',
     component: Login,
     hidden: true,
@@ -64,7 +64,7 @@ export const constantRouterMap = [
     meta: { title: '站点关闭' }
   },
   {
-    path: '/',
+    path: '/home',
     name: 'home',
     component: Home,
     hidden: true,
