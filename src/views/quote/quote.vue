@@ -12,7 +12,7 @@
             handler: () => deleteGoods(item)}]">
               <div class="model-box" >
                   <div class="left-b-box">
-                      <i class="sign-i" @click="goodsCheck(item,$event,item.bllId)"></i>
+                      <i class="sign-on" @click="goodsCheck(item,$event,item.bllId)"></i>
                       <div class="pic-left">
                           <img :src="item.imgs.length>0?item.imgs[0].url:''" @click="goodsDetail(item)" >
                       </div>
@@ -49,7 +49,7 @@
                 handler: () => deleteGoods(item)}]">
                     <div class="model-box" >
                         <div class="left-b-box">
-                            <i class="sign-i" @click="goodsCheck(item,$event,item.bllId)"></i>
+                            <i class="sign-on" @click="goodsCheck(item,$event,item.bllId)"></i>
                             <div class="pic-left">
                                 <img :src="item.imgs.length>0?item.imgs[0].url:''" @click="goodsDetail(item)">
                             </div>
@@ -81,7 +81,7 @@
       </div>
     </div>
     <div class="footer-appraisal1" @click="confirm">
-      <span>合计：<strong><b>￥</b> <em class="aggregate-amount">{{temp.price}}</em></strong></span>
+      <span>合计：<strong><b></b> <em class="aggregate-amount">{{temp.price}}</em></strong></span>
       <!--<p>提交</p>-->
       <a href="javascript:;" title="订单提交">订单提交</a>
     </div>
@@ -152,6 +152,8 @@
         bllId: '',
         number: 1,
         count: 0,
+        oldprice: 0,
+        newprice: 0,
         jump: true,
         updateOldGoods: '',
         popupVisibleOld: false,
@@ -177,12 +179,24 @@
       getList() {
         queryReplacementCar(this.openId).then(response => {
           if (response.code === 200) {
-            let cur = this
             response.data.oldGoods.forEach((value, index) => {
               value.bllParameterStr = value.bllParameterStr
+              this.oldprice += parseFloat(value.bllPrice)
+              this.goodsChecks.push(value.bllId)
+            })
+            response.data.newGoods.forEach((value, index) => {
+              this.newprice += parseFloat(value.bllPrice)
+              this.goodsChecks.push(value.bllId)
             })
             this.newGoods = response.data.newGoods
             this.oldGoods = response.data.oldGoods
+            this.temp.price = this.newprice - this.oldprice
+            if(this.oldprice - this.newprice > 0){
+              $('.footer-appraisal1').find('em').html('返现￥'+ (parseFloat(this.oldprice) - parseFloat(this.newprice)))
+            }else{
+              $('.footer-appraisal1').find('em').html('￥' +(parseFloat(this.newprice) - parseFloat(this.oldprice)))
+            }
+
           }
         }).catch(() => {
         })
@@ -337,22 +351,39 @@
           evn.toElement.className = "sign-i"
           if(item.model === '01') {
             this.temp.price = parseFloat(this.temp.price) - parseFloat(item.bllPrice)
-            $('.footer-appraisal1').find('em').html(this.temp.price)
+            if(this.temp.price < 0 ){
+              $('.footer-appraisal1').find('em').html('返现￥' + this.temp.price)
+            }else{
+              $('.footer-appraisal1').find('em').html('￥' + this.temp.price)
+            }
+
           }
           if(item.model === '02') {
             this.temp.price = parseFloat(this.temp.price) + parseFloat(item.bllPrice)
-            $('.footer-appraisal1').find('em').html(this.temp.price)
+            if(this.temp.price < 0 ){
+              $('.footer-appraisal1').find('em').html('返现￥' + this.temp.price)
+            }else{
+              $('.footer-appraisal1').find('em').html('￥' + this.temp.price)
+            }
           }
         }else {
           this.goodsChecks.push(val)
           evn.toElement.className = "sign-on"
           if(item.model === '01') {
             this.temp.price = parseFloat(this.temp.price) + parseFloat(item.bllPrice)
-            $('.footer-appraisal1').find('em').html(this.temp.price)
+            if(this.temp.price < 0 ){
+              $('.footer-appraisal1').find('em').html('返现￥' + this.temp.price)
+            }else{
+              $('.footer-appraisal1').find('em').html('￥' + this.temp.price)
+            }
           }
           if(item.model === '02') {
             this.temp.price = parseFloat(this.temp.price) - parseFloat(item.bllPrice)
-            $('.footer-appraisal1').find('em').html(this.temp.price)
+            if(this.temp.price < 0 ){
+              $('.footer-appraisal1').find('em').html('返现￥' + this.temp.price)
+            }else{
+              $('.footer-appraisal1').find('em').html('￥' + this.temp.price)
+            }
           }
         }
       },

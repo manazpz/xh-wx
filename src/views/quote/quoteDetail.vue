@@ -16,7 +16,7 @@
           </div>
       </div>
     </div>
-    <div class="echarts-main" title="价格趋势echarts">
+    <div v-if="goods[0].model == '02'" class="echarts-main" title="价格趋势echarts">
       <h2>价格趋势</h2>
       <p>预计下周跌幅40元</p>
       <div ref="container" style="height: 100%"></div>
@@ -33,7 +33,7 @@
 
 <script type="text/ecmascript-6">
   import VHeader from 'components/v-header/v-header'
-  import { queryReplacementCarDetail } from 'api/goods'
+  import { queryReplacementCarDetail, queryForecastList } from 'api/goods'
   import echarts from 'echarts'
 
   export default {
@@ -42,97 +42,117 @@
         openId: '',
         id: '',
         chart: null,
-        goods: []
+        nowData: '',
+        nowYear: '',
+        nowMonth: '',
+        month: [],
+        price: [],
+        goods: [{model :'', imgs:[]}]
       }
     },
     created() {
       this.openId = window.localStorage.getItem("openId")
       this.id = this.$route.query.id
+      this.getType()
       this.getList()
-      this.$nextTick(function () {
-        this.functionEcharts()
-      })
     },
     methods: {
-      getList() {
+      getType() {
+        queryForecastList().then(response => {
+          this.month  = response.data.items[0].datas
+          this.price  = response.data.items[0].price
 
+        }).catch(() => {
+        })
+      },
+      getList() {
         queryReplacementCarDetail({openId:this.openId,id:this.id}).then(response => {
           if (response.code === 200) {
             if(response.data.newGoods.length !== 0){
-                this.goods = response.data.newGoods
+              this.goods = response.data.newGoods
             }else if(response.data.oldGoods.length !== 0){
-                this.goods = response.data.oldGoods
+              this.goods = response.data.oldGoods
             }
+            var lets = this.goods[0].bllPrice/this.price[5]
+            this.price.forEach((value, index) => {
+              value = parseInt(value*lets)
+              this.price[index] = value
+            })
+            this.$nextTick(function () {
+              this.functionEcharts()
+            })
           }
         }).catch(() => {
         })
       },
       functionEcharts(){
-        var option = {
-          tooltip : {
-            trigger: 'axis',
-            axisPointer: {
-              type: 'cross',
-              label: {
-                backgroundColor: '#6a7985'
+        if(this.goods[0].model == '02'){
+          var option = {
+            tooltip : {
+              trigger: 'axis',
+              axisPointer: {
+                type: 'cross',
+                label: {
+                  backgroundColor: '#6a7985'
+                }
               }
-            }
-          },
-          grid: {
-            left: '8%',
-            right: '8%',
-            bottom: '3%',
-            containLabel: true
-          },
-          xAxis : [
-            {
-              type : 'category',
-              boundaryGap : false,
-              data : ['4月','5月','6月','7月','8月',''],
-            }
-          ],
-          yAxis : [
-            {
-              type : 'value',
-              min: 2000,
-              interval: 200,
-            }
-          ],
-          series : [
-            {
-              name:'价格趋势',
-              type:'line',
-              stack: '总量',
-              label: {
-                normal: {
-                  show: true,
-                  position: 'top',
-                  color:'#222',
-                  lineStyle:{
+            },
+            grid: {
+              left: '8%',
+              right: '8%',
+              bottom: '3%',
+              containLabel: true
+            },
+            xAxis : [
+              {
+                type : 'category',
+                boundaryGap : false,
+                // data : ['4月','5月','6月','7月','8月',''],
+                data : this.month,
+              }
+            ],
+            yAxis : [
+              {
+                type: 'value'
+              }
+            ],
+            series : [
+              {
+                name:'价格趋势',
+                type:'line',
+                stack: '总量',
+                label: {
+                  normal: {
+                    show: true,
+                    position: 'top',
                     color:'#222',
-                    width:3
+                    lineStyle:{
+                      color:'#222',
+                      width:3
+                    }
                   }
-                }
-              },
+                },
 
-              itemStyle:{
-                normal:{
-                  color:'#d8f5e6',
-                  lineStyle:{
-                    color:'#3acc82'
+                itemStyle:{
+                  normal:{
+                    color:'#d8f5e6',
+                    lineStyle:{
+                      color:'#3acc82'
+                    }
                   }
-                }
-              },
+                },
 
-              areaStyle: {normal: {
+                areaStyle: {normal: {
 
-                }},
-              data:[3210, 2850, 2630, 2570, 2420]
-            }
-          ]
+                  }},
+                // data:[3210, 2850, 2630, 2570, 2420]
+                data:this.price
+              }
+            ]
+          }
+          this.chart = echarts.init(this.$refs.container)
+          this.chart.setOption(option)
         }
-        this.chart = echarts.init(this.$refs.container)
-        this.chart.setOption(option)
       }
     },
     //注册组件

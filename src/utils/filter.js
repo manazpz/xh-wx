@@ -21,7 +21,7 @@ export function orderType(status) {
 }
 
 export function orderLogType(status) {
-  switch (status.type) {
+  switch (status.status) {
     case '01' :
       return '订单待付款';
     case '02' :
@@ -31,6 +31,8 @@ export function orderLogType(status) {
     case '04' :
       return '订单已收款';
     case '05' :
-      return '订单换购旧机已检验';
+      return '订单已确认收货';
+    case '06' :
+      return '已确认出售旧机';
   }
 }

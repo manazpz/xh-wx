@@ -59,6 +59,7 @@
             this.check = response.data.check
             if ( response.data.check.length > 0 ){
               this.temp.prete = this.check[0].recoveryId
+              this.types = this.check[0].types
             }
             this.$nextTick(function () {
               if(this.check.length>0) {

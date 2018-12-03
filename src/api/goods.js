@@ -109,3 +109,11 @@ export function updateHomeGoods(params) {
     data: params
   })
 }
+
+export function queryForecastList(query) {
+  return request({
+    url: '/api/goods/forecastList',
+    method: 'get',
+    params: query
+  })
+}

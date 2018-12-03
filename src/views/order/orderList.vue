@@ -20,7 +20,7 @@
           <div v-for="(item1,index1) in data" class="order-tab-box order-show" title="全部">
             <div class="calculation-main" title="换购明细">
               <div class="big-title">
-                <i></i>
+                <!--<i></i>-->
                 <span>{{item1|orderType}}</span>
                 <strong>{{item1|payStatus}}</strong>
               </div>
@@ -81,10 +81,12 @@
               <a v-if="navbar=='ALL'?(item1.type != '02' && item1.payStatus == '01' && item1.price >0):btn.fk" class="payment-btn" href="javascript:;" @click="fkcilck(item1,index1)" title="付款">付款</a>
               <a v-if="navbar=='ALL'?(item1.orderStatus != '01' && item1.payStatus == '01'):btn.qxfk" class="cancel-btn" href="javascript:;" @click="qxcilck(item1,index1)" title="取消订单">取消订单</a>
               <a v-if="navbar=='ALL'?((item1.deliveryStatus == '01' || item1.deliveryStatus == '03') && item1.payStatus == '02' && item1.type == '01'):btn.qrsh" class="payment-btn" href="javascript:;" @click="qrshcilck(item1,index1)" title="确认收货">确认收货</a>
-              <a v-if="navbar=='ALL'?(item1.type != '01' && item1.price < 0 && item1.checkStatus == true && item1.orderStatus != '01'):btn.qrsk" class="payment-btn" href="javascript:;" @click="skcilck(item1,index1)" title="确认收款">确认收款</a>
+              <a v-if="navbar=='ALL'?(item1.type != '01' && item1.price < 0 && item1.checkStatus == '02' && item1.orderStatus != '01'):btn.qrsk" class="payment-btn" href="javascript:;" @click="qrcscilck(item1,index1)" title="同意验机">确认出售</a>
+              <a v-if="navbar=='ALL'?(item1.type != '01' && item1.price < 0 && item1.checkStatus == '02' && item1.orderStatus != '01'):btn.qrsk" class="payment-btn" href="javascript:;" @click="qxcscilck(item1,index1)" title="同意验机">取消出售</a>
+              <a v-if="navbar=='ALL'?(item1.type != '01' && item1.price < 0 && item1.checkStatus == '03' && item1.orderStatus != '01'):btn.qrsk" class="payment-btn" href="javascript:;" @click="skcilck(item1,index1)" title="确认收款">确认收款</a>
               <a v-if="navbar=='ALL'?(item1.type == '01' && item1.deliveryStatus == '03' && item1.orderStatus == '01'):btn.pl" class="payment-btn" href="javascript:;" @click="pjcilck(item1,index1)" title="评价">评价</a>
               <a v-if="navbar=='ALL'?(item1.payStatus == '02' && item1.orderStatus != '01'):btn.ckwl" class="cancel-btn" href="javascript:;" @click="ckwlcilck(item1,index1)" title="查看物流">查看物流</a>
-              <a v-if="navbar=='ALL'?(item1.type != '01' && item1.checkStatus == false):btn.txjy" class="payment-btn" href="javascript:;" @click="txjccilck(item1,index1)" title="提醒检验">提醒检验</a>
+              <a v-if="navbar=='ALL'?(item1.type != '01' && item1.checkStatus == '01'):btn.txjy" class="payment-btn" href="javascript:;" @click="txjccilck(item1,index1)" title="提醒检验">提醒检验</a>
               <a v-if="navbar=='ALL'?((item1.deliveryStatus == '01' || item1.deliveryStatus == '03') && item1.payStatus == '02' && item1.type == '01'):btn.sqth" class="payment-btn" href="javascript:;" @click="sqthcilck(item1,index1)" title="申请退款">申请退货</a>
             </div>
             <div class="line" v-if="index1 != 0"></div>
@@ -106,7 +108,7 @@
     </div>
     <div class="popup-choice-wrap" title="是否删除弹窗">
       <div class="choice-box">
-        <p>确定取消订单吗？</p>
+        <p>{{msgTip}}</p>
         <div>
           <a class="cancel-btn" href="javascript:;" title="取消">取消</a>
           <a class="confirm-btn" href="javascript:;" title="确定">确定</a>
@@ -118,7 +120,7 @@
 
 <script type="text/ecmascript-6">
   import VHeader from 'components/v-header/v-header'
-  import { queryOrderList, updateOrder } from 'api/order'
+  import { queryOrderList, updateOrder, updateOrderDetail } from 'api/order'
   import { payStatus,orderType } from '../../utils/filter'
   import { pay } from 'api/wx'
   import { Toast } from 'mint-ui'
@@ -132,6 +134,7 @@
         navbar: 'ALL',
         types: '',
         openId: '',
+        msgTip: '',
         temp:{
           id: '',
           type: '',
@@ -295,7 +298,71 @@
         }).catch(() => {
         })
       },
+      qrcscilck(item,index){
+        var tar = this
+        item.oldOrder.item.forEach((value,index) => {
+          var res = {
+            id: item.id,
+            openId: this.openId,
+            no: value.no,
+            checkStatus:'03'
+          }
+          this.msgTip = '确定出售该商品吗？'
+          $('.popup-choice-wrap').fadeIn();
+          $('.popup-choice-wrap .cancel-btn').click(function() {
+            $('.popup-choice-wrap').fadeOut();
+            $('.model-box').removeClass('m-swipeleft');
+          });
+          $('.popup-choice-wrap .confirm-btn').click(function() {
+            updateOrderDetail(res).then(response => {
+              if(response.code == 200){
+                $('.popup-choice-wrap').fadeOut();
+                Toast({
+                  message: '请等待工作人员打款！',
+                  position: 'bottom',
+                  duration: 5000
+                });
+                setTimeout(() => {
+                  tar.reload()
+                }, 1000)
+              }
+            }).catch(() => {
+            })
+          })
+        })
+
+      },
+      qxcscilck(item,index){
+        this.msgTip = '确定取消出售吗？'
+        $('.popup-choice-wrap').fadeIn();
+        $('.popup-choice-wrap .cancel-btn').click(function() {
+          $('.popup-choice-wrap').fadeOut();
+          $('.model-box').removeClass('m-swipeleft');
+        });
+        $('.popup-choice-wrap .confirm-btn').click(function() {
+          this.temp.id = item.id
+          this.temp.paystatus = '03'
+          this.temp.openId = this.openId
+          this.temp.orderstatus = '02'
+          this.temp.status = '07'
+          updateOrder(this.temp).then(response => {
+            if(response.code == 200){
+              $('.popup-choice-wrap').fadeOut();
+              Toast({
+                message: '取消成功！',
+                position: 'bottom',
+                duration: 5000
+              });
+              setTimeout(() => {
+                tar.reload()
+              }, 1000)
+            }
+          }).catch(() => {
+          })
+        })
+      },
       qrshcilck(item,index){
+        var tar = this
         var res = {
           id: item.id,
           openId: this.openId,
@@ -303,7 +370,6 @@
           deliverystatus:'04',
           status: '05'
         }
-        var tar = this
         updateOrder(res).then(response => {
           Toast({
             message: '确认收货成功！',
@@ -318,6 +384,7 @@
       },
       qxcilck(item,index) {
         var tar = this
+        this.msgTip = '确定取消订单吗？'
         $('.popup-choice-wrap').fadeIn();
         $('.popup-choice-wrap .cancel-btn').click(function() {
           $('.popup-choice-wrap').fadeOut();
@@ -329,14 +396,17 @@
           this.temp.openId = this.openId
           this.temp.type = '03'
           updateOrder(this.temp).then(response => {
-            Toast({
-              message: '订单取消成功！',
-              position: 'bottom',
-              duration: 5000
-            });
-            setTimeout(() => {
-              tar.reload()
-            }, 1000)
+            if(response.code == 200){
+              $('.popup-choice-wrap').fadeOut();
+              Toast({
+                message: '订单取消成功！',
+                position: 'bottom',
+                duration: 5000
+              });
+              setTimeout(() => {
+                tar.reload()
+              }, 1000)
+            }
           }).catch(() => {
           })
         })

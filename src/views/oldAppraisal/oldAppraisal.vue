@@ -30,7 +30,7 @@
       </div>
 
       <div class="offer-btn-box">
-        <a class="" href="javascript:;" @click="confirm()" title="查看报价">查看报价</a>
+        <a class="" href="javascript:;" @click="confirm()" title="查看报价">加入换货</a>
       </div>
 
     <div class="appraisal-process-problem-wrap" title="问号弹窗">
