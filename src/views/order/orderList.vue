@@ -43,7 +43,7 @@
                   </li>
                 </ul>
                 <div class="subtotal-box">
-                  共<span>{{item1.oldOrder.item.length}}</span>件商品&nbsp;&nbsp;小计：<strong>￥{{item1.oldOrder.sum}}</strong>
+                  共<span>{{item1.oldOrder.item.length}}</span>件商品&nbsp;&nbsp;小计：<strong>{{item1.oldOrder.sums}}</strong>
                 </div>
               </div>
             </div>
@@ -171,6 +171,13 @@
         this.query.openId = this.openId
         queryOrderList(this.query).then(response => {
           if (response.code === 200) {
+            response.data.items.forEach((value,index) => {
+              if(value.oldOrder.sum<0){
+                value.oldOrder.sums = '返现￥' +Math.abs(value.oldOrder.sum)
+              }else{
+                value.oldOrder.sums = '￥' + value.oldOrder.sum
+              }
+            })
             this.data = response.data.items;
           }
         }).catch(() => {

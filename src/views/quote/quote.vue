@@ -192,7 +192,7 @@
             this.oldGoods = response.data.oldGoods
             this.temp.price = this.newprice - this.oldprice
             if(this.oldprice - this.newprice > 0){
-              $('.footer-appraisal1').find('em').html('返现￥'+ (parseFloat(this.oldprice) - parseFloat(this.newprice)))
+              $('.footer-appraisal1').find('em').html('返现￥'+ Math.abs((parseFloat(this.oldprice) - parseFloat(this.newprice))))
             }else{
               $('.footer-appraisal1').find('em').html('￥' +(parseFloat(this.newprice) - parseFloat(this.oldprice)))
             }
@@ -352,7 +352,7 @@
           if(item.model === '01') {
             this.temp.price = parseFloat(this.temp.price) - parseFloat(item.bllPrice)
             if(this.temp.price < 0 ){
-              $('.footer-appraisal1').find('em').html('返现￥' + this.temp.price)
+              $('.footer-appraisal1').find('em').html('返现￥' + Math.abs(this.temp.price))
             }else{
               $('.footer-appraisal1').find('em').html('￥' + this.temp.price)
             }
@@ -361,7 +361,7 @@
           if(item.model === '02') {
             this.temp.price = parseFloat(this.temp.price) + parseFloat(item.bllPrice)
             if(this.temp.price < 0 ){
-              $('.footer-appraisal1').find('em').html('返现￥' + this.temp.price)
+              $('.footer-appraisal1').find('em').html('返现￥' + Math.abs(this.temp.price))
             }else{
               $('.footer-appraisal1').find('em').html('￥' + this.temp.price)
             }
@@ -372,7 +372,7 @@
           if(item.model === '01') {
             this.temp.price = parseFloat(this.temp.price) + parseFloat(item.bllPrice)
             if(this.temp.price < 0 ){
-              $('.footer-appraisal1').find('em').html('返现￥' + this.temp.price)
+              $('.footer-appraisal1').find('em').html('返现￥' + Math.abs(this.temp.price))
             }else{
               $('.footer-appraisal1').find('em').html('￥' + this.temp.price)
             }
@@ -380,7 +380,7 @@
           if(item.model === '02') {
             this.temp.price = parseFloat(this.temp.price) - parseFloat(item.bllPrice)
             if(this.temp.price < 0 ){
-              $('.footer-appraisal1').find('em').html('返现￥' + this.temp.price)
+              $('.footer-appraisal1').find('em').html('返现￥' + Math.abs(this.temp.price))
             }else{
               $('.footer-appraisal1').find('em').html('￥' + this.temp.price)
             }

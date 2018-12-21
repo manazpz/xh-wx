@@ -100,7 +100,16 @@
     </div>
 
     <div class="footer-appraisal">
-      <span>合计：<strong><b>￥</b> <em v-model="price" class="aggregate-amount">{{sData.sumNewPrice - sData.sumOldPrice - couponPrice -ptCouponPrice - hjCouponPrice}}</em></strong></span>
+      <span>合计：
+        <strong v-if="(sData.sumNewPrice - sData.sumOldPrice - couponPrice -ptCouponPrice - hjCouponPrice)>0">
+          <b>￥</b>
+          <em v-model="price" class="aggregate-amount">{{sData.sumNewPrice - sData.sumOldPrice - couponPrice -ptCouponPrice - hjCouponPrice}}</em>
+        </strong>
+        <strong v-else>
+          <b>返现￥</b>
+          <em v-model="price" class="aggregate-amount">{{Math.abs(sData.sumNewPrice - sData.sumOldPrice - couponPrice -ptCouponPrice - hjCouponPrice)}}</em>
+      </strong>
+      </span>
       <a href="javascript:;" title="订单提交" @click="submit">订单提交</a>
     </div>
   </div>
