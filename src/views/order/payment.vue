@@ -51,6 +51,7 @@
     },
     methods: {
       pay() {
+        debugger
         pay(this.list).then(response => {
           this.weixinPay(response.data)
           this.$router.push({path: 'home', query: {}})

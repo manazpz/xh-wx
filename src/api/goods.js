@@ -117,3 +117,11 @@ export function queryForecastList(query) {
     params: query
   })
 }
+
+export function updateStock(params) {
+  return request({
+    url: '/api/goods/updateStock',
+    method: 'POST',
+    data: params
+  })
+}

@@ -45,8 +45,9 @@
         nowData: '',
         nowYear: '',
         nowMonth: '',
-        month: [],
+        week: [],
         price: [],
+        nowprice: '',
         goods: [{model :'', imgs:[]}]
       }
     },
@@ -54,14 +55,14 @@
       this.openId = window.localStorage.getItem("openId")
       this.id = this.$route.query.id
       this.getType()
-      this.getList()
     },
     methods: {
       getType() {
-        queryForecastList().then(response => {
-          this.month  = response.data.items[0].datas
+        queryForecastList({id:this.id}).then(response => {
+          this.week  = response.data.items[0].datas
           this.price  = response.data.items[0].price
-
+          this.nowprice  = response.data.items[0].now
+          this.getList()
         }).catch(() => {
         })
       },
@@ -73,9 +74,9 @@
             }else if(response.data.oldGoods.length !== 0){
               this.goods = response.data.oldGoods
             }
-            var lets = this.goods[0].bllPrice/this.price[5]
+            var lets = this.goods[0].bllPrice/this.nowprice
             this.price.forEach((value, index) => {
-              value = parseInt(value*lets)
+              value = parseFloat((value*lets).toFixed(2))
               this.price[index] = value
             })
             this.$nextTick(function () {
@@ -108,7 +109,7 @@
                 type : 'category',
                 boundaryGap : false,
                 // data : ['4月','5月','6月','7月','8月',''],
-                data : this.month,
+                data : this.week,
               }
             ],
             yAxis : [

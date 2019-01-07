@@ -12,9 +12,11 @@
             handler: () => deleteGoods(item)}]">
               <div class="model-box" >
                   <div class="left-b-box">
-                      <i class="sign-on" @click="goodsCheck(item,$event,item.bllId)"></i>
+                      <i v-if="item.overdue === 'true'" class="sign-i"></i>
+                      <i v-else class="sign-on" @click="goodsCheck(item,$event,item.bllId)"></i>
                       <div class="pic-left">
-                          <img :src="item.imgs.length>0?item.imgs[0].url:''" @click="goodsDetail(item)" >
+                          <img v-if="item.imgs.length>0" :src="item.imgs[0].url" @click="goodsDetail(item)" >
+                          <img v-else src="static/image/shopping_trolley.png" @click="goodsDetail(item)" >
                       </div>
                       <div class="inf-right">
                           <h4>{{item.goodsName}} <span v-if="item.del === 'Y' || item.logIstcs === '02'">已失效</span></h4>
@@ -26,7 +28,8 @@
                           </div>
                           <div class="inf-r-price">
                               <span>预计一周后再降￥30</span>
-                              <strong><b>￥</b><em>{{item.bllPrice}}</em></strong>
+                              <strong v-if="item.overdue === 'false'"><b>￥</b><em>{{item.bllPrice}}</em></strong>
+                              <strong v-else><span @click="overdueEva(item)">点此重新估价</span></strong>
                           </div>
                       </div>
                   </div>
@@ -51,7 +54,8 @@
                         <div class="left-b-box">
                             <i class="sign-on" @click="goodsCheck(item,$event,item.bllId)"></i>
                             <div class="pic-left">
-                                <img :src="item.imgs.length>0?item.imgs[0].url:''" @click="goodsDetail(item)">
+                              <img v-if="item.imgs.length>0" :src="item.imgs[0].url" @click="goodsDetail(item)" >
+                              <img v-else src="static/image/shopping_trolley.png" @click="goodsDetail(item)" >
                             </div>
                             <div class="inf-right" >
                                 <h4>{{item.goodsName}}<span v-if="item.del === 'Y' || item.logIstcs === '02'">已失效</span></h4>
@@ -179,10 +183,16 @@
       getList() {
         queryReplacementCar(this.openId).then(response => {
           if (response.code === 200) {
-            response.data.oldGoods.forEach((value, index) => {
-              value.bllParameterStr = value.bllParameterStr
-              this.oldprice += parseFloat(value.bllPrice)
-              this.goodsChecks.push(value.bllId)
+            var datas = this.getDay(-7)
+            response.data.oldGoods.forEach((value1, index) => {
+              value1.bllParameterStr = value1.bllParameterStr
+              this.oldprice += parseFloat(value1.bllPrice)
+              this.goodsChecks.push(value1.bllId)
+              if(this.dataCompare(value1.createTime,datas)){
+                value1.overdue = 'false'
+              }else{
+                value1.overdue = 'true'
+              }
             })
             response.data.newGoods.forEach((value, index) => {
               this.newprice += parseFloat(value.bllPrice)
@@ -190,11 +200,11 @@
             })
             this.newGoods = response.data.newGoods
             this.oldGoods = response.data.oldGoods
-            this.temp.price = this.newprice - this.oldprice
+            this.temp.price = parseFloat((this.newprice - this.oldprice).toFixed(2))
             if(this.oldprice - this.newprice > 0){
-              $('.footer-appraisal1').find('em').html('返现￥'+ Math.abs((parseFloat(this.oldprice) - parseFloat(this.newprice))))
+              $('.footer-appraisal1').find('em').html('返现￥'+ Math.abs((parseFloat((this.oldprice - this.newprice).toFixed(2)))))
             }else{
-              $('.footer-appraisal1').find('em').html('￥' +(parseFloat(this.newprice) - parseFloat(this.oldprice)))
+              $('.footer-appraisal1').find('em').html('￥' +(parseFloat((this.newprice - this.oldprice).toFixed(2))))
             }
 
           }
@@ -350,7 +360,7 @@
           this.goodsChecks.splice(this.goodsChecks.indexOf(val),1)
           evn.toElement.className = "sign-i"
           if(item.model === '01') {
-            this.temp.price = parseFloat(this.temp.price) - parseFloat(item.bllPrice)
+            this.temp.price = parseFloat((this.temp.price - item.bllPrice).toFixed(2))
             if(this.temp.price < 0 ){
               $('.footer-appraisal1').find('em').html('返现￥' + Math.abs(this.temp.price))
             }else{
@@ -359,7 +369,8 @@
 
           }
           if(item.model === '02') {
-            this.temp.price = parseFloat(this.temp.price) + parseFloat(item.bllPrice)
+            this.temp.price = parseFloat((this.temp.price + item.bllPrice).toFixed(2))
+
             if(this.temp.price < 0 ){
               $('.footer-appraisal1').find('em').html('返现￥' + Math.abs(this.temp.price))
             }else{
@@ -370,7 +381,7 @@
           this.goodsChecks.push(val)
           evn.toElement.className = "sign-on"
           if(item.model === '01') {
-            this.temp.price = parseFloat(this.temp.price) + parseFloat(item.bllPrice)
+            this.temp.price = parseFloat((this.temp.price + item.bllPrice).toFixed(2))
             if(this.temp.price < 0 ){
               $('.footer-appraisal1').find('em').html('返现￥' + Math.abs(this.temp.price))
             }else{
@@ -378,7 +389,7 @@
             }
           }
           if(item.model === '02') {
-            this.temp.price = parseFloat(this.temp.price) - parseFloat(item.bllPrice)
+            this.temp.price = parseFloat((this.temp.price - item.bllPrice).toFixed(2))
             if(this.temp.price < 0 ){
               $('.footer-appraisal1').find('em').html('返现￥' + Math.abs(this.temp.price))
             }else{
@@ -494,6 +505,14 @@
           }
         }
       },
+      overdueEva(item){
+        this.$router.push({path: '/oldAppraisal', query: {id:item.goodsId,name:item.goodsName,price:item.banPrice}})
+        deleteReplacementCar({id:item.bllId}).then(response => {
+          if (response.code === 200) {
+          }
+        }).catch(() => {
+        })
+      },
       chickProblem(val){
         $('.appraisal-process-problem-wrap').fadeIn();
         $('.problem-box').addClass('p-top-ani').find('h1').html(val.name).siblings('p').html(val.tipsText);
@@ -501,6 +520,27 @@
           $('.appraisal-process-problem-wrap').fadeOut();
           $('.problem-box').removeClass('p-top-ani');
         });
+      },
+      getDay(day){
+        var today = new Date();
+        var targetday_milliseconds=today.getTime() + 1000*60*60*24*day;
+        today.setTime(targetday_milliseconds); //注意，这行是关键代码
+        var tYear = today.getFullYear();
+        var tMonth = today.getMonth();
+        var tDate = today.getDate();
+        tMonth = this.doHandleMonth(tMonth + 1);
+        tDate = this.doHandleMonth(tDate);
+        return tYear+"-"+tMonth+"-"+tDate;
+      },
+      doHandleMonth(month){
+        var m = month;
+        if(month.toString().length == 1){
+          m = "0" + month;
+        }
+        return m;
+      },
+      dataCompare(begintime,endtime){
+        return ((new Date(begintime.replace(/-/g,"\/"))) > (new Date(endtime.replace(/-/g,"\/"))));
       }
     },
     //注册组件

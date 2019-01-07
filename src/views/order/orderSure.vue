@@ -117,7 +117,7 @@
 <script type="text/ecmascript-6">
   import {  instertOrder } from 'api/order'
   import { queryAddress } from 'api/address'
-  import { queryReplacementCar, queryrecoveryList } from 'api/goods'
+  import { queryReplacementCar, queryrecoveryList, updateStock } from 'api/goods'
   import { queryCouponUser } from 'api/coupon'
   import { pay } from 'api/wx'
   import { queryUserinfos } from 'api/system'
@@ -135,6 +135,7 @@
         pcList: [],
         hcList: [],
         openid: '',
+        goodsId: [],
         couponPrice: 0,
         ptCouponPrice: 0,
         hjCouponPrice: 0,
@@ -187,10 +188,12 @@
           if (response.code === 200) {
             this.data = response.data
             this.data.newGoods.forEach(obj => {
-              this.sData.sumNewPrice = parseFloat(obj.bllPrice) + parseFloat(this.sData.sumNewPrice)
+              this.sData.sumNewPrice = parseFloat((obj.bllPrice + this.sData.sumNewPrice).toFixed(2))
+              obj.bllPrice = obj.bllPrice.toFixed(2)
             })
             this.data.oldGoods.forEach(obj => {
-              this.sData.sumOldPrice = parseFloat(obj.bllPrice) + parseFloat(this.sData.sumOldPrice)
+              this.sData.sumOldPrice = parseFloat((obj.bllPrice + this.sData.sumOldPrice).toFixed(2))
+              obj.bllPrice = obj.bllPrice.toFixed(2)
             })
           }
         }).catch(() => {
@@ -226,12 +229,12 @@
           queryUserinfos({openId:this.openid}).then(response => {
             if (response.code === 200) {
               if(response.data.items[0].phone == null || response.data.items[0].phone == '' ){
-                this.$router.push({path: '/user/accountBingDing', query: {id:this.openid}})
+                this.$router.push({path: '/user/accountBingDing', query: {}})
               }
             }
           }).catch(() => {
           })
-          this.data.price = this.sData.sumNewPrice - this.sData.sumOldPrice - this.couponPrice - this.ptCouponPrice - this.hjCouponPrice
+          this.data.price = (this.sData.sumNewPrice - this.sData.sumOldPrice - this.couponPrice - this.ptCouponPrice - this.hjCouponPrice).toFixed(2)
           this.data.openId = this.openid
           this.data.type = this.list.types
           this.data.address = this.address
@@ -239,11 +242,19 @@
           if(this.data.oldGoods.length === 0){
             this.$router.push({path: 'payment', query: {item:this.data}})
           }else{
+            debugger
             instertOrder(this.data).then(response => {
               this.data.orderId = response.data.items[0].orderId
               setTimeout(() => {
                 this.$router.push({path: 'visitRecovery', query: {item:this.data}})
               }, 1000)
+            }).catch(() => {
+            })
+            this.data.newGoods.forEach((value,index) => {
+              this.goodsId.push(value.goodsId)
+            })
+            updateStock(this.goodsId).then(response => {
+
             }).catch(() => {
             })
           }

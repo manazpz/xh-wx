@@ -391,6 +391,11 @@
       },
       qxcilck(item,index) {
         var tar = this
+        this.temp.id = item.id
+        this.temp.paystatus = '03'
+        this.temp.openId = this.openId
+        this.temp.type = '03'
+        this.temp.newOrder = item.newOrder.item
         this.msgTip = '确定取消订单吗？'
         $('.popup-choice-wrap').fadeIn();
         $('.popup-choice-wrap .cancel-btn').click(function() {
@@ -398,11 +403,7 @@
           $('.model-box').removeClass('m-swipeleft');
         });
         $('.popup-choice-wrap .confirm-btn').click(function() {
-          this.temp.id = item.id
-          this.temp.paystatus = '03'
-          this.temp.openId = this.openId
-          this.temp.type = '03'
-          updateOrder(this.temp).then(response => {
+          updateOrder(tar.temp).then(response => {
             if(response.code == 200){
               $('.popup-choice-wrap').fadeOut();
               Toast({
