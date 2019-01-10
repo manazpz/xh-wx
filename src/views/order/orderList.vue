@@ -7,10 +7,10 @@
           <li class="select" @click="qh('ALL')" ref="ALL"><a href="javascript:;">全部</a></li>
           <li @click="qh('DFK',{payStatus:'01'})" ref="DFK"><a href="javascript:;">待付款</a></li>
           <li @click="qh('DJY',{checkStatus:'01',model:'02'})" ref="DJY"><a href="javascript:;">待检验</a></li>
-          <li @click="qh('DSXJ',{deliveryStatus:'01',model:'01'})" ref="DSXJ"><a href="javascript:;">待收新机</a></li>
+          <li @click="qh('DSXJ',{payStatus:'02',model:'01',orderStatus:'03'})" ref="DSXJ"><a href="javascript:;">待收新机</a></li>
           <li @click="qh('DSJJ',{deliveryStatus:'01',model:'02'})" ref="DSJJ"><a href="javascript:;">待收旧机</a></li>
 
-          <li @click="qh('DSK',{checkStatus:'02',model:'02'})" ref="DSK"><a href="javascript:;">待收款</a></li>
+          <li @click="qh('DSK',{checkStatus:'03'})" ref="DSK"><a href="javascript:;">待收款</a></li>
 
           <li @click="qh('DPL',{deliveryStatus:'04',model:'01'})" ref="DPL"><a href="javascript:;">待评价</a></li>
         </ul>
@@ -81,8 +81,8 @@
               <a v-if="navbar=='ALL'?(item1.type != '02' && item1.payStatus == '01' && item1.price >0):btn.fk" class="payment-btn" href="javascript:;" @click="fkcilck(item1,index1)" title="付款">付款</a>
               <a v-if="navbar=='ALL'?(item1.orderStatus != '01' && item1.payStatus == '01'):btn.qxfk" class="cancel-btn" href="javascript:;" @click="qxcilck(item1,index1)" title="取消订单">取消订单</a>
               <a v-if="navbar=='ALL'?((item1.deliveryStatus == '01' || item1.deliveryStatus == '03') && item1.payStatus == '02' && item1.type == '01'):btn.qrsh" class="payment-btn" href="javascript:;" @click="qrshcilck(item1,index1)" title="确认收货">确认收货</a>
-              <a v-if="navbar=='ALL'?(item1.type != '01' && item1.price < 0 && item1.checkStatus == '02' && item1.orderStatus != '01'):btn.qrsk" class="payment-btn" href="javascript:;" @click="qrcscilck(item1,index1)" title="同意验机">确认出售</a>
-              <a v-if="navbar=='ALL'?(item1.type != '01' && item1.price < 0 && item1.checkStatus == '02' && item1.orderStatus != '01'):btn.qrsk" class="payment-btn" href="javascript:;" @click="qxcscilck(item1,index1)" title="同意验机">取消出售</a>
+              <a v-if="navbar=='ALL'?(item1.type != '01' && item1.price < 0 && item1.checkStatus == '02' && item1.orderStatus != '01'):btn.qrcs" class="payment-btn" href="javascript:;" @click="qrcscilck(item1,index1)" title="确认出售">确认出售</a>
+              <a v-if="navbar=='ALL'?(item1.type != '01' && item1.price < 0 && item1.checkStatus == '02' && item1.orderStatus != '01'):btn.qxcs" class="payment-btn" href="javascript:;" @click="qxcscilck(item1,index1)" title="取消出售">取消出售</a>
               <a v-if="navbar=='ALL'?(item1.type != '01' && item1.price < 0 && item1.checkStatus == '03' && item1.orderStatus != '01'):btn.qrsk" class="payment-btn" href="javascript:;" @click="skcilck(item1,index1)" title="确认收款">确认收款</a>
               <a v-if="navbar=='ALL'?(item1.type == '01' && item1.deliveryStatus == '03' && item1.orderStatus == '01'):btn.pl" class="payment-btn" href="javascript:;" @click="pjcilck(item1,index1)" title="评价">评价</a>
               <a v-if="navbar=='ALL'?(item1.payStatus == '02' && item1.orderStatus != '01'):btn.ckwl" class="cancel-btn" href="javascript:;" @click="ckwlcilck(item1,index1)" title="查看物流">查看物流</a>
@@ -147,6 +147,8 @@
           fk:false,
           qxfk:false,
           qrsh:false,
+          qrcs:false,
+          qxcs:false,
           qrsk:false,
           ckwl:false,
           pl:false,
@@ -215,6 +217,8 @@
             this.btn.qrsh = true
             this.btn.qrsk = true
             this.btn.ckwl = true
+            this.btn.qrcs = true
+            this.btn.qxcs = true
             this.btn.pl = true
             this.btn.txjy = true
             this.btn.sqth = true
@@ -225,6 +229,8 @@
             this.btn.qrsh = false
             this.btn.qrsk = false
             this.btn.ckwl = false
+            this.btn.qrcs = false
+            this.btn.qxcs = false
             this.btn.pl = false
             this.btn.txjy = false
             this.btn.sqth = false
@@ -235,6 +241,8 @@
             this.btn.qrsh = false
             this.btn.qrsk = false
             this.btn.ckwl = false
+            this.btn.qrcs = false
+            this.btn.qxcs = false
             this.btn.pl = false
             this.btn.sqth = false
             return;
@@ -244,6 +252,8 @@
             this.btn.qrsh = true
             this.btn.qrsk = false
             this.btn.ckwl = true
+            this.btn.qrcs = false
+            this.btn.qxcs = false
             this.btn.pl = false
             this.btn.txjy = false
             this.btn.sqth = true
@@ -253,19 +263,24 @@
             this.btn.qxfk = false
             this.btn.qrsh = true
             this.btn.qrsk = false
+            this.btn.qrcs = false
+            this.btn.qxcs = false
             this.btn.ckwl = true
             this.btn.pl = false
             this.btn.txjy = false
+            this.btn.sqth = true
             return;
           case 'DSK' :
             this.btn.fk = false
             this.btn.qxfk = false
             this.btn.qrsh = false
+            this.btn.qrcs = false
+            this.btn.qxcs = false
             this.btn.qrsk = true
             this.btn.ckwl = false
             this.btn.pl = false
             this.btn.txjy = false
-            this.btn.sqth = true
+            this.btn.sqth = false
             return;
           case 'DPL' :
             this.btn.fk = false
@@ -273,6 +288,8 @@
             this.btn.qrsh = false
             this.btn.qrsk = false
             this.btn.ckwl = true
+            this.btn.qrcs = false
+            this.btn.qxcs = false
             this.btn.pl = true
             this.btn.txjy = false
             this.btn.sqth = false
@@ -295,7 +312,7 @@
         // this.temp.openId = this.openId
         this.temp.openId = this.openId
         this.temp.orderId = item.number
-        this.temp.price = item.sum
+        this.temp.price = item.price
         this.temp.goodsName = this.types + item.goodsName
         pay(this.temp).then(response => {
           this.weixinPay(response.data)
@@ -340,6 +357,7 @@
 
       },
       qxcscilck(item,index){
+        var tar = this
         this.msgTip = '确定取消出售吗？'
         $('.popup-choice-wrap').fadeIn();
         $('.popup-choice-wrap .cancel-btn').click(function() {
@@ -488,10 +506,33 @@
           },
           function(res){
             // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
-            if(res.err_msg == "get_brand_wcpay_request:ok" ){
-
-            }else{
-
+            if (res.err_msg === 'get_brand_wcpay_request:ok') {
+              Toast({
+                message: '支付成功！',
+                position: 'bottom',
+                duration: 5000
+              })
+              setTimeout(() => {
+                vm.$router.push('/orderList')
+              }, 1000)
+            } else if (res.err_msg === 'get_brand_wcpay_request:cancel') {
+              Toast({
+                message: '已取消支付！',
+                position: 'bottom',
+                duration: 5000
+              })
+              setTimeout(() => {
+                vm.$router.push('/orderList')
+              }, 1000)
+            } else if (res.err_msg === 'get_brand_wcpay_request:fail') {
+              Toast({
+                message: '网络异常，请重试！',
+                position: 'bottom',
+                duration: 5000
+              })
+              setTimeout(() => {
+                vm.$router.push('/orderList')
+              }, 1000)
             }
           }
         );
