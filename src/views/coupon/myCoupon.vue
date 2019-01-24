@@ -164,7 +164,7 @@
       },
       redeem(){
         this.temp.openId = this.openId
-        this.temp.number = this.number
+        this.temp.no = this.number
         getCoupon(this.temp).then(response => {
           if (response.code === 200) {
             Toast({

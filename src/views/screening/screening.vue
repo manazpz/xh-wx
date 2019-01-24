@@ -7,7 +7,8 @@
     <div class="model-search" title="搜索框">
       <label>
         <i></i>
-        <input type="text" v-model="searchs" @change="search(searchs)" placeholder="搜索您想要的机型">
+        <input v-if="model ==='01'" type="text" v-model="searchs" @change="search(searchs)" placeholder="搜索您想购买的机型">
+        <input v-else type="text" v-model="searchs" @change="search(searchs)" placeholder="搜索您想换掉的机型">
       </label>
     </div>
     <div v-if="his.length>0" class="his">
@@ -53,6 +54,7 @@
         selected: '',
         selecteds: [],
         his:[],
+        model: '',
         data: undefined,
         isSearch: false,
         searchText: '',
@@ -60,6 +62,7 @@
       }
     },
     created: function () {
+      this.model = this.$route.query.model
       this.getList()
       this.hisSearch();
     },

@@ -1,8 +1,8 @@
 <template>
   <div class="goodsNew" ref="goodsNew">
-    <v-header title="商品详情"></v-header>
+    <v-header title="新机详情"></v-header>
     <mt-navbar  class="navbar" v-model="selected">
-      <mt-tab-item id="sp">商品</mt-tab-item>
+      <mt-tab-item id="sp">新机</mt-tab-item>
       <mt-tab-item id="xq">详情</mt-tab-item>
     </mt-navbar>
     <mt-tab-container v-model="selected">

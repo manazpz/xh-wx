@@ -39,7 +39,7 @@
           <mt-button size="large" class="exchange-btn" @click="tradeUp">换购新机</mt-button>
         </div>
         <div class="h-prompt-img">
-          <h4>三天换新机</h4>
+          <h4>放心换新机</h4>
           <div>
             <router-link v-for="item in statements" :to="{path:'/statement',query:{title:item.title,id:item.id}}">
               <img :src="item.imgUrl">
@@ -90,6 +90,11 @@
       }
     },
     created() {
+<<<<<<< Updated upstream
+=======
+      window.localStorage.setItem('openId','oaCWN0sZrB1zR7SGL2V55ej1OK9M')
+      // this.openId = window.localStorage.getItem("openId")
+>>>>>>> Stashed changes
       this.getHomeLabel()
       // window.localStorage.setItem('openId','oaCWN0ns9o_IjsXbeRQtAqIeHhhg')
       this.getBanners('HB')

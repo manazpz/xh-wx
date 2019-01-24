@@ -67,6 +67,9 @@
               position: 'bottom',
               duration: 1000
             });
+            setTimeout(() => {
+              this.$router.push({path: '/home', query: {}})
+            }, 1000)
           }
           if(response.code === 501){
             Toast({
