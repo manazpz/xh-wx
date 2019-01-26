@@ -26,10 +26,18 @@
                           <div class="increase-change">
                               <span @click="numreduceclick(item,$event,'reduce')" class="reduce">-</span><i class="number">1</i><span @click="numaddclick(item,$event,'add')" class="add">+</span>
                           </div>
-                          <div class="inf-r-price">
+                          <div class="inf-r-price" v-if="item.overdue === 'false'">
                               <span>预计一周后再降￥30</span>
-                              <strong v-if="item.overdue === 'false'"><b>￥</b><em>{{item.bllPrice}}</em></strong>
-                              <strong v-else><span @click="overdueEva(item)">点此重新估价</span></strong>
+                              <strong v-if="item.bllPrice < 0">
+                                <b>返现￥</b><em>{{Math.abs(item.bllPrice)}}</em>
+                              </strong>
+                            <strong v-else>
+                              <b>￥</b><em>{{item.bllPrice}}</em>
+                            </strong>
+                          </div>
+                          <div v-else class="inf-r-price" >
+                            <span>预计一周后再降￥30</span>
+                            <strong><span @click="overdueEva(item)">点此重新估价</span></strong>
                           </div>
                       </div>
                   </div>
@@ -181,6 +189,7 @@
     },
     methods: {
       getList() {
+        var tar = this
         queryReplacementCar(this.openId).then(response => {
           if (response.code === 200) {
             var datas = this.getDay(-7)
@@ -201,10 +210,11 @@
             this.newGoods = response.data.newGoods
             this.oldGoods = response.data.oldGoods
             this.temp.price = parseFloat((this.newprice - this.oldprice).toFixed(2))
-            if(this.oldprice - this.newprice > 0){
-              $('.footer-appraisal1').find('em').html('返现￥'+ Math.abs((parseFloat((this.oldprice - this.newprice).toFixed(2)))))
-            }else{
+            debugger
+            if(tar.oldprice - tar.newprice > 0){
               $('.footer-appraisal1').find('em').html('￥' +(parseFloat((this.newprice - this.oldprice).toFixed(2))))
+            }else{
+              $('.footer-appraisal1').find('em').html('返现￥'+ Math.abs((parseFloat((this.oldprice - this.newprice).toFixed(2)))))
             }
 
           }
@@ -443,10 +453,10 @@
           }
         }else {
           if(ent.toElement.className == 'select'){
-            ent.toElement.classList.remove("select")
             if(this.text[index].split(';').length == 1) {
-              this.text[index] = this.text[index].replace(val.spec_value_name, '')
+              //this.text[index] = this.text[index].replace(val.spec_value_name, '')
             }else {
+              ent.toElement.classList.remove("select")
               if (this.text[index].indexOf(val.spec_value_name) == 0){
                 this.text[index] = this.text[index].replace(val.spec_value_name+';', '')
               }else if (this.text[index].indexOf(val.spec_value_name) > 0){
@@ -461,7 +471,7 @@
               this.text[index] += ';' + val.spec_value_name
             }
           }
-          ent.target.parentNode.parentNode.childNodes[0].childNodes[2].innerText = this.text[index]
+          ent.target.parentNode.parentNode.childNodes[0].childNodes[2].childNodes[0].innerText = this.text[index]
         }
         if(this.temp.parameter.length == 0){
           this.temp.parameter.push('{"id": "'+item.id+'","obligate": "'+item.obligate+'","spec": ['+JSON.stringify(val)+']}')
