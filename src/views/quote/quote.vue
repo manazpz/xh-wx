@@ -210,7 +210,6 @@
             this.newGoods = response.data.newGoods
             this.oldGoods = response.data.oldGoods
             this.temp.price = parseFloat((this.newprice - this.oldprice).toFixed(2))
-            debugger
             if(tar.oldprice - tar.newprice > 0){
               $('.footer-appraisal1').find('em').html('￥' +(parseFloat((this.newprice - this.oldprice).toFixed(2))))
             }else{

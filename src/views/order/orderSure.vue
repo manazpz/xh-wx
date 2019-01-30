@@ -242,7 +242,6 @@
           if(this.data.oldGoods.length === 0){
             this.$router.push({path: 'payment', query: {item:this.data}})
           }else{
-            debugger
             instertOrder(this.data).then(response => {
               this.data.orderId = response.data.items[0].orderId
               setTimeout(() => {

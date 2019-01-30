@@ -448,7 +448,6 @@
         });
       },
       sqthcilck(item,index){
-        debugger
         this.$router.push({path: '/order/returns', query: {id:item.id}})
       },
       cellClick(item) {
