@@ -192,16 +192,18 @@
         var tar = this
         queryReplacementCar(this.openId).then(response => {
           if (response.code === 200) {
+            this.oldprice = 0
+            this.newprice = 0
             var datas = this.getDay(-7)
             response.data.oldGoods.forEach((value1, index) => {
               value1.bllParameterStr = value1.bllParameterStr
-              this.oldprice += parseFloat(value1.bllPrice)
-              this.goodsChecks.push(value1.bllId)
               if(this.dataCompare(value1.createTime,datas)){
                 value1.overdue = 'false'
+                this.oldprice += parseFloat(value1.bllPrice)
               }else{
                 value1.overdue = 'true'
               }
+              this.goodsChecks.push(value1.bllId)
             })
             response.data.newGoods.forEach((value, index) => {
               this.newprice += parseFloat(value.bllPrice)
@@ -211,9 +213,9 @@
             this.oldGoods = response.data.oldGoods
             this.temp.price = parseFloat((this.newprice - this.oldprice).toFixed(2))
             if(tar.oldprice - tar.newprice > 0){
-              $('.footer-appraisal1').find('em').html('￥' +(parseFloat((this.newprice - this.oldprice).toFixed(2))))
-            }else{
               $('.footer-appraisal1').find('em').html('返现￥'+ Math.abs((parseFloat((this.oldprice - this.newprice).toFixed(2)))))
+            }else{
+              $('.footer-appraisal1').find('em').html('￥' +(parseFloat((this.newprice - this.oldprice).toFixed(2))))
             }
 
           }
