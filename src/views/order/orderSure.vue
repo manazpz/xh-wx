@@ -24,7 +24,7 @@
         <h3>旧机估价</h3>
         <ul>
           <li v-for="item in data.oldGoods">
-            <div class="li-left-img">
+            <div class="li-left-img li-left-img-old">
               <img :src="item.imgs.length>0?item.imgs[0].url:''" >
             </div>
             <div class="li-right-inf">
@@ -47,7 +47,7 @@
         <h3>{{newTile}}</h3>
         <ul>
           <li v-for="item in data.newGoods">
-            <div class="li-left-img">
+            <div class="li-left-img li-left-img-new">
               <img :src="item.imgs.length>0?item.imgs[0].url:''" >
             </div>
             <div class="li-right-inf">

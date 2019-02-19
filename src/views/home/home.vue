@@ -9,10 +9,10 @@
         <mt-tab-item v-if="homeLable[1]&&homeLable[1].isEnable === 'Y'" id="js" @click.native="qh('JB')">集市</mt-tab-item>
       </mt-navbar>
     </div>
-    <mt-swipe :stopPropagation="true" :auto="5000" class="banner" style="height: 17rem;margin-top: 50px;">
+    <mt-swipe :stopPropagation="true" :auto="5000" class="banner" style="height: 8.8rem; margin-top: 50px;">
       <mt-swipe-item v-for="item in banners">
         <a :href="item.link" rel="external nofollow" >
-          <img :src="item.url" style="height: 100%;width: 100%">
+          <img :src="item.url" style="height: auto;width: 100%">
         </a>
       </mt-swipe-item>
     </mt-swipe>

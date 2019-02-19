@@ -28,7 +28,7 @@
       left 0
       right 0
       bottom 0
-      margin auto
+      margin 0 auto!important;
       background-color #0000
       width 50%
   .mint-tab-item-label
@@ -204,11 +204,17 @@
   text-overflow: ellipsis;
 }
 .homeHead .mint-navbar .mint-tab-item.is-selected {
+  width: 100%!important;
   border-bottom: 3px solid #fff!important;
   padding: 21px 0!important;
-  //color :#fff;
+  margin: 0;
+  //color :#fff;.mint-swipe
+}
+.homeHead .mint-tab-item-label {
+  padding:0;
 }
 .mint-navbar .mint-tab-item {
+  width: 50% !important;
   padding: 21px 0;
 }
 .old-machine-btn button label {
@@ -252,3 +258,4 @@
 .homeHead .mint-swipe {
   height: 18.5rem;
 }
+

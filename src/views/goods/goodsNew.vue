@@ -7,7 +7,7 @@
     </mt-navbar>
     <mt-tab-container v-model="selected">
       <mt-tab-container-item id="sp" class="sp">
-        <mt-swipe :stopPropagation="true" :prevent="true" :auto="5000" class="banner" style="height: 250px;">
+        <mt-swipe :stopPropagation="true" :prevent="true" :auto="5000" class="banner"">
           <mt-swipe-item v-for="item in detail.imgs">
             <img :src="item.url" style="height: 100%;width: 100%">
           </mt-swipe-item>
@@ -16,15 +16,17 @@
           <h3><span>{{detail.name}}</span></h3>
           <p><i>￥</i><span>{{price}}</span></p>
         </div>
-        <mt-radio
-          :ref="'radio'+index"
-          :title="item.name"
-          v-model="checks[index]"
-          v-for="(item,index) in checksData" style="overflow:auto;zoom:1;"
-          @change="checkRadio($event,index)"
-          @click.native="onRadio($event,index)"
-          :options="item.spec">
-        </mt-radio>
+        <div style="background: #fff;">
+          <mt-radio
+            :ref="'radio'+index"
+            :title="item.name"
+            v-model="checks[index]"
+            v-for="(item,index) in checksData" style="overflow:auto;zoom:1;"
+            @change="checkRadio($event,index)"
+            @click.native="onRadio($event,index)"
+            :options="item.spec">
+          </mt-radio>
+        </div>
         <mt-button class="confirm-btn" @click="confirm()">确定</mt-button>
       </mt-tab-container-item>
       <mt-tab-container-item id="xq">
