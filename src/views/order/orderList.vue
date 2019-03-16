@@ -121,6 +121,7 @@
 <script type="text/ecmascript-6">
   import VHeader from 'components/v-header/v-header'
   import { queryOrderList, updateOrder, updateOrderDetail } from 'api/order'
+  import { getUserBankinfo } from 'api/system'
   import { payStatus,orderType } from '../../utils/filter'
   import { pay } from 'api/wx'
   import { Toast } from 'mint-ui'
@@ -175,9 +176,9 @@
           if (response.code === 200) {
             response.data.items.forEach((value,index) => {
               if(value.oldOrder.sum<0){
-                value.oldOrder.sums = '返现￥' +Math.abs(value.oldOrder.sum)
+                value.oldOrder.sums = '返现￥' +Math.abs((value.oldOrder.sum).toFixed(2))
               }else{
-                value.oldOrder.sums = '￥' + value.oldOrder.sum
+                value.oldOrder.sums = '￥' + (value.oldOrder.sum).toFixed(2)
               }
             })
             this.data = response.data.items;
@@ -323,38 +324,45 @@
         })
       },
       qrcscilck(item,index){
-        var tar = this
-        item.oldOrder.item.forEach((value,index) => {
-          var res = {
-            id: item.id,
-            openId: this.openId,
-            no: value.no,
-            checkStatus:'03'
-          }
-          this.msgTip = '确定出售该商品吗？'
-          $('.popup-choice-wrap').fadeIn();
-          $('.popup-choice-wrap .cancel-btn').click(function() {
-            $('.popup-choice-wrap').fadeOut();
-            $('.model-box').removeClass('m-swipeleft');
-          });
-          $('.popup-choice-wrap .confirm-btn').click(function() {
-            updateOrderDetail(res).then(response => {
-              if(response.code == 200){
-                $('.popup-choice-wrap').fadeOut();
-                Toast({
-                  message: '请等待工作人员打款！',
-                  position: 'bottom',
-                  duration: 5000
-                });
-                setTimeout(() => {
-                  tar.reload()
-                }, 1000)
+        getUserBankinfo({openId:this.openId}).then(response => {
+          if (response.code === 200) {
+            var tar = this
+            item.oldOrder.item.forEach((value,index) => {
+              var res = {
+                id: item.id,
+                openId: this.openId,
+                no: value.no,
+                checkStatus:'03'
               }
-            }).catch(() => {
+              this.msgTip = '确定出售该商品吗？'
+              $('.popup-choice-wrap').fadeIn();
+              $('.popup-choice-wrap .cancel-btn').click(function() {
+                $('.popup-choice-wrap').fadeOut();
+                $('.model-box').removeClass('m-swipeleft');
+              });
+              $('.popup-choice-wrap .confirm-btn').click(function() {
+                updateOrderDetail(res).then(response => {
+                  if(response.code == 200){
+                    $('.popup-choice-wrap').fadeOut();
+                    Toast({
+                      message: '请等待工作人员打款！',
+                      position: 'bottom',
+                      duration: 5000
+                    });
+                    setTimeout(() => {
+                      tar.reload()
+                    }, 1000)
+                  }
+                }).catch(() => {
+                })
+              })
             })
-          })
+          }
+          if(response.code === 499){
+            this.$router.push({path:'/user/addpaymentmethod'})
+          }
+        }).catch(() => {
         })
-
       },
       qxcscilck(item,index){
         var tar = this

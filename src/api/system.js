@@ -51,3 +51,17 @@ export function insertSuggestion(params) {
     data: params
   })
 }
+export function getUserBankinfo(query) {
+  return request({
+    url: '/api/user/banklist',
+    method: 'get',
+    params: query
+  })
+}
+export function insertUserBank(params) {
+  return request({
+    url: '/api/user/insertUserBank',
+    method: 'POST',
+    data: params
+  })
+}

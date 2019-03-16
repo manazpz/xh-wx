@@ -33,6 +33,6 @@ export function orderLogType(status) {
     case '05' :
       return '订单已确认收货';
     case '06' :
-      return '已确认出售旧机';
+      return '已确认继续交易';
   }
 }

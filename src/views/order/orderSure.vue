@@ -230,33 +230,34 @@
             if (response.code === 200) {
               if(response.data.items[0].phone == null || response.data.items[0].phone == '' ){
                 this.$router.push({path: '/user/accountBingDing', query: {}})
+              }else{
+                this.data.price = (this.sData.sumNewPrice - this.sData.sumOldPrice - this.couponPrice - this.ptCouponPrice - this.hjCouponPrice).toFixed(2)
+                this.data.openId = this.openid
+                this.data.type = this.list.types
+                this.data.address = this.address
+                this.data.quoteId = this.quoteId
+                if(this.data.oldGoods.length === 0){
+                  this.$router.push({path: 'payment', query: {item:this.data}})
+                }else{
+                  instertOrder(this.data).then(response => {
+                    this.data.orderId = response.data.items[0].orderId
+                    setTimeout(() => {
+                      this.$router.push({path: 'visitRecovery', query: {item:this.data}})
+                    }, 1000)
+                  }).catch(() => {
+                  })
+                  this.data.newGoods.forEach((value,index) => {
+                    this.goodsId.push(value.goodsId)
+                  })
+                  updateStock(this.goodsId).then(response => {
+
+                  }).catch(() => {
+                  })
+                }
               }
             }
           }).catch(() => {
           })
-          this.data.price = (this.sData.sumNewPrice - this.sData.sumOldPrice - this.couponPrice - this.ptCouponPrice - this.hjCouponPrice).toFixed(2)
-          this.data.openId = this.openid
-          this.data.type = this.list.types
-          this.data.address = this.address
-          this.data.quoteId = this.quoteId
-          if(this.data.oldGoods.length === 0){
-            this.$router.push({path: 'payment', query: {item:this.data}})
-          }else{
-            instertOrder(this.data).then(response => {
-              this.data.orderId = response.data.items[0].orderId
-              setTimeout(() => {
-                this.$router.push({path: 'visitRecovery', query: {item:this.data}})
-              }, 1000)
-            }).catch(() => {
-            })
-            this.data.newGoods.forEach((value,index) => {
-              this.goodsId.push(value.goodsId)
-            })
-            updateStock(this.goodsId).then(response => {
-
-            }).catch(() => {
-            })
-          }
         }else{
           Toast({
             message: '请填写收货/上门地址！',

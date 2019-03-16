@@ -33,6 +33,9 @@ const quit = () => import('../views/user/quit')
 const encyclopedia = () => import('../views/user/encyclopedia')
 const authentication = () => import('../views/user/authentication')
 const accountBingDing = () => import('../views/user/account-bingding')
+const addpaymentmethod = () => import('../views/user/add-payment-method')
+const paymentmethod = () => import('../views/user/payment-method')
+const accountBingDed = () => import('../views/user/account-bingded')
 const bingDingSuccess = () => import('../views/user/bingding-success')
 const machineReport = () => import('../views/machine/machineReport')
 const machine = () => import('../views/machine/machine')
@@ -271,6 +274,27 @@ export const constantRouterMap = [
     component: accountBingDing,
     hidden: true,
     meta: { title: '绑定账户' }
+  },
+  {
+    path: '/user/addpaymentmethod',
+    name: 'addpaymentmethod',
+    component: addpaymentmethod,
+    hidden: true,
+    meta: { title: '添加收款方式' }
+  },
+  {
+    path: '/user/paymentmethod',
+    name: 'paymentmethod',
+    component: paymentmethod,
+    hidden: true,
+    meta: { title: '已绑收款方式' }
+  },
+  {
+    path: '/user/accountBingDed',
+    name: 'accountBingDed',
+    component: accountBingDed,
+    hidden: true,
+    meta: { title: '已绑账户' }
   },
   {
     path: '/user/bingDingSuccess',

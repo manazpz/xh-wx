@@ -453,9 +453,11 @@
             this.flag = -1
           }
         }else {
+          debugger
           if(ent.toElement.className == 'select'){
             if(this.text[index].split(';').length == 1) {
-              //this.text[index] = this.text[index].replace(val.spec_value_name, '')
+              ent.toElement.classList.remove("select")
+              this.text[index] = this.text[index].replace(val.spec_value_name, '')
             }else {
               ent.toElement.classList.remove("select")
               if (this.text[index].indexOf(val.spec_value_name) == 0){

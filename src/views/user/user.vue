@@ -17,8 +17,11 @@
       <div class="account-list">
         <ul>
           <!--<li><a href="javascript:;" title="绑定手机号码">绑定手机号码</a></li>-->
-          <li><router-link :to="{path:'/user/accountBingDing',query:{}}">
+          <li><router-link :to="{path:'/user/accountBingDed',query:{}}">
             绑定手机号码
+          </router-link></li>
+          <li><router-link :to="{path:'/user/paymentmethod',query:{}}">
+            银行卡管理
           </router-link></li>
           <li><router-link :to="{path:'/manaAddress',query:{}}">
             收货地址管理

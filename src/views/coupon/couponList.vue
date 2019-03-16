@@ -56,6 +56,9 @@
         })
       },
       check(item) {
+        $('.preference-box').on('click', 'li', function(event) {
+          $(this).addClass('current').siblings().removeClass('current');
+        });
         this.checks = item
       },
       getCoupon(){
@@ -74,6 +77,13 @@
           if(response.code === 501){
             Toast({
               message: '您已领取过该优惠券！',
+              position: 'bottom',
+              duration: 1000
+            });
+          }
+          if(response.code === 502){
+            Toast({
+              message: '无此优惠券！',
               position: 'bottom',
               duration: 1000
             });

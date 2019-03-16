@@ -870,6 +870,7 @@ layui.define(['layer', 'laytpl', 'upload'], function(exports){
     var index = $('.layim-chat-list .' + THIS).index();
     var cont = layimChat.find('.layim-chat').eq(index);
     var to = JSON.parse(decodeURIComponent(cont.find('.layim-chat-tool').data('json')));
+    debugger;
     return {
       elem: cont
       ,data: to
