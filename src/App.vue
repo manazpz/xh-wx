@@ -14,6 +14,12 @@
     },
     methods: {
     },
+    watch: {
+      $route(to, from) {
+        alert(to.name)
+        // if(to.name )
+      }
+    },
     components: {
     }
   }

@@ -60,6 +60,13 @@ export const constantRouterMap = [
     meta: { title: '授权' }
   },
   {
+    path: '/login',
+    name: 'login',
+    component: Login,
+    hidden: true,
+    meta: { title: '授权' }
+  },
+  {
     path: '/webError',
     name: 'webError',
     component: webError,
